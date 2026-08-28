@@ -16,12 +16,15 @@ namespace FisioFlow_API.Repositories
 
         public async Task<IEnumerable<Patient>> GetAllPatientsAsync()
         {
-            return await _context.Patients.ToListAsync();
+            return await _context.Patients
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public async Task<Patient> GetPatientByIdAsync(int id)
+        public async Task<Patient?> GetPatientByIdAsync(int id)
         {
             return await _context.Patients
+                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.PatientId == id);
         }
 
@@ -31,7 +34,6 @@ namespace FisioFlow_API.Repositories
                 throw new ArgumentNullException(nameof(patient));
 
             await _context.Patients.AddAsync(patient);
-            await _context.SaveChangesAsync();
 
             return patient;
         }
@@ -41,9 +43,7 @@ namespace FisioFlow_API.Repositories
             if (patient is null)
                 throw new ArgumentNullException(nameof(patient));
 
-            _context.Entry(patient).State = EntityState.Modified;
-
-            await _context.SaveChangesAsync();
+            _context.Patients.Update(patient);
 
             return patient;
         }
@@ -53,11 +53,11 @@ namespace FisioFlow_API.Repositories
             var patient = await _context.Patients.FindAsync(id);
 
             if (patient is null)
-                throw new KeyNotFoundException($"Paciente com ID {id} não encontrado.");
+                throw new KeyNotFoundException(
+                    $"Paciente com ID {id} não encontrado."
+                );
 
             _context.Patients.Remove(patient);
-
-            await _context.SaveChangesAsync();
 
             return patient;
         }

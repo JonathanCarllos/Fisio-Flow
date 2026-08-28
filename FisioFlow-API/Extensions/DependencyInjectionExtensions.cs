@@ -8,7 +8,7 @@ namespace FisioFlow_API.Extensions
         public static IServiceCollection AddRepositories(
             this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, UnityOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPatientRepository, PatientRepository>();
 
             return services;

@@ -16,12 +16,16 @@ namespace FisioFlow_API.Repositories
 
         public async Task<IEnumerable<Physiotherapist>> GetAllPhysiotherapistsAsync()
         {
-            return await _context.Physiotherapists.ToListAsync();
+            return await _context.Physiotherapists
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public async Task<Physiotherapist> GetPhysiotherapistByIdAsync(int id)
+        public async Task<Physiotherapist?> GetPhysiotherapistByIdAsync(int id)
         {
-            return await _context.Physiotherapists.FirstOrDefaultAsync(p => p.PhysiotherapistId == id);
+            return await _context.Physiotherapists
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.PhysiotherapistId == id);
         }
 
         public async Task<Physiotherapist> AddPhysiotherapistAsync(Physiotherapist physiotherapist)
@@ -29,8 +33,7 @@ namespace FisioFlow_API.Repositories
             if(physiotherapist is null)
                 throw new ArgumentNullException(nameof(physiotherapist));
 
-            await _context.Physiotherapists.AddAsync(physiotherapist);
-            await _context.SaveChangesAsync();
+            await _context.Physiotherapists.AddAsync(physiotherapist);    
 
             return physiotherapist;
         }
@@ -40,8 +43,7 @@ namespace FisioFlow_API.Repositories
             if (physiotherapist is null)
                 throw new ArgumentNullException(nameof(physiotherapist));
 
-            _context.Entry(physiotherapist).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _context.Physiotherapists.Update(physiotherapist);
 
             return physiotherapist;
         }
@@ -53,9 +55,7 @@ namespace FisioFlow_API.Repositories
             if (physiotherapist is null)
                 throw new ArgumentNullException($"Fisioterapeuta com ID {id} não encontrado.");
 
-            _context.Physiotherapists.Remove(physiotherapist);
-
-            await _context.SaveChangesAsync();
+            _context.Physiotherapists.Remove(physiotherapist);      
 
             return physiotherapist;
         }

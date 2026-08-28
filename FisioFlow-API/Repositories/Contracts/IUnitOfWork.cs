@@ -1,6 +1,6 @@
 ﻿namespace FisioFlow_API.Repositories.Contracts
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         IPatientRepository PatientRepository { get; }
         IPhysiotherapistRepository PhysiotherapistRepository { get; }
