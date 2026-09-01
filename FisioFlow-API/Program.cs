@@ -1,7 +1,5 @@
 using FisioFlow_API.Context;
 using FisioFlow_API.Extensions;
-using FisioFlow_API.Repositories;
-using FisioFlow_API.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

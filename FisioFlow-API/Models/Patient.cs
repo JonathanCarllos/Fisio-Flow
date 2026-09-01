@@ -18,5 +18,7 @@
         public string? MedicalHistory { get; set; }  
         public bool Status { get; set; }
         public string? Notes { get; set; }
+
+        public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
     }
 }

@@ -4,6 +4,7 @@
     {
         IPatientRepository PatientRepository { get; }
         IPhysiotherapistRepository PhysiotherapistRepository { get; }
+        ITreatment TreatmentRepository { get; }
 
         Task Commit();
     }

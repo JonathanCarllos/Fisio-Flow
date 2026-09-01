@@ -19,5 +19,7 @@
         public string AvailableHours { get; set; }
         public bool Status { get; set; }
         public string Color { get; set; }
+
+        public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
     }
 }

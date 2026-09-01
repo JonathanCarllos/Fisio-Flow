@@ -11,6 +11,7 @@ namespace FisioFlow_API.Context
 
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Physiotherapist> Physiotherapists { get; set; }
+        public DbSet<Treatment> Treatments { get; set; }
 
     }
 }

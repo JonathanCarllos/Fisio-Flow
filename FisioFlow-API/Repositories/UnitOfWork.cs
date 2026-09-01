@@ -9,6 +9,8 @@ namespace FisioFlow_API.Repositories
 
         private IPhysiotherapistRepository? _physiotherapistRepository;
 
+        private ITreatment? _treatmentRepository;
+
         public AppDbContext _context;
 
         public UnitOfWork(AppDbContext context)
@@ -29,6 +31,14 @@ namespace FisioFlow_API.Repositories
             get
             {
                 return _physiotherapistRepository ??= new PhysiotherapistRepository(_context);
+            }
+        }
+
+        public ITreatment TreatmentRepository
+        {
+            get
+            {
+                return _treatmentRepository ??= new TreatmentRepository(_context);
             }
         }
 
