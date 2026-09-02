@@ -12,6 +12,7 @@ namespace FisioFlow_API.Extensions
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IPhysiotherapistRepository, PhysiotherapistRepository>();
             services.AddScoped<ITreatment, TreatmentRepository>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
 
             return services;
         }

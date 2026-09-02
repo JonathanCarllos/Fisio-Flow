@@ -20,5 +20,6 @@
         public string? Notes { get; set; }
 
         public ICollection<Treatment> Treatments { get; set; } = new List<Treatment>();
+        public ICollection<Session> Sessions { get; set; } = new List<Session>();
     }
 }
