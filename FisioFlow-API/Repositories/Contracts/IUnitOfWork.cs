@@ -6,6 +6,7 @@
         IPhysiotherapistRepository PhysiotherapistRepository { get; }
         ITreatment TreatmentRepository { get; }  
         ISessionRepository SessionRepository { get; }
+        IMedicalRecordRepository MedicalRecordRepository { get; }
 
         Task Commit();
     }

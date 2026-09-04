@@ -13,6 +13,8 @@ namespace FisioFlow_API.Repositories
 
         private ISessionRepository? _sessionRepository;
 
+        private IMedicalRecordRepository? _medicalRecordRepository;
+
         public AppDbContext _context;
 
         public UnitOfWork(AppDbContext context)
@@ -49,6 +51,14 @@ namespace FisioFlow_API.Repositories
             get
             {
                 return _sessionRepository ??= new SessionRepository(_context);
+            }
+        }
+
+        public IMedicalRecordRepository MedicalRecordRepository
+        {
+            get
+            {
+                return _medicalRecordRepository ??= new MedicalRecordRepository(_context);
             }
         }
 
