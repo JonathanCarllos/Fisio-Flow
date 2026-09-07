@@ -62,6 +62,14 @@ namespace FisioFlow_API.Repositories
             }
         }
 
+        public IExpenseRepository ExpenseRepository
+        {
+            get
+            {
+                return new ExpenseRepository(_context);
+            }
+        }
+
         public async Task Commit()
         {
             await _context.SaveChangesAsync();

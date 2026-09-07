@@ -14,6 +14,7 @@ namespace FisioFlow_API.Context
         public DbSet<Treatment> Treatments { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
 
     }
 }
