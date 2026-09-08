@@ -8,6 +8,7 @@
         ISessionRepository SessionRepository { get; }
         IMedicalRecordRepository MedicalRecordRepository { get; }
         IExpenseRepository ExpenseRepository { get; }
+        IPaymentRepository PaymentRepository { get; }
 
         Task Commit();
     }

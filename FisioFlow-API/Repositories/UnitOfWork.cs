@@ -15,6 +15,10 @@ namespace FisioFlow_API.Repositories
 
         private IMedicalRecordRepository? _medicalRecordRepository;
 
+        private IExpenseRepository? _expenseRepository;
+
+        private IPaymentRepository? _paymentRepository;
+
         public AppDbContext _context;
 
         public UnitOfWork(AppDbContext context)
@@ -66,7 +70,15 @@ namespace FisioFlow_API.Repositories
         {
             get
             {
-                return new ExpenseRepository(_context);
+                return _expenseRepository ??= new ExpenseRepository(_context);
+            }
+        }
+
+        public IPaymentRepository PaymentRepository
+        {
+            get
+            {
+                return _paymentRepository ??= new PaymentRepository(_context);
             }
         }
 
