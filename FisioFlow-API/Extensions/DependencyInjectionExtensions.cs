@@ -2,6 +2,7 @@
 using FisioFlow_API.Repositories;
 using FisioFlow_API.Repositories.Contracts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FisioFlow_API.Extensions
 {
@@ -9,11 +10,7 @@ namespace FisioFlow_API.Extensions
     {
         public static IServiceCollection AddRepositories(
             this IServiceCollection services)
-        {         
-
-            services.AddAuthorization();
-            services.AddAuthentication("Bearer").AddJwtBearer();
-
+        {                  
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IPhysiotherapistRepository, PhysiotherapistRepository>();

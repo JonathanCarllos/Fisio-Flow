@@ -1,36 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using FisioFlow_API.Enums;
+﻿using FisioFlow_API.Enums;
 
-namespace FisioFlow_API.Models
+namespace FisioFlow_API.DTOs
 {
-    public class Expense
+    public class ExpenseDTO
     {
-        [Key]
         public int ExpenseId { get; set; }
 
-
-        [Required]
-        [StringLength(150)]
         public string Description { get; set; } = string.Empty;
 
-
-        [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }
-
 
         public DateTime Date { get; set; }
 
-
-        [StringLength(1000)]
         public string? Notes { get; set; }
-
 
         public bool Status { get; set; } = true;
 
-
         public Category Category { get; set; }
-
 
         public PaymentMethod PaymentMethod { get; set; }
     }

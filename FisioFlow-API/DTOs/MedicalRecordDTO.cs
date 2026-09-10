@@ -1,34 +1,36 @@
 ﻿using FisioFlow_API.Enums;
 
-namespace FisioFlow_API.Models
+namespace FisioFlow_API.DTOs
 {
-    public class MedicalRecord
+    public class MedicalRecordDTO
     {
         public int MedicalRecordId { get; set; }
 
+
         public RecordType RecordType { get; set; }
+
 
         public string Title { get; set; } = string.Empty;
 
+
         public string Content { get; set; } = string.Empty;
 
+
         public string? FunctionalDiagnosis { get; set; }
+
 
         public string? FileUrl { get; set; }
 
 
-        // Relacionamento com Patient
+        // FK Patient
         public int PatientId { get; set; }
-        public Patient Patient { get; set; } = null!;
 
 
-        // Relacionamento com Physiotherapist
+        // FK Physiotherapist
         public int PhysiotherapistId { get; set; }
-        public Physiotherapist Physiotherapist { get; set; } = null!;
 
 
-        // Relacionamento opcional com Session
+        // FK Session opcional
         public int? SessionId { get; set; }
-        public Session? Session { get; set; }
     }
 }

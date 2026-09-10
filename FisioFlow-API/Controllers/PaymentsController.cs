@@ -1,6 +1,7 @@
-﻿using FisioFlow_API.Models;
+﻿using AutoMapper;
+using FisioFlow_API.DTOs;
+using FisioFlow_API.Models;
 using FisioFlow_API.Repositories.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FisioFlow_API.Controllers
@@ -10,26 +11,44 @@ namespace FisioFlow_API.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public PaymentsController(IUnitOfWork unitOfWork)
+
+        public PaymentsController(
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        //Get: api/payments
+
+
+        // GET: api/payments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Payment>>> GetAllPayments()
+        public async Task<ActionResult<IEnumerable<PaymentDTO>>> GetAllPayments()
         {
-            var payments = await _unitOfWork.PaymentRepository.GetAllPaymentsAsync();
+            var payments = await _unitOfWork
+                .PaymentRepository
+                .GetAllPaymentsAsync();
 
-            return Ok(payments);
+
+            var result = _mapper.Map<IEnumerable<PaymentDTO>>(payments);
+
+
+            return Ok(result);
         }
 
-        //Get: api/payments/id
+
+
+        // GET: api/payments/{id}
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Payment>> GetPaymentById(int id)
+        public async Task<ActionResult<PaymentDTO>> GetPaymentById(int id)
         {
-            var payment = await _unitOfWork.PaymentRepository.GetPaymentByIdAsync(id);
+            var payment = await _unitOfWork
+                .PaymentRepository
+                .GetPaymentByIdAsync(id);
+
 
             if (payment is null)
             {
@@ -39,49 +58,87 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-            return Ok(payment);
+
+            var result = _mapper.Map<PaymentDTO>(payment);
+
+
+            return Ok(result);
         }
+
+
+
 
         // POST: api/payments
         [HttpPost]
-        public async Task<ActionResult<Payment>> CreatePayment(Payment payment)
+        public async Task<ActionResult<PaymentDTO>> CreatePayment(
+            PaymentDTO dto)
         {
-            if (payment is null)
+
+            if (dto is null)
             {
                 return BadRequest(new
                 {
-                    message = "Os dados do payment são obrigatórios."
+                    message = "Os dados do pagamento são obrigatórios."
                 });
             }
 
-            await _unitOfWork.PaymentRepository.CreatePaymentAsync(payment);
+
+            var payment = _mapper.Map<Payment>(dto);
+
+
+            await _unitOfWork
+                .PaymentRepository
+                .CreatePaymentAsync(payment);
+
 
             await _unitOfWork.Commit();
 
-            return CreatedAtAction(nameof(GetPaymentById), new { id = payment.PaymentId }, payment);
+
+            var result = _mapper.Map<PaymentDTO>(payment);
+
+
+
+            return CreatedAtAction(
+                nameof(GetPaymentById),
+                new { id = payment.PaymentId },
+                result
+            );
         }
 
-        // PUT: api/payments/id
+
+
+
+        // PUT: api/payments/{id}
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Payment>> UpdatePayment(int id, Payment payment)
+        public async Task<IActionResult> UpdatePayment(
+            int id,
+            PaymentDTO dto)
         {
-            if (payment is null)
+
+            if (dto is null)
             {
                 return BadRequest(new
                 {
-                    message = "Os dados do payment são obrigatórios e o ID deve corresponder."
+                    message = "Os dados do pagamento são obrigatórios."
                 });
             }
 
-            if(id != payment.PaymentId)
+
+            if (id != dto.PaymentId)
             {
                 return BadRequest(new
                 {
-                    message = "O ID do payment na URL não corresponde ao ID no corpo da solicitação."
+                    message = "O ID da URL não corresponde ao ID do pagamento."
                 });
             }
 
-            var existingPayment = await _unitOfWork.PaymentRepository.GetPaymentByIdAsync(id);
+
+
+            var existingPayment = await _unitOfWork
+                .PaymentRepository
+                .GetPaymentByIdAsync(id);
+
+
 
             if (existingPayment is null)
             {
@@ -91,33 +148,55 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-            await _unitOfWork.PaymentRepository.UpdatePaymentAsync(payment);
+
+
+            _mapper.Map(dto, existingPayment);
+
+
+
+            await _unitOfWork
+                .PaymentRepository
+                .UpdatePaymentAsync(existingPayment);
+
+
 
             await _unitOfWork.Commit();
+
+
 
             return NoContent();
         }
 
-        // DELETE: api/payments/id
+
+
+
+        // DELETE: api/payments/{id}
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> DeletePayment(int id)
+        public async Task<IActionResult> DeletePayment(int id)
         {
             try
             {
-                var payment = await _unitOfWork.PaymentRepository.DeletePaymentAsync(id);
+                var payment = await _unitOfWork
+                    .PaymentRepository
+                    .DeletePaymentAsync(id);
+
 
                 await _unitOfWork.Commit();
 
-                return Ok(payment);
+
+                return Ok(new
+                {
+                    message = "Pagamento removido com sucesso.",
+                    data = _mapper.Map<PaymentDTO>(payment)
+                });
             }
-            catch(KeyNotFoundException)
+            catch (KeyNotFoundException)
             {
                 return NotFound(new
                 {
                     message = $"Payment com ID {id} não encontrado."
                 });
-            }            
+            }
         }
-
     }
 }

@@ -1,6 +1,7 @@
-﻿using FisioFlow_API.Models;
+﻿using AutoMapper;
+using FisioFlow_API.DTOs;
+using FisioFlow_API.Models;
 using FisioFlow_API.Repositories.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FisioFlow_API.Controllers
@@ -10,29 +11,32 @@ namespace FisioFlow_API.Controllers
     public class ExpensesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ExpensesController(IUnitOfWork unitOfWork)
+        public ExpensesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         // GET: api/Expenses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Expense>>> GetAllExpenses()
+        public async Task<ActionResult<IEnumerable<ExpenseDTO>>> GetAllExpenses()
         {
-            var expenses = await _unitOfWork.ExpenseRepository
-                .GetAllExpensesAsync();
+            var expenses = await _unitOfWork.ExpenseRepository.GetAllExpensesAsync();
 
-            return Ok(expenses);
+            var expenseDTOs = _mapper.Map<IEnumerable<ExpenseDTO>>(expenses);
+
+            return Ok(expenseDTOs);
         }
 
-        //Get: api/Expenses/id
+        // GET: api/Expenses/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Expense>> GetExpenseById(int id)
+        public async Task<ActionResult<ExpenseDTO>> GetExpenseById(int id)
         {
-            var expenses = await _unitOfWork.ExpenseRepository.GetExpenseByIdAsync(id);
+            var expense = await _unitOfWork.ExpenseRepository.GetExpenseByIdAsync(id);
 
-            if (expenses is null)
+            if (expense is null)
             {
                 return NotFound(new
                 {
@@ -40,80 +44,77 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-            return Ok(expenses);
+            return Ok(_mapper.Map<ExpenseDTO>(expense));
         }
 
         // POST: api/Expenses
         [HttpPost]
-        public async Task<ActionResult<Expense>> UpdateExpense(Expense expense)
+        public async Task<ActionResult<ExpenseDTO>> CreateExpense(ExpenseDTO expenseDTO)
         {
-            if(expense is null)
-            {
-                return BadRequest(new
-                {
-                    message = "Os dados do expense são obrigatórios."
-                });
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var expense = _mapper.Map<Expense>(expenseDTO);
 
             await _unitOfWork.ExpenseRepository.CreateExpenseAsync(expense);
 
             await _unitOfWork.Commit();
 
-            return CreatedAtAction(nameof(GetExpenseById), new {id = expense.ExpenseId}, expense);
+            var expenseCreated = _mapper.Map<ExpenseDTO>(expense);
+
+            return CreatedAtAction(
+                nameof(GetExpenseById),
+                new { id = expenseCreated.ExpenseId },
+                expenseCreated);
         }
 
-        //Put: api/Expenses/id
+        // PUT: api/Expenses/5
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Patient>> UpdatePatient(
-            int id,
-            Expense expense)
+        public async Task<ActionResult<ExpenseDTO>> UpdateExpense(int id, ExpenseDTO expenseDTO)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (id != expenseDTO.ExpenseId)
+            {
+                return BadRequest(new
+                {
+                    message = "O ID da URL é diferente do ID da despesa."
+                });
+            }
+
+            var expense = await _unitOfWork.ExpenseRepository.GetExpenseByIdAsync(id);
+
             if (expense is null)
-            {
-                return BadRequest(new
-                {
-                    message = "Os dados do expense são obrigatórios."
-                });
-            }
-
-            if (id != expense.ExpenseId)
-            {
-                return BadRequest(new
-                {
-                    message = "O ID da URL é diferente do ID do expense."
-                });
-            }
-
-            var newExpense = await _unitOfWork.ExpenseRepository.GetExpenseByIdAsync(id);
-
-            if(newExpense is null)
             {
                 return NotFound(new
                 {
-                    messeger = $"expense com o id= {id} não encontrado"
+                    message = $"Expense com ID {id} não encontrado."
                 });
             }
 
-            await _unitOfWork.ExpenseRepository.UpdateExpenseAsync(newExpense);
+            _mapper.Map(expenseDTO, expense);
+
+            await _unitOfWork.ExpenseRepository.UpdateExpenseAsync(expense);
 
             await _unitOfWork.Commit();
 
-            return Ok(newExpense);
+            return Ok(_mapper.Map<ExpenseDTO>(expense));
         }
 
-        //Delete api/Expenses/id
+        // DELETE: api/Expenses/5
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<Expense>> DeleteExpense(int id)
+        public async Task<ActionResult<ExpenseDTO>> DeleteExpense(int id)
         {
             try
             {
-                var expense = _unitOfWork.ExpenseRepository.DeleteExpenseAsync(id);
+                var expense = await _unitOfWork.ExpenseRepository.DeleteExpenseAsync(id);
 
                 await _unitOfWork.Commit();
 
-                return Ok(expense);
+                return Ok(_mapper.Map<ExpenseDTO>(expense));
             }
-            catch(KeyNotFoundException)
+            catch (KeyNotFoundException)
             {
                 return NotFound(new
                 {
@@ -121,7 +122,5 @@ namespace FisioFlow_API.Controllers
                 });
             }
         }
-
-
     }
 }

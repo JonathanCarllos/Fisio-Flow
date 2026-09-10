@@ -1,6 +1,7 @@
-﻿using FisioFlow_API.Models;
+﻿using AutoMapper;
+using FisioFlow_API.DTOs;
+using FisioFlow_API.Models;
 using FisioFlow_API.Repositories.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FisioFlow_API.Controllers
@@ -10,27 +11,42 @@ namespace FisioFlow_API.Controllers
     public class PhysiotherapistsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PhysiotherapistsController(IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+
+
+        public PhysiotherapistsController(
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
+
+
 
         // GET: api/Physiotherapists
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Physiotherapist>>> GetPhysiotherapists()
+        public async Task<ActionResult<IEnumerable<PhysiotherapistDTO>>> GetPhysiotherapists()
         {
             var physiotherapists = await _unitOfWork.PhysiotherapistRepository
                 .GetAllPhysiotherapistsAsync();
 
-            return Ok(physiotherapists);
+
+            var result = _mapper.Map<IEnumerable<PhysiotherapistDTO>>(physiotherapists);
+
+
+            return Ok(result);
         }
 
-        // GET: api/Physiotherapists/id
+
+
+        // GET: api/Physiotherapists/{id}
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Physiotherapist>> GetPhysiotherapist(int id)
+        public async Task<ActionResult<PhysiotherapistDTO>> GetPhysiotherapist(int id)
         {
             var physiotherapist = await _unitOfWork.PhysiotherapistRepository
                 .GetPhysiotherapistByIdAsync(id);
+
 
             if (physiotherapist is null)
             {
@@ -39,14 +55,24 @@ namespace FisioFlow_API.Controllers
                     message = $"Fisioterapeuta com ID {id} não encontrado."
                 });
             }
-            return Ok(physiotherapist);
+
+
+            var result = _mapper.Map<PhysiotherapistDTO>(physiotherapist);
+
+
+            return Ok(result);
         }
+
+
+
 
         // POST: api/Physiotherapists
         [HttpPost]
-        public async Task<ActionResult<Physiotherapist>> CreatePhysiotherapist(Physiotherapist physiotherapist)
+        public async Task<ActionResult<PhysiotherapistDTO>> CreatePhysiotherapist(
+            PhysiotherapistDTO dto)
         {
-            if (physiotherapist is null)
+
+            if (dto is null)
             {
                 return BadRequest(new
                 {
@@ -54,30 +80,51 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-            await _unitOfWork.PhysiotherapistRepository.AddPhysiotherapistAsync(physiotherapist);
+
+            var physiotherapist = _mapper.Map<Physiotherapist>(dto);
+
+
+
+            await _unitOfWork.PhysiotherapistRepository
+                .AddPhysiotherapistAsync(physiotherapist);
+
 
             await _unitOfWork.Commit();
 
-            return CreatedAtAction
-                (nameof(GetPhysiotherapist),
+
+
+            var result = _mapper.Map<PhysiotherapistDTO>(physiotherapist);
+
+
+
+            return CreatedAtAction(
+                nameof(GetPhysiotherapist),
                 new { id = physiotherapist.PhysiotherapistId },
-                physiotherapist
-                );
+                result
+            );
         }
 
-        // PUT: api/Patient/1
+
+
+
+        // PUT: api/Physiotherapists/{id}
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Physiotherapist>> UpdatePhysiotherapist(int id,Physiotherapist physiotherapist)
+        public async Task<IActionResult> UpdatePhysiotherapist(
+            int id,
+            PhysiotherapistDTO dto)
         {
-            if(physiotherapist is null)
+
+            if (dto is null)
             {
-                return NotFound(new
+                return BadRequest(new
                 {
                     message = "Dados do fisioterapeuta inválidos."
                 });
             }
 
-            if(id != physiotherapist.PhysiotherapistId)
+
+
+            if (id != dto.PhysiotherapistId)
             {
                 return BadRequest(new
                 {
@@ -85,10 +132,14 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
+
+
             var existingPhysiotherapist = await _unitOfWork.PhysiotherapistRepository
                 .GetPhysiotherapistByIdAsync(id);
 
-            if(existingPhysiotherapist is null)
+
+
+            if (existingPhysiotherapist is null)
             {
                 return NotFound(new
                 {
@@ -96,32 +147,52 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-            await _unitOfWork.PhysiotherapistRepository.UpdatePhysiotherapistAsync(physiotherapist);
+
+
+            _mapper.Map(dto, existingPhysiotherapist);
+
+
+
+            await _unitOfWork.PhysiotherapistRepository
+                .UpdatePhysiotherapistAsync(existingPhysiotherapist);
+
+
 
             await _unitOfWork.Commit();
 
-            return Ok(physiotherapist);
+
+
+            return NoContent();
         }
 
-        // DELETE: api/Physiotherapist/id
+
+
+
+        // DELETE: api/Physiotherapists/{id}
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> DeletePhysiotherapist(int id)
+        public async Task<IActionResult> DeletePhysiotherapist(int id)
         {
             try
             {
-              var physiotherapist = await _unitOfWork.PhysiotherapistRepository
+                var physiotherapist = await _unitOfWork.PhysiotherapistRepository
                     .DeletePhysiotherapistAsync(id);
-                
+
+
                 await _unitOfWork.Commit();
 
-                return Ok(physiotherapist);
 
+
+                return Ok(new
+                {
+                    message = "Fisioterapeuta removido com sucesso.",
+                    data = _mapper.Map<PhysiotherapistDTO>(physiotherapist)
+                });
             }
             catch (KeyNotFoundException)
             {
                 return NotFound(new
                 {
-                    message = $"Ocorreu um erro ao excluir o fisioterapeuta de Id:{id}"
+                    message = $"Fisioterapeuta com ID {id} não encontrado."
                 });
             }
         }

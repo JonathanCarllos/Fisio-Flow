@@ -21,42 +21,43 @@ namespace FisioFlow_API.Repositories
                 .ToListAsync();
         }
 
-        public Task<Expense> GetExpenseByIdAsync(int expenseId)
+        public async Task<Expense?> GetExpenseByIdAsync(int expenseId)
         {
-            return _context.Expenses
+            return await _context.Expenses
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.ExpenseId == expenseId);
         }
 
         public async Task<Expense> CreateExpenseAsync(Expense expense)
         {
-            if(expense is null)
+            if (expense is null)
                 throw new ArgumentNullException(nameof(expense));
 
             await _context.Expenses.AddAsync(expense);
 
-            return expense;
+            return await Task.FromResult(expense);
         }
 
         public async Task<Expense> UpdateExpenseAsync(Expense expense)
         {
-            if(expense is null)
+            if (expense is null)
                 throw new ArgumentNullException(nameof(expense));
 
             _context.Expenses.Update(expense);
 
-            return expense;
+            return await Task.FromResult(expense);
         }
+
         public async Task<Expense> DeleteExpenseAsync(int expenseId)
         {
-           var expense = await _context.Expenses.FindAsync(expenseId);
+            var expense = await _context.Expenses.FindAsync(expenseId);
 
             if (expense is null)
                 throw new KeyNotFoundException($"Expense with ID {expenseId} not found.");
 
             _context.Expenses.Remove(expense);
 
-            return expense;
+            return await Task.FromResult(expense);
         }
     }
 }

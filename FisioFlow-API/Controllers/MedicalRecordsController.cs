@@ -1,6 +1,7 @@
-﻿using FisioFlow_API.Models;
+﻿using AutoMapper;
+using FisioFlow_API.DTOs;
+using FisioFlow_API.Models;
 using FisioFlow_API.Repositories.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FisioFlow_API.Controllers
@@ -10,42 +11,64 @@ namespace FisioFlow_API.Controllers
     public class MedicalRecordsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public MedicalRecordsController(IUnitOfWork unitOfWork)
+        public MedicalRecordsController(
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        // POST: api/MedicalRecords
+
+        // GET: api/MedicalRecords
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MedicalRecord>>> GetMedicalRecords()
+        public async Task<ActionResult<IEnumerable<MedicalRecordDTO>>> GetMedicalRecords()
         {
-            var medicalRecords = await _unitOfWork.MedicalRecordRepository.GetAllMedicalRecordsAsync();
+            var medicalRecords = await _unitOfWork
+                .MedicalRecordRepository
+                .GetAllMedicalRecordsAsync();
 
-            return Ok(medicalRecords);
+
+            var result = _mapper.Map<IEnumerable<MedicalRecordDTO>>(medicalRecords);
+
+            return Ok(result);
         }
 
-        // GET: api/MedicalRecords/patientId
-        [HttpGet("patient/{patientId:int}")]
-        public async Task<ActionResult<IEnumerable<MedicalRecord>>> GetMedicalRecordsByPatientId(int patientId)
-        {
-            var medicalRecords = await _unitOfWork.MedicalRecordRepository.GetMedicalRecordsByPatientIdAsync(patientId);
 
-            if (medicalRecords is null || !medicalRecords.Any())
+        // GET: api/MedicalRecords/patient/{patientId}
+        [HttpGet("patient/{patientId:int}")]
+        public async Task<ActionResult<IEnumerable<MedicalRecordDTO>>> GetMedicalRecordsByPatientId(int patientId)
+        {
+            var medicalRecords = await _unitOfWork
+                .MedicalRecordRepository
+                .GetMedicalRecordsByPatientIdAsync(patientId);
+
+
+            if (medicalRecords == null || !medicalRecords.Any())
             {
                 return NotFound(new
                 {
                     message = $"Nenhum registro médico encontrado para o paciente com ID {patientId}."
                 });
             }
-            return Ok(medicalRecords);
+
+
+            var result = _mapper.Map<IEnumerable<MedicalRecordDTO>>(medicalRecords);
+
+            return Ok(result);
         }
+
+
 
         // POST: api/MedicalRecords
         [HttpPost]
-        public async Task<ActionResult<MedicalRecord>> CreateMedicalRecord(MedicalRecord medicalRecord)
+        public async Task<ActionResult<MedicalRecordDTO>> CreateMedicalRecord(
+            MedicalRecordDTO dto)
         {
-            if (medicalRecord is null)
+
+            if (dto == null)
             {
                 return BadRequest(new
                 {
@@ -53,28 +76,51 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-            await _unitOfWork.MedicalRecordRepository.AddMedicalRecordAsync(medicalRecord);
+
+            var medicalRecord = _mapper.Map<MedicalRecord>(dto);
+
+
+            await _unitOfWork
+                .MedicalRecordRepository
+                .AddMedicalRecordAsync(medicalRecord);
+
 
             await _unitOfWork.Commit();
 
-            return CreatedAtAction(nameof(GetMedicalRecordsByPatientId), new { patientId = medicalRecord.PatientId }, medicalRecord);
+
+            var result = _mapper.Map<MedicalRecordDTO>(medicalRecord);
+
+
+            return CreatedAtAction(
+                nameof(GetMedicalRecordsByPatientId),
+                new { patientId = medicalRecord.PatientId },
+                result);
         }
+
+
 
         // PUT: api/MedicalRecords/{id}
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateMedicalRecord(int id, MedicalRecord medicalRecord)
+        public async Task<IActionResult> UpdateMedicalRecord(
+            int id,
+            MedicalRecordDTO dto)
         {
-            if (id != medicalRecord.MedicalRecordId)
+
+            if (id != dto.MedicalRecordId)
             {
                 return BadRequest(new
                 {
-                    message = "O ID do registro médico não corresponde ao ID fornecido."
+                    message = "O ID do registro médico não corresponde ao ID informado."
                 });
             }
 
-            var existingMedicalRecord = await _unitOfWork.MedicalRecordRepository.GetMedicalRecordByIdAsync(id);
 
-            if (existingMedicalRecord is null)
+            var existingMedicalRecord = await _unitOfWork
+                .MedicalRecordRepository
+                .GetMedicalRecordByIdAsync(id);
+
+
+            if (existingMedicalRecord == null)
             {
                 return NotFound(new
                 {
@@ -82,23 +128,38 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
+
+            _mapper.Map(dto, existingMedicalRecord);
+
+
             await _unitOfWork.Commit();
+
 
             return NoContent();
         }
+
+
 
         // DELETE: api/MedicalRecords/{id}
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteMedicalRecord(int id)
         {
+
             try
             {
-                var medicalRecord = await _unitOfWork.MedicalRecordRepository.DeleteMedicalRecordAsync(id);
-              
+                var medicalRecord = await _unitOfWork
+                    .MedicalRecordRepository
+                    .DeleteMedicalRecordAsync(id);
+
 
                 await _unitOfWork.Commit();
 
-                return Ok(medicalRecord);
+
+                return Ok(new
+                {
+                    message = "Registro médico removido com sucesso.",
+                    data = medicalRecord
+                });
             }
             catch (KeyNotFoundException)
             {

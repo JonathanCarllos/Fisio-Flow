@@ -1,4 +1,6 @@
-﻿using FisioFlow_API.Models;
+﻿using AutoMapper;
+using FisioFlow_API.DTOs;
+using FisioFlow_API.Models;
 using FisioFlow_API.Repositories.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,28 +11,42 @@ namespace FisioFlow_API.Controllers
     public class PatientsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public PatientsController(IUnitOfWork unitOfWork)
+
+        public PatientsController(
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        // GET: api/Patient
+
+
+        // GET: api/Patients
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Patient>>> GetPatients()
+        public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
         {
             var patients = await _unitOfWork.PatientRepository
                 .GetAllPatientsAsync();
 
-            return Ok(patients);
+
+            var result = _mapper.Map<IEnumerable<PatientDTO>>(patients);
+
+
+            return Ok(result);
         }
 
-        // GET: api/Patient/id
+
+
+        // GET: api/Patients/{id}
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Patient>> GetPatient(int id)
+        public async Task<ActionResult<PatientDTO>> GetPatient(int id)
         {
             var patient = await _unitOfWork.PatientRepository
                 .GetPatientByIdAsync(id);
+
 
             if (patient is null)
             {
@@ -40,40 +56,60 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-            return Ok(patient);
+
+            var result = _mapper.Map<PatientDTO>(patient);
+
+
+            return Ok(result);
         }
 
-        // POST: api/Patient
+
+
+        // POST: api/Patients
         [HttpPost]
-        public async Task<ActionResult<Patient>> CreatePatient(Patient patient)
+        public async Task<ActionResult<PatientDTO>> CreatePatient(
+            PatientDTO dto)
         {
-            if (patient is null)
+
+            if (dto is null)
             {
                 return BadRequest(new
                 {
                     message = "Os dados do paciente são obrigatórios."
                 });
             }
+
+
+            var patient = _mapper.Map<Patient>(dto);
+
 
             await _unitOfWork.PatientRepository
                 .AddPatientAsync(patient);
 
+
             await _unitOfWork.Commit();
+
+
+            var result = _mapper.Map<PatientDTO>(patient);
+
 
             return CreatedAtAction(
                 nameof(GetPatient),
                 new { id = patient.PatientId },
-                patient
+                result
             );
         }
 
-        // PUT: api/Patient/1
+
+
+        // PUT: api/Patients/{id}
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Patient>> UpdatePatient(
+        public async Task<IActionResult> UpdatePatient(
             int id,
-            Patient patient)
+            PatientDTO dto)
         {
-            if (patient is null)
+
+            if (dto is null)
             {
                 return BadRequest(new
                 {
@@ -81,7 +117,8 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-            if (id != patient.PatientId)
+
+            if (id != dto.PatientId)
             {
                 return BadRequest(new
                 {
@@ -89,8 +126,12 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
+
+
             var existingPatient = await _unitOfWork.PatientRepository
                 .GetPatientByIdAsync(id);
+
+
 
             if (existingPatient is null)
             {
@@ -100,26 +141,45 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
+
+
+            _mapper.Map(dto, existingPatient);
+
+
+
             await _unitOfWork.PatientRepository
-                .UpdatePatientAsync(patient);
+                .UpdatePatientAsync(existingPatient);
+
+
 
             await _unitOfWork.Commit();
 
-            return Ok(patient);
+
+
+            return NoContent();
         }
 
-        // DELETE: api/Patient/1
+
+
+
+        // DELETE: api/Patients/{id}
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<Patient>> DeletePatient(int id)
+        public async Task<IActionResult> DeletePatient(int id)
         {
             try
             {
                 var patient = await _unitOfWork.PatientRepository
                     .DeletePatientAsync(id);
 
+
                 await _unitOfWork.Commit();
 
-                return Ok(patient);
+
+                return Ok(new
+                {
+                    message = "Paciente removido com sucesso.",
+                    data = _mapper.Map<PatientDTO>(patient)
+                });
             }
             catch (KeyNotFoundException)
             {
@@ -131,4 +191,3 @@ namespace FisioFlow_API.Controllers
         }
     }
 }
-
