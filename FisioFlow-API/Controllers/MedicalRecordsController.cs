@@ -2,10 +2,12 @@
 using FisioFlow_API.DTOs;
 using FisioFlow_API.Models;
 using FisioFlow_API.Repositories.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FisioFlow_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MedicalRecordsController : ControllerBase

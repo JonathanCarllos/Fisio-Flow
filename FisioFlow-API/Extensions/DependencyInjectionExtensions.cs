@@ -1,6 +1,8 @@
 ﻿using FisioFlow_API.Context;
 using FisioFlow_API.Repositories;
 using FisioFlow_API.Repositories.Contracts;
+using FisioFlow_API.Services;
+using FisioFlow_API.Services.Contracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +21,7 @@ namespace FisioFlow_API.Extensions
             services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
             services.AddScoped<IExpenseRepository, ExpenseRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<ITokenService, TokenService>();
 
             return services;
         }
