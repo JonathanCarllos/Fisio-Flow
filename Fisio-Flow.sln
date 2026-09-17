@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.37411.7 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.10.12201.205 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FisioFlow-API", "FisioFlow-API\FisioFlow-API.csproj", "{11B4D146-3460-4000-B8D0-B7552FA87018}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FisioFlow-Web", "FisioFlow-Web\FisioFlow-Web.csproj", "{FAB4FA0A-F862-4868-9B0B-25B57CDDB447}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{11B4D146-3460-4000-B8D0-B7552FA87018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11B4D146-3460-4000-B8D0-B7552FA87018}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11B4D146-3460-4000-B8D0-B7552FA87018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAB4FA0A-F862-4868-9B0B-25B57CDDB447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAB4FA0A-F862-4868-9B0B-25B57CDDB447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAB4FA0A-F862-4868-9B0B-25B57CDDB447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAB4FA0A-F862-4868-9B0B-25B57CDDB447}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

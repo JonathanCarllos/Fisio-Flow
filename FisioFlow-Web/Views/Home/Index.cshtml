@@ -1,0 +1,1589 @@
+﻿@{
+    ViewData["Title"] = "Início";
+}
+
+<style>
+    :root {
+        --green: #10b981;
+        --green-light: #34d399;
+        --green-dark: #047857;
+        --green-deep: #022c22;
+        --green-soft: #ecfdf5;
+        --white: #ffffff;
+        --gray: #64748b;
+        --dark: #0f172a;
+        --light: #f8fafc;
+        --border: #e2e8f0;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        font-family: "Inter", Arial, sans-serif;
+        color: var(--dark);
+        background: #ffffff;
+    }
+
+    /* HERO */
+
+    .home-hero {
+        position: relative;
+        width: 100%;
+        min-height: 800px;
+        padding: 120px 0 90px;
+        overflow: hidden;
+        background: radial-gradient(circle at 80% 30%, rgba(52,211,153,.18), transparent 30%), radial-gradient(circle at 10% 80%, rgba(16,185,129,.12), transparent 30%), linear-gradient(135deg, #022c22 0%, #064e3b 55%, #022c22 100%);
+    }
+
+        .home-hero::before {
+            content: "";
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            right: -300px;
+            top: 40px;
+            border: 1px solid rgba(52,211,153,.15);
+            border-radius: 50%;
+        }
+
+        .home-hero::after {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            left: -300px;
+            bottom: -250px;
+            border: 1px solid rgba(52,211,153,.10);
+            border-radius: 50%;
+        }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 16px;
+        margin-bottom: 22px;
+        border: 1px solid rgba(52,211,153,.35);
+        border-radius: 30px;
+        color: #d1fae5;
+        background: rgba(16,185,129,.10);
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+        .hero-badge i {
+            color: var(--green-light);
+        }
+
+    .hero-small {
+        margin-bottom: 5px;
+        color: #ffffff;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .hero-green {
+        color: var(--green-light);
+        font-size: 22px;
+        font-weight: 800;
+    }
+
+    .hero-line {
+        width: 55px;
+        height: 4px;
+        margin: 20px 0;
+        border-radius: 10px;
+        background: var(--green-light);
+    }
+
+    .home-hero h1 {
+        max-width: 650px;
+        margin: 0 0 25px;
+        color: #ffffff;
+        font-size: clamp(42px, 5vw, 68px);
+        line-height: .98;
+        letter-spacing: -3px;
+        font-weight: 900;
+    }
+
+        .home-hero h1 span {
+            color: var(--green-light);
+        }
+
+    .hero-description {
+        max-width: 600px;
+        margin-bottom: 30px;
+        color: #cbd5e1;
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+    .hero-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .btn-home-green,
+    .btn-home-outline {
+        min-height: 50px;
+        padding: 0 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        border-radius: 14px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        transition: .25s;
+    }
+
+    .home-hero > .container {
+        max-width: 1600px;
+        width: 100%;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .btn-home-green {
+        color: white;
+        background: var(--green);
+        box-shadow: 0 12px 30px rgba(16,185,129,.25);
+    }
+
+        .btn-home-green:hover {
+            color: white;
+            background: var(--green-light);
+            transform: translateY(-3px);
+        }
+
+    .btn-home-outline {
+        color: white;
+        border: 1px solid rgba(255,255,255,.25);
+        background: rgba(255,255,255,.05);
+    }
+
+        .btn-home-outline:hover {
+            color: white;
+            border-color: var(--green-light);
+            background: rgba(16,185,129,.15);
+        }
+
+    /* DASHBOARD */
+
+    .dashboard-container {
+        position: relative;
+        margin-left: 30px;
+    }
+
+    .dashboard-glow {
+        position: absolute;
+        top: 40px;
+        right: -60px;
+        width: 430px;
+        height: 430px;
+        border-radius: 50%;
+        background: rgba(52,211,153,.25);
+        filter: blur(100px);
+    }
+
+    .dashboard {
+        position: relative;
+        overflow: hidden;
+        border: 6px solid rgba(255,255,255,.12);
+        border-radius: 28px;
+        background: #f8fafc;
+        box-shadow: 0 40px 90px rgba(0,0,0,.45);
+        transform: perspective(1400px) rotateY(-4deg) rotateX(2deg);
+    }
+
+    .dashboard-header {
+        height: 48px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #022c22;
+    }
+
+    .dashboard-brand {
+        color: white;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+        .dashboard-brand i {
+            margin-right: 5px;
+            color: var(--green-light);
+        }
+
+        .dashboard-brand span {
+            color: var(--green-light);
+        }
+
+    .dashboard-header-links {
+        display: flex;
+        gap: 18px;
+    }
+
+        .dashboard-header-links span {
+            color: #cbd5e1;
+            font-size: 7px;
+            font-weight: 700;
+        }
+
+    .dashboard-body {
+        display: flex;
+        min-height: 405px;
+    }
+
+    .dashboard-sidebar {
+        width: 145px;
+        padding: 14px 10px;
+        background: #052e24;
+    }
+
+    .dashboard-user {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding-bottom: 14px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .dashboard-user-icon {
+        width: 27px;
+        height: 27px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        color: white;
+        background: var(--green);
+        font-size: 9px;
+    }
+
+    .dashboard-user strong,
+    .dashboard-user small {
+        display: block;
+    }
+
+    .dashboard-user strong {
+        color: white;
+        font-size: 7px;
+    }
+
+    .dashboard-user small {
+        margin-top: 2px;
+        color: #94a3b8;
+        font-size: 6px;
+    }
+
+    .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 7px;
+        margin-bottom: 2px;
+        border-radius: 8px;
+        color: #9ca3af;
+        font-size: 7px;
+        font-weight: 600;
+    }
+
+        .sidebar-item i {
+            width: 12px;
+            text-align: center;
+        }
+
+        .sidebar-item.active {
+            color: white;
+            background: rgba(16,185,129,.18);
+        }
+
+            .sidebar-item.active i {
+                color: var(--green-light);
+            }
+
+    .dashboard-content {
+        flex: 1;
+        padding: 17px;
+    }
+
+    .dashboard-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+    }
+
+        .dashboard-title small {
+            color: #64748b;
+            font-size: 7px;
+        }
+
+        .dashboard-title h3 {
+            margin: 3px 0 0;
+            color: #0f172a;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .dashboard-title button {
+            padding: 7px 10px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            background: var(--green);
+            font-size: 7px;
+            font-weight: 700;
+        }
+
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+        margin-bottom: 9px;
+    }
+
+    .dashboard-stat {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px;
+        border: 1px solid #edf0f2;
+        border-radius: 9px;
+        background: white;
+    }
+
+    .dashboard-stat-icon {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        color: var(--green);
+        background: var(--green-soft);
+        font-size: 9px;
+    }
+
+    .dashboard-stat small,
+    .dashboard-stat strong {
+        display: block;
+    }
+
+    .dashboard-stat small {
+        color: #64748b;
+        font-size: 5px;
+    }
+
+    .dashboard-stat strong {
+        color: #0f172a;
+        font-size: 10px;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 8px;
+    }
+
+    .dashboard-card {
+        padding: 11px;
+        border: 1px solid #edf0f2;
+        border-radius: 10px;
+        background: white;
+    }
+
+    .dashboard-card-title {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+        .dashboard-card-title strong {
+            font-size: 8px;
+        }
+
+        .dashboard-card-title span {
+            color: var(--green);
+            font-size: 6px;
+        }
+
+    .fake-chart {
+        position: relative;
+        height: 110px;
+        overflow: hidden;
+        border-bottom: 1px solid #e5e7eb;
+        background: repeating-linear-gradient( to bottom, transparent, transparent 27px, #f1f5f9 28px );
+    }
+
+    .fake-line {
+        position: absolute;
+        top: 55px;
+        left: -5%;
+        width: 110%;
+        height: 2px;
+        background: var(--green);
+        transform: rotate(-5deg);
+    }
+
+        .fake-line.two {
+            top: 73px;
+            opacity: .5;
+            transform: rotate(5deg);
+        }
+
+        .fake-line.three {
+            top: 40px;
+            opacity: .25;
+            transform: rotate(-8deg);
+        }
+
+    .agenda-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 10px;
+    }
+
+        .agenda-item span {
+            color: #64748b;
+            font-size: 6px;
+        }
+
+        .agenda-item div {
+            flex: 1;
+            height: 5px;
+            border-radius: 10px;
+            background: #e2e8f0;
+        }
+
+        .agenda-item b {
+            color: var(--green);
+            font-size: 5px;
+        }
+
+    .dashboard-bottom {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+        margin-top: 8px;
+    }
+
+    .dashboard-bottom-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 8px;
+        border: 1px solid #edf0f2;
+        border-radius: 8px;
+        background: white;
+    }
+
+        .dashboard-bottom-item i {
+            color: var(--green);
+            font-size: 9px;
+        }
+
+        .dashboard-bottom-item span {
+            font-size: 6px;
+            font-weight: 700;
+        }
+
+    /* BENEFÍCIOS */
+
+    .benefits {
+        position: relative;
+        z-index: 5;
+        margin-top: -45px;
+    }
+
+    .benefits-box {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: 25px;
+        background: white;
+        box-shadow: 0 25px 70px rgba(15,23,42,.08);
+    }
+
+    .benefit {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 20px;
+        border-right: 1px solid var(--border);
+    }
+
+        .benefit:last-child {
+            border-right: none;
+        }
+
+    .benefit-icon {
+        min-width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #bbf7d0;
+        border-radius: 15px;
+        color: var(--green);
+        background: var(--green-soft);
+    }
+
+    .benefit strong {
+        font-size: 14px;
+    }
+
+    .benefit p {
+        margin: 4px 0 0;
+        color: #64748b;
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+    /* SEÇÕES */
+
+    .home-section {
+        padding: 105px 0;
+    }
+
+    .home-section-light {
+        background: #f8fafc;
+    }
+
+    .section-heading {
+        max-width: 800px;
+        margin: 0 auto 55px;
+        text-align: center;
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 7px 14px;
+        margin-bottom: 14px;
+        border-radius: 30px;
+        color: var(--green-dark);
+        background: var(--green-soft);
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: .5px;
+    }
+
+    .section-heading h2 {
+        margin-bottom: 15px;
+        font-size: clamp(32px, 4vw, 48px);
+        line-height: 1.05;
+        letter-spacing: -2px;
+        font-weight: 900;
+    }
+
+        .section-heading h2 span {
+            color: var(--green);
+        }
+
+    .section-heading p {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    /* CARDS */
+
+    .home-card {
+        height: 100%;
+        padding: 30px;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: white;
+        box-shadow: 0 15px 40px rgba(15,23,42,.04);
+        transition: .25s;
+    }
+
+        .home-card:hover {
+            border-color: #86efac;
+            box-shadow: 0 25px 55px rgba(16,185,129,.12);
+            transform: translateY(-7px);
+        }
+
+    .home-card-icon {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 22px;
+        border-radius: 16px;
+        color: var(--green);
+        background: var(--green-soft);
+        font-size: 20px;
+    }
+
+    .home-card h3 {
+        margin-bottom: 12px;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    .home-card p {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    /* CONTATO */
+
+    .home-contact {
+        padding: 80px 0;
+    }
+
+    .contact-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        padding: 60px;
+        border-radius: 30px;
+        color: white;
+        background: radial-gradient(circle at 90% 50%, rgba(52,211,153,.25), transparent 35%), linear-gradient(135deg, #022c22, #064e3b);
+        box-shadow: 0 30px 70px rgba(2,44,34,.15);
+    }
+
+    .contact-label {
+        color: var(--green-light);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+
+    .contact-box h2 {
+        max-width: 650px;
+        margin: 10px 0;
+        font-size: 38px;
+        font-weight: 900;
+        letter-spacing: -1.5px;
+    }
+
+    .contact-box p {
+        margin: 0;
+        color: #cbd5e1;
+    }
+
+    /* CHAT */
+
+    .home-chat {
+        position: fixed;
+        right: 25px;
+        bottom: 25px;
+        z-index: 1000;
+        width: 58px;
+        height: 58px;
+        border: none;
+        border-radius: 50%;
+        color: white;
+        background: var(--green);
+        font-size: 21px;
+        box-shadow: 0 12px 35px rgba(16,185,129,.35);
+        transition: .25s;
+    }
+
+        .home-chat:hover {
+            background: var(--green-dark);
+            transform: translateY(-4px);
+        }
+
+    /* RESPONSIVO */
+
+    @@media (max-width: 991px) {
+
+        .home-hero {
+            padding: 130px 0 90px;
+        }
+
+        .dashboard-container {
+            margin: 60px 0 0;
+        }
+
+        .dashboard {
+            transform: none;
+        }
+
+        .benefits-box {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .benefit:nth-child(2) {
+            border-right: none;
+        }
+
+        .benefit:nth-child(-n+2) {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .benefit:nth-child(n+3) {
+            padding-top: 20px;
+        }
+    }
+
+    @@media (max-width: 767px) {
+
+        .home-hero {
+            min-height: auto;
+            padding: 120px 0 70px;
+        }
+
+            .home-hero h1 {
+                letter-spacing: -2px;
+            }
+
+        .hero-buttons {
+            flex-direction: column;
+        }
+
+        .btn-home-green,
+        .btn-home-outline {
+            width: 100%;
+        }
+
+        .dashboard-container {
+            display: none;
+        }
+
+        .benefits {
+            margin-top: -20px;
+        }
+
+        .benefits-box {
+            grid-template-columns: 1fr;
+        }
+
+        .benefit {
+            border-right: none;
+            border-bottom: 1px solid var(--border);
+            padding: 18px 10px !important;
+        }
+
+            .benefit:last-child {
+                border-bottom: none;
+            }
+
+        .home-section {
+            padding: 75px 0;
+        }
+
+        .contact-box {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 40px 30px;
+        }
+
+            .contact-box h2 {
+                font-size: 30px;
+            }
+    }
+</style>
+
+<section class="home-hero" id="inicio">
+
+    ```
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 hero-content">
+
+                <div class="hero-badge">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    Plataforma completa para gestão de fisioterapia
+                </div>
+
+                <div class="hero-small">
+                    Você cuida dos seus pacientes.
+                </div>
+
+                <div class="hero-green">
+                    O Fisio Flow cuida da gestão.
+                </div>
+
+                <div class="hero-line"></div>
+
+                <h1>
+                    Sua clínica mais
+                    <span>organizada, digital e eficiente.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Uma plataforma completa para clínicas e profissionais
+                    de fisioterapia gerenciarem pacientes, avaliações,
+                    tratamentos, agenda e informações clínicas em um
+                    único ambiente.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#recursos" class="btn-home-green">
+                        <i class="fa-solid fa-rocket"></i>
+                        Conhecer o Fisio Flow
+                    </a>
+
+                    <a href="#contato" class="btn-home-outline">
+                        <i class="fa-solid fa-headset"></i>
+                        Falar com nossa equipe
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <div class="dashboard-container">
+
+                    <div class="dashboard-glow"></div>
+
+                    <div class="dashboard">
+
+                        <div class="dashboard-header">
+
+                            <div class="dashboard-brand">
+                                <i class="fa-solid fa-heart-pulse"></i>
+                                FISIO<span>FLOW</span>
+                            </div>
+
+                            <div class="dashboard-header-links">
+                                <span>Pacientes</span>
+                                <span>Agenda</span>
+                                <span>Tratamentos</span>
+                                <span>Relatórios</span>
+                            </div>
+
+                        </div>
+
+                        <div class="dashboard-body">
+
+                            <aside class="dashboard-sidebar">
+
+                                <div class="dashboard-user">
+
+                                    <div class="dashboard-user-icon">
+                                        <i class="fa-solid fa-user-doctor"></i>
+                                    </div>
+
+                                    <div>
+                                        <strong>FISIOTERAPEUTA</strong>
+                                        <small>Usuário logado</small>
+                                    </div>
+
+                                </div>
+
+                                <div class="sidebar-item active">
+                                    <i class="fa-solid fa-house"></i>
+                                    Início
+                                </div>
+
+                                <div class="sidebar-item">
+                                    <i class="fa-solid fa-users"></i>
+                                    Pacientes
+                                </div>
+
+                                <div class="sidebar-item">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    Agenda
+                                </div>
+
+                                <div class="sidebar-item">
+                                    <i class="fa-solid fa-clipboard-list"></i>
+                                    Avaliações
+                                </div>
+
+                                <div class="sidebar-item">
+                                    <i class="fa-solid fa-person-walking"></i>
+                                    Tratamentos
+                                </div>
+
+                                <div class="sidebar-item">
+                                    <i class="fa-solid fa-file-medical"></i>
+                                    Prontuários
+                                </div>
+
+                                <div class="sidebar-item">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                    Relatórios
+                                </div>
+
+                            </aside>
+
+                            <div class="dashboard-content">
+
+                                <div class="dashboard-title">
+
+                                    <div>
+                                        <small>Visão geral</small>
+                                        <h3>Painel da clínica</h3>
+                                    </div>
+
+                                    <button>
+                                        <i class="fa-solid fa-plus"></i>
+                                        Novo paciente
+                                    </button>
+
+                                </div>
+
+                                <div class="dashboard-stats">
+
+                                    <div class="dashboard-stat">
+
+                                        <div class="dashboard-stat-icon">
+                                            <i class="fa-solid fa-users"></i>
+                                        </div>
+
+                                        <div>
+                                            <small>Pacientes ativos</small>
+                                            <strong>248</strong>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dashboard-stat">
+
+                                        <div class="dashboard-stat-icon">
+                                            <i class="fa-solid fa-calendar-check"></i>
+                                        </div>
+
+                                        <div>
+                                            <small>Consultas hoje</small>
+                                            <strong>32</strong>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dashboard-stat">
+
+                                        <div class="dashboard-stat-icon">
+                                            <i class="fa-solid fa-person-walking"></i>
+                                        </div>
+
+                                        <div>
+                                            <small>Tratamentos</small>
+                                            <strong>126</strong>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dashboard-stat">
+
+                                        <div class="dashboard-stat-icon">
+                                            <i class="fa-solid fa-file-medical"></i>
+                                        </div>
+
+                                        <div>
+                                            <small>Avaliações</small>
+                                            <strong>18</strong>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="dashboard-grid">
+
+                                    <div class="dashboard-card">
+
+                                        <div class="dashboard-card-title">
+
+                                            <strong>
+                                                Evolução dos atendimentos
+                                            </strong>
+
+                                            <span>
+                                                Últimos 30 dias
+                                            </span>
+
+                                        </div>
+
+                                        <div class="fake-chart">
+
+                                            <div class="fake-line"></div>
+                                            <div class="fake-line two"></div>
+                                            <div class="fake-line three"></div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="dashboard-card">
+
+                                        <div class="dashboard-card-title">
+
+                                            <strong>
+                                                Agenda de hoje
+                                            </strong>
+
+                                            <span>
+                                                Ver agenda
+                                            </span>
+
+                                        </div>
+
+                                        <div class="agenda-item">
+                                            <span>09:00</span>
+                                            <div></div>
+                                            <b>ATENDIDO</b>
+                                        </div>
+
+                                        <div class="agenda-item">
+                                            <span>10:15</span>
+                                            <div></div>
+                                            <b>EM ATENDIMENTO</b>
+                                        </div>
+
+                                        <div class="agenda-item">
+                                            <span>11:30</span>
+                                            <div></div>
+                                            <b>AGENDADO</b>
+                                        </div>
+
+                                        <div class="agenda-item">
+                                            <span>14:00</span>
+                                            <div></div>
+                                            <b>AGENDADO</b>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="dashboard-bottom">
+
+                                    <div class="dashboard-bottom-item">
+                                        <i class="fa-solid fa-users"></i>
+                                        <span>Pacientes</span>
+                                    </div>
+
+                                    <div class="dashboard-bottom-item">
+                                        <i class="fa-solid fa-calendar-check"></i>
+                                        <span>Agenda</span>
+                                    </div>
+
+                                    <div class="dashboard-bottom-item">
+                                        <i class="fa-solid fa-file-medical"></i>
+                                        <span>Prontuários</span>
+                                    </div>
+
+                                    <div class="dashboard-bottom-item">
+                                        <i class="fa-solid fa-chart-line"></i>
+                                        <span>Relatórios</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    ```
+
+</section>
+
+<section class="benefits" id="plataforma">
+
+    ```
+    <div class="container">
+
+        <div class="benefits-box">
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div>
+                    <strong>Gestão de pacientes</strong>
+
+                    <p>
+                        Tenha todas as informações dos pacientes organizadas.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+
+                <div>
+                    <strong>Agenda inteligente</strong>
+
+                    <p>
+                        Organize consultas e atendimentos com praticidade.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    <i class="fa-solid fa-file-medical"></i>
+                </div>
+
+                <div>
+                    <strong>Prontuário digital</strong>
+
+                    <p>
+                        Centralize avaliações e informações clínicas.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="benefit">
+
+                <div class="benefit-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <div>
+                    <strong>Indicadores</strong>
+
+                    <p>
+                        Acompanhe o desempenho da sua clínica.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    ```
+
+</section>
+
+<section class="home-section" id="portais">
+
+    ```
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                GESTÃO INTEGRADA
+            </div>
+
+            <h2>
+                Um ambiente para toda a
+                <span>rotina da clínica</span>
+            </h2>
+
+            <p>
+                Conecte profissionais, pacientes e informações
+                em uma plataforma simples, moderna e organizada.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+
+                    <h3>
+                        Fisioterapeutas
+                    </h3>
+
+                    <p>
+                        Gerencie atendimentos, avaliações, evolução
+                        dos pacientes e registros clínicos em um único
+                        ambiente.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-hospital"></i>
+                    </div>
+
+                    <h3>
+                        Gestão da clínica
+                    </h3>
+
+                    <p>
+                        Organize profissionais, pacientes, agenda,
+                        tratamentos e informações administrativas.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <h3>
+                        Acompanhamento do paciente
+                    </h3>
+
+                    <p>
+                        Tenha uma visão completa da jornada do paciente,
+                        desde a avaliação inicial até a evolução do tratamento.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    ```
+
+</section>
+
+<section class="home-section home-section-light" id="modulos">
+
+    ```
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                MÓDULOS
+            </div>
+
+            <h2>
+                Tudo que sua clínica precisa
+                <span>em um só lugar</span>
+            </h2>
+
+            <p>
+                Recursos integrados para simplificar a rotina
+                dos profissionais e melhorar a organização da clínica.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <h3>Pacientes</h3>
+
+                    <p>
+                        Cadastre e acompanhe informações,
+                        histórico e evolução de cada paciente.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                    </div>
+
+                    <h3>Avaliações</h3>
+
+                    <p>
+                        Registre avaliações fisioterapêuticas
+                        e acompanhe os resultados ao longo do tempo.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-person-walking"></i>
+                    </div>
+
+                    <h3>Tratamentos</h3>
+
+                    <p>
+                        Organize planos de tratamento,
+                        sessões e evolução clínica.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+
+                    <h3>Agenda</h3>
+
+                    <p>
+                        Controle consultas, horários,
+                        profissionais e compromissos da clínica.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-file-medical"></i>
+                    </div>
+
+                    <h3>Prontuário digital</h3>
+
+                    <p>
+                        Centralize informações clínicas
+                        em um prontuário organizado e acessível.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="home-card">
+
+                    <div class="home-card-icon">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+
+                    <h3>Relatórios</h3>
+
+                    <p>
+                        Visualize indicadores e informações
+                        importantes para acompanhar sua clínica.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    ```
+
+</section>
+
+<section class="home-section" id="recursos">
+
+    ```
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                RECURSOS
+            </div>
+
+            <h2>
+                Tecnologia para uma
+                <span>gestão mais inteligente</span>
+            </h2>
+
+            <p>
+                Centralize informações e tenha mais controle
+                sobre todos os processos da sua clínica.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="home-card text-center">
+
+                    <div class="home-card-icon mx-auto">
+                        <i class="fa-solid fa-cloud"></i>
+                    </div>
+
+                    <h3>100% Digital</h3>
+
+                    <p>
+                        Acesse as informações da clínica
+                        de qualquer lugar.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="home-card text-center">
+
+                    <div class="home-card-icon mx-auto">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+
+                    <h3>Indicadores</h3>
+
+                    <p>
+                        Visualize dados importantes
+                        da sua operação.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="home-card text-center">
+
+                    <div class="home-card-icon mx-auto">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+
+                    <h3>Segurança</h3>
+
+                    <p>
+                        Organize e controle as informações
+                        da sua clínica.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="home-card text-center">
+
+                    <div class="home-card-icon mx-auto">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </div>
+
+                    <h3>Integração</h3>
+
+                    <p>
+                        Mantenha pacientes, profissionais
+                        e processos conectados.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    ```
+
+</section>
+
+<section class="home-contact" id="contato">
+
+    ```
+    <div class="container">
+
+        <div class="contact-box">
+
+            <div>
+
+                <div class="contact-label">
+                    FISIO FLOW
+                </div>
+
+                <h2>
+                    Simplifique a gestão da sua clínica.
+                </h2>
+
+                <p>
+                    Organize pacientes, agenda, tratamentos
+                    e informações clínicas em um único lugar.
+                </p>
+
+            </div>
+
+            <a href="#" class="btn-home-green">
+
+                <i class="fa-solid fa-comments"></i>
+
+                Conhecer a plataforma
+
+            </a>
+
+        </div>
+
+    </div>
+    ```
+
+</section>
+
+<button class="home-chat" type="button">
+
+    ```
+    <i class="fa-solid fa-comment"></i>
+    ```
+
+</button>

@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - FisioFlow</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+
+            body {
+                background: #f7faf8;
+                font-family: 'Segoe UI', sans-serif;
+            }
+
+
+            /* MENU */
+
+            .navbar {
+
+                background: #ffffff !important;
+                box-shadow: 0 3px 15px rgba(0,0,0,.05);
+                padding: 15px;
+
+            }
+
+
+            .navbar-brand {
+
+                color: #198754 !important;
+                font-size: 26px;
+                font-weight: 700;
+
+            }
+
+
+            .nav-link {
+
+                color: #444 !important;
+                font-weight: 500;
+                margin-left: 20px;
+
+            }
+
+
+            .nav-link:hover {
+
+                color: #198754 !important;
+
+            }
+
+
+
+            /* BOTÃO LOGIN */
+
+            .btn-login {
+
+                background: #198754;
+                color:white;
+                border-radius:25px;
+                padding:8px 25px;
+                transition:.3s;
+
+            }
+
+
+            .btn-login:hover {
+
+                background:#157347;
+                color:white;
+
+            }
+
+
+
+            /* CONTEÚDO */
+
+            main {
+
+                background:white;
+                border-radius:20px;
+                padding:40px;
+                margin-top:30px;
+                min-height:70vh;
+                box-shadow:0 5px 20px rgba(0,0,0,.05);
+
+            }
+
+
+
+            /* FOOTER */
+
+            footer {
+
+                background:white;
+                border-top:1px solid #dcefe4;
+                margin-top:30px;
+                padding:20px;
+
+            }
+
+
+            footer strong {
+
+                color:#198754;
+
+            }
+
+
+    </style>
+
+
+</head>
+
+
+<body>
+
+
+    <header>
+
+
+        <nav class="navbar navbar-expand-sm">
+
+
+            <div class="container">
+
+
+                <a class="navbar-brand"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    🌿 FisioFlow
+
+                </a>
+
+
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse">
+
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+
+
+
+                <div class="navbar-collapse collapse justify-content-end">
+
+
+                    <ul class="navbar-nav align-items-center">
+
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Início
+
+                            </a>
+
+                        </li>
+
+
+
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-controller="Home"
+                               asp-action="Sobre">
+
+                                Sobre
+
+                            </a>
+
+                        </li>
+
+
+
+                        <li class="nav-item ms-3">
+
+                            <a class="btn btn-login"
+                               asp-controller="Account"
+                               asp-action="Login">
+
+                                Área Administrativa
+
+                            </a>
+
+                        </li>
+
+
+
+                    </ul>
+
+
+                </div>
+
+
+            </div>
+
+
+        </nav>
+
+
+    </header>
+
+
+
+    <div class="container">
+
+
+        <main role="main">
+
+            @RenderBody()
+
+        </main>
+
+
+    </div>
+
+
+
+
+    <footer>
+
+
+        <div class="container text-center">
+
+
+            © 2026 <strong>FisioFlow</strong>
+
+            <br>
+
+            Sistema inteligente para gestão de clínicas de fisioterapia.
+
+
+        </div>
+
+
+    </footer>
+
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+</body>
+
+</html>
