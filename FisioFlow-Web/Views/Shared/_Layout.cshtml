@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -10,125 +11,127 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
 
             body {
-                background: #f7faf8;
+                background: #f4f8f5;
                 font-family: 'Segoe UI', sans-serif;
+                color: #1f2937;
             }
 
-
-            /* MENU */
+            /* NAVBAR */
 
             .navbar {
-
-                background: #ffffff !important;
-                box-shadow: 0 3px 15px rgba(0,0,0,.05);
-                padding: 15px;
-
+                background: linear-gradient(135deg, #087443, #0b8f55) !important;
+                padding: 14px 0;
+                box-shadow: 0 5px 20px rgba(0, 80, 45, 0.18);
             }
-
 
             .navbar-brand {
-
-                color: #198754 !important;
+                color: #ffffff !important;
                 font-size: 26px;
                 font-weight: 700;
-
+                letter-spacing: -0.5px;
+                transition: .3s;
             }
 
+                .navbar-brand:hover {
+                    transform: translateY(-1px);
+                }
 
             .nav-link {
-
-                color: #444 !important;
+                color: rgba(255, 255, 255, 0.9) !important;
                 font-weight: 500;
-                margin-left: 20px;
-
+                margin-left: 12px;
+                padding: 9px 16px !important;
+                border-radius: 10px;
+                transition: .3s;
             }
 
+                .nav-link:hover {
+                    color: #ffffff !important;
+                    background: rgba(255, 255, 255, 0.12);
+                }
 
-            .nav-link:hover {
+                .nav-link.active {
+                    color: #ffffff !important;
+                    background: rgba(255, 255, 255, 0.15);
+                }
 
-                color: #198754 !important;
-
-            }
-
-
-
-            /* BOTÃO LOGIN */
+            /* BOTÃO ADMINISTRATIVO */
 
             .btn-login {
-
-                background: #198754;
-                color:white;
-                border-radius:25px;
-                padding:8px 25px;
-                transition:.3s;
-
+                background: #ffffff;
+                color: #087443 !important;
+                border: none;
+                border-radius: 12px;
+                padding: 10px 20px;
+                font-weight: 600;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+                transition: .3s;
             }
 
+                .btn-login:hover {
+                    background: #ecfdf5;
+                    color: #065f38 !important;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+                }
 
-            .btn-login:hover {
+            /* MENU MOBILE */
 
-                background:#157347;
-                color:white;
-
+            .navbar-toggler {
+                border: 1px solid rgba(255, 255, 255, 0.35);
+                border-radius: 10px;
+                padding: 7px 10px;
             }
 
+                .navbar-toggler:focus {
+                    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+                }
 
+            .navbar-toggler-icon {
+                filter: brightness(0) invert(1);
+            }
 
             /* CONTEÚDO */
 
             main {
-
-                background:white;
-                border-radius:20px;
-                padding:40px;
-                margin-top:30px;
-                min-height:70vh;
-                box-shadow:0 5px 20px rgba(0,0,0,.05);
-
+                background: #ffffff;
+                border-radius: 20px;
+                padding: 40px;
+                margin-top: 30px;
+                min-height: 70vh;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
             }
-
-
 
             /* FOOTER */
 
             footer {
-
-                background:white;
-                border-top:1px solid #dcefe4;
-                margin-top:30px;
-                padding:20px;
-
+                background: #ffffff;
+                border-top: 1px solid #dcefe4;
+                margin-top: 30px;
+                padding: 20px;
+                color: #64748b;
             }
 
-
-            footer strong {
-
-                color:#198754;
-
-            }
-
+                footer strong {
+                    color: #087443;
+                }
 
     </style>
 
-
 </head>
-
 
 <body>
 
-
     <header>
-
 
         <nav class="navbar navbar-expand-sm">
 
-
             <div class="container">
-
 
                 <a class="navbar-brand"
                    asp-controller="Home"
@@ -138,24 +141,21 @@
 
                 </a>
 
-
-
                 <button class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse">
+                        data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Alternar navegação">
 
                     <span class="navbar-toggler-icon"></span>
 
                 </button>
 
-
-
                 <div class="navbar-collapse collapse justify-content-end">
 
-
                     <ul class="navbar-nav align-items-center">
-
 
                         <li class="nav-item">
 
@@ -169,8 +169,6 @@
 
                         </li>
 
-
-
                         <li class="nav-item">
 
                             <a class="nav-link"
@@ -182,8 +180,6 @@
                             </a>
 
                         </li>
-
-
 
                         <li class="nav-item ms-3">
 
@@ -197,44 +193,23 @@
 
                         </li>
 
-
-
                     </ul>
-
 
                 </div>
 
-
             </div>
-
 
         </nav>
 
-
     </header>
 
-
-
-    <div class="container">
-
-
-        <main role="main">
-
-            @RenderBody()
-
-        </main>
-
-
-    </div>
-
-
-
+    <main role="main">
+        @RenderBody()
+    </main>
 
     <footer>
 
-
         <div class="container text-center">
-
 
             © 2026 <strong>FisioFlow</strong>
 
@@ -242,14 +217,9 @@
 
             Sistema inteligente para gestão de clínicas de fisioterapia.
 
-
         </div>
 
-
     </footer>
-
-
-
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
@@ -257,9 +227,7 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-
     @await RenderSectionAsync("Scripts", required: false)
-
 
 </body>
 

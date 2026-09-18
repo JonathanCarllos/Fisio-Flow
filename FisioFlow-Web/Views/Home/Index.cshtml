@@ -4,16 +4,28 @@
 
 <style>
     :root {
-        --green: #10b981;
-        --green-light: #34d399;
-        --green-dark: #047857;
-        --green-deep: #022c22;
-        --green-soft: #ecfdf5;
+        --green-50: #ecfdf5;
+        --green-100: #d1fae5;
+        --green-200: #a7f3d0;
+        --green-400: #34d399;
+        --green-500: #10b981;
+        --green-600: #059669;
+        --green-700: #047857;
+        --green-800: #065f46;
+        --green-900: #064e3b;
+        --green-950: #022c22;
         --white: #ffffff;
-        --gray: #64748b;
-        --dark: #0f172a;
-        --light: #f8fafc;
-        --border: #e2e8f0;
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-200: #e2e8f0;
+        --slate-500: #64748b;
+        --slate-600: #475569;
+        --slate-700: #334155;
+        --slate-900: #0f172a;
+        --radius-lg: 24px;
+        --radius-xl: 32px;
+        --shadow-sm: 0 10px 30px rgba(15, 23, 42, .06);
+        --shadow-lg: 0 30px 80px rgba(15, 23, 42, .12);
     }
 
     * {
@@ -26,850 +38,947 @@
 
     body {
         margin: 0;
+        color: var(--slate-900);
+        background: var(--white);
         font-family: "Inter", Arial, sans-serif;
-        color: var(--dark);
-        background: #ffffff;
     }
 
-    /* HERO */
+    /* =========================================================
+           HERO VERDE
+           ========================================================= */
 
-    .home-hero {
+    .ff-hero {
         position: relative;
-        width: 100%;
-        min-height: 800px;
-        padding: 120px 0 90px;
         overflow: hidden;
-        background: radial-gradient(circle at 80% 30%, rgba(52,211,153,.18), transparent 30%), radial-gradient(circle at 10% 80%, rgba(16,185,129,.12), transparent 30%), linear-gradient(135deg, #022c22 0%, #064e3b 55%, #022c22 100%);
+        min-height: 760px;
+        padding: 110px 0 100px;
+        color: var(--white);
+        background: radial-gradient(circle at 85% 20%, rgba(52, 211, 153, .22), transparent 25%), radial-gradient(circle at 10% 90%, rgba(16, 185, 129, .16), transparent 30%), linear-gradient(135deg, var(--green-950), var(--green-900) 55%, var(--green-950));
     }
 
-        .home-hero::before {
+        .ff-hero::before,
+        .ff-hero::after {
             content: "";
             position: absolute;
-            width: 700px;
-            height: 700px;
-            right: -300px;
-            top: 40px;
-            border: 1px solid rgba(52,211,153,.15);
+            border: 1px solid rgba(255, 255, 255, .08);
             border-radius: 50%;
+            pointer-events: none;
         }
 
-        .home-hero::after {
-            content: "";
-            position: absolute;
+        .ff-hero::before {
+            width: 650px;
+            height: 650px;
+            right: -300px;
+            top: -180px;
+        }
+
+        .ff-hero::after {
             width: 500px;
             height: 500px;
             left: -300px;
-            bottom: -250px;
-            border: 1px solid rgba(52,211,153,.10);
-            border-radius: 50%;
+            bottom: -300px;
         }
 
-    .hero-content {
+    .ff-container {
         position: relative;
         z-index: 2;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 28px;
     }
 
-    .hero-badge {
+    .ff-hero-content {
+        padding-right: 35px;
+    }
+
+    .ff-badge {
         display: inline-flex;
         align-items: center;
         gap: 9px;
-        padding: 9px 16px;
+        padding: 9px 15px;
         margin-bottom: 22px;
-        border: 1px solid rgba(52,211,153,.35);
-        border-radius: 30px;
-        color: #d1fae5;
-        background: rgba(16,185,129,.10);
+        border: 1px solid rgba(52, 211, 153, .35);
+        border-radius: 50px;
+        color: var(--green-100);
+        background: rgba(16, 185, 129, .10);
         font-size: 12px;
         font-weight: 800;
+        letter-spacing: .2px;
     }
 
-        .hero-badge i {
-            color: var(--green-light);
+        .ff-badge i {
+            color: var(--green-400);
         }
 
-    .hero-small {
-        margin-bottom: 5px;
-        color: #ffffff;
-        font-size: 19px;
+    .ff-hero-small {
+        margin-bottom: 7px;
+        color: var(--white);
+        font-size: 18px;
         font-weight: 700;
     }
 
-    .hero-green {
-        color: var(--green-light);
+    .ff-hero-highlight {
+        color: var(--green-400);
         font-size: 22px;
         font-weight: 800;
     }
 
-    .hero-line {
+    .ff-line {
         width: 55px;
         height: 4px;
         margin: 20px 0;
-        border-radius: 10px;
-        background: var(--green-light);
+        border-radius: 20px;
+        background: var(--green-400);
     }
 
-    .home-hero h1 {
-        max-width: 650px;
+    .ff-hero h1 {
+        max-width: 680px;
         margin: 0 0 25px;
-        color: #ffffff;
+        color: var(--white);
         font-size: clamp(42px, 5vw, 68px);
         line-height: .98;
         letter-spacing: -3px;
         font-weight: 900;
     }
 
-        .home-hero h1 span {
-            color: var(--green-light);
+        .ff-hero h1 span {
+            color: var(--green-400);
         }
 
-    .hero-description {
-        max-width: 600px;
+    .ff-hero-description {
+        max-width: 610px;
         margin-bottom: 30px;
         color: #cbd5e1;
         font-size: 16px;
         line-height: 1.8;
     }
 
-    .hero-buttons {
+    .ff-buttons {
         display: flex;
         flex-wrap: wrap;
-        gap: 14px;
+        gap: 13px;
     }
 
-    .btn-home-green,
-    .btn-home-outline {
-        min-height: 50px;
-        padding: 0 24px;
+    .ff-btn {
+        min-height: 52px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 9px;
+        padding: 0 23px;
         border-radius: 14px;
         text-decoration: none;
         font-size: 13px;
         font-weight: 800;
-        transition: .25s;
+        transition: .25s ease;
     }
 
-    .home-hero > .container {
-        max-width: 1600px;
-        width: 100%;
-        padding-left: 25px;
-        padding-right: 25px;
+    .ff-btn-green {
+        color: var(--white);
+        background: var(--green-500);
+        box-shadow: 0 14px 35px rgba(16, 185, 129, .25);
     }
 
-    .btn-home-green {
-        color: white;
-        background: var(--green);
-        box-shadow: 0 12px 30px rgba(16,185,129,.25);
-    }
-
-        .btn-home-green:hover {
-            color: white;
-            background: var(--green-light);
+        .ff-btn-green:hover {
+            color: var(--white);
+            background: var(--green-400);
             transform: translateY(-3px);
         }
 
-    .btn-home-outline {
-        color: white;
-        border: 1px solid rgba(255,255,255,.25);
-        background: rgba(255,255,255,.05);
+    .ff-btn-outline {
+        color: var(--white);
+        border: 1px solid rgba(255, 255, 255, .22);
+        background: rgba(255, 255, 255, .05);
     }
 
-        .btn-home-outline:hover {
-            color: white;
-            border-color: var(--green-light);
-            background: rgba(16,185,129,.15);
+        .ff-btn-outline:hover {
+            color: var(--white);
+            border-color: var(--green-400);
+            background: rgba(16, 185, 129, .12);
+            transform: translateY(-3px);
         }
 
-    /* DASHBOARD */
+    /* =========================================================
+           DASHBOARD
+           ========================================================= */
 
-    .dashboard-container {
+    .ff-dashboard-wrapper {
         position: relative;
-        margin-left: 30px;
     }
 
-    .dashboard-glow {
+    .ff-dashboard-glow {
         position: absolute;
+        width: 420px;
+        height: 420px;
+        right: -70px;
         top: 40px;
-        right: -60px;
-        width: 430px;
-        height: 430px;
         border-radius: 50%;
-        background: rgba(52,211,153,.25);
+        background: rgba(52, 211, 153, .25);
         filter: blur(100px);
     }
 
-    .dashboard {
+    .ff-dashboard {
         position: relative;
         overflow: hidden;
-        border: 6px solid rgba(255,255,255,.12);
+        border: 5px solid rgba(255, 255, 255, .10);
         border-radius: 28px;
-        background: #f8fafc;
-        box-shadow: 0 40px 90px rgba(0,0,0,.45);
+        background: var(--slate-50);
+        box-shadow: 0 40px 100px rgba(0, 0, 0, .40);
         transform: perspective(1400px) rotateY(-4deg) rotateX(2deg);
     }
 
-    .dashboard-header {
-        height: 48px;
-        padding: 0 16px;
+    .ff-dashboard-header {
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background: #022c22;
+        padding: 0 17px;
+        background: var(--green-950);
     }
 
-    .dashboard-brand {
-        color: white;
+    .ff-dashboard-brand {
+        color: var(--white);
         font-size: 11px;
         font-weight: 900;
     }
 
-        .dashboard-brand i {
+        .ff-dashboard-brand i,
+        .ff-dashboard-brand span {
+            color: var(--green-400);
+        }
+
+        .ff-dashboard-brand i {
             margin-right: 5px;
-            color: var(--green-light);
         }
 
-        .dashboard-brand span {
-            color: var(--green-light);
-        }
-
-    .dashboard-header-links {
+    .ff-dashboard-links {
         display: flex;
         gap: 18px;
     }
 
-        .dashboard-header-links span {
-            color: #cbd5e1;
+        .ff-dashboard-links span {
+            color: #94a3b8;
             font-size: 7px;
             font-weight: 700;
         }
 
-    .dashboard-body {
+    .ff-dashboard-body {
         display: flex;
-        min-height: 405px;
+        min-height: 410px;
     }
 
-    .dashboard-sidebar {
+    .ff-sidebar {
         width: 145px;
-        padding: 14px 10px;
+        padding: 15px 10px;
         background: #052e24;
     }
 
-    .dashboard-user {
+    .ff-user {
         display: flex;
         align-items: center;
         gap: 7px;
         padding-bottom: 14px;
         margin-bottom: 10px;
-        border-bottom: 1px solid rgba(255,255,255,.08);
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
     }
 
-    .dashboard-user-icon {
-        width: 27px;
-        height: 27px;
+    .ff-user-icon {
+        width: 28px;
+        height: 28px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 9px;
-        color: white;
-        background: var(--green);
+        color: var(--white);
+        background: var(--green-500);
         font-size: 9px;
     }
 
-    .dashboard-user strong,
-    .dashboard-user small {
+    .ff-user strong,
+    .ff-user small {
         display: block;
     }
 
-    .dashboard-user strong {
-        color: white;
+    .ff-user strong {
+        color: var(--white);
         font-size: 7px;
     }
 
-    .dashboard-user small {
+    .ff-user small {
         margin-top: 2px;
         color: #94a3b8;
         font-size: 6px;
     }
 
-    .sidebar-item {
+    .ff-menu-item {
         display: flex;
         align-items: center;
         gap: 7px;
         padding: 9px 7px;
         margin-bottom: 2px;
         border-radius: 8px;
-        color: #9ca3af;
+        color: #94a3b8;
         font-size: 7px;
         font-weight: 600;
     }
 
-        .sidebar-item i {
+        .ff-menu-item i {
             width: 12px;
             text-align: center;
         }
 
-        .sidebar-item.active {
-            color: white;
-            background: rgba(16,185,129,.18);
+        .ff-menu-item.active {
+            color: var(--white);
+            background: rgba(16, 185, 129, .18);
         }
 
-            .sidebar-item.active i {
-                color: var(--green-light);
+            .ff-menu-item.active i {
+                color: var(--green-400);
             }
 
-    .dashboard-content {
+    .ff-dashboard-content {
         flex: 1;
         padding: 17px;
     }
 
-    .dashboard-title {
+    .ff-dashboard-title {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
         margin-bottom: 14px;
     }
 
-        .dashboard-title small {
-            color: #64748b;
+        .ff-dashboard-title small {
+            color: var(--slate-500);
             font-size: 7px;
         }
 
-        .dashboard-title h3 {
+        .ff-dashboard-title h3 {
             margin: 3px 0 0;
-            color: #0f172a;
+            color: var(--slate-900);
             font-size: 17px;
             font-weight: 800;
         }
 
-        .dashboard-title button {
+        .ff-dashboard-title button {
             padding: 7px 10px;
-            border: none;
+            border: 0;
             border-radius: 8px;
-            color: white;
-            background: var(--green);
+            color: var(--white);
+            background: var(--green-500);
             font-size: 7px;
             font-weight: 700;
         }
 
-    .dashboard-stats {
+    .ff-stats {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 7px;
         margin-bottom: 9px;
     }
 
-    .dashboard-stat {
+    .ff-stat {
         display: flex;
         align-items: center;
         gap: 6px;
         padding: 9px;
         border: 1px solid #edf0f2;
-        border-radius: 9px;
-        background: white;
+        border-radius: 10px;
+        background: var(--white);
     }
 
-    .dashboard-stat-icon {
+    .ff-stat-icon {
         width: 25px;
         height: 25px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 7px;
-        color: var(--green);
-        background: var(--green-soft);
+        color: var(--green-600);
+        background: var(--green-50);
         font-size: 9px;
     }
 
-    .dashboard-stat small,
-    .dashboard-stat strong {
+    .ff-stat small,
+    .ff-stat strong {
         display: block;
     }
 
-    .dashboard-stat small {
-        color: #64748b;
+    .ff-stat small {
+        color: var(--slate-500);
         font-size: 5px;
     }
 
-    .dashboard-stat strong {
-        color: #0f172a;
+    .ff-stat strong {
+        color: var(--slate-900);
         font-size: 10px;
     }
 
-    .dashboard-grid {
+    .ff-dashboard-grid {
         display: grid;
         grid-template-columns: 1.5fr 1fr;
         gap: 8px;
     }
 
-    .dashboard-card {
+    .ff-dashboard-card {
         padding: 11px;
         border: 1px solid #edf0f2;
         border-radius: 10px;
-        background: white;
+        background: var(--white);
     }
 
-    .dashboard-card-title {
+    .ff-card-title {
         display: flex;
         justify-content: space-between;
         margin-bottom: 10px;
     }
 
-        .dashboard-card-title strong {
+        .ff-card-title strong {
             font-size: 8px;
         }
 
-        .dashboard-card-title span {
-            color: var(--green);
+        .ff-card-title span {
+            color: var(--green-600);
             font-size: 6px;
         }
 
-    .fake-chart {
+    .ff-chart {
         position: relative;
         height: 110px;
         overflow: hidden;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid var(--slate-200);
         background: repeating-linear-gradient( to bottom, transparent, transparent 27px, #f1f5f9 28px );
     }
 
-    .fake-line {
+    .ff-chart-line {
         position: absolute;
-        top: 55px;
         left: -5%;
         width: 110%;
         height: 2px;
-        background: var(--green);
-        transform: rotate(-5deg);
+        background: var(--green-500);
     }
 
-        .fake-line.two {
+        .ff-chart-line.one {
+            top: 55px;
+            transform: rotate(-5deg);
+        }
+
+        .ff-chart-line.two {
             top: 73px;
             opacity: .5;
             transform: rotate(5deg);
         }
 
-        .fake-line.three {
+        .ff-chart-line.three {
             top: 40px;
             opacity: .25;
             transform: rotate(-8deg);
         }
 
-    .agenda-item {
+    .ff-agenda {
         display: flex;
         align-items: center;
         gap: 7px;
         margin-bottom: 10px;
     }
 
-        .agenda-item span {
-            color: #64748b;
+        .ff-agenda span {
+            color: var(--slate-500);
             font-size: 6px;
         }
 
-        .agenda-item div {
+        .ff-agenda div {
             flex: 1;
             height: 5px;
             border-radius: 10px;
-            background: #e2e8f0;
+            background: var(--slate-200);
         }
 
-        .agenda-item b {
-            color: var(--green);
+        .ff-agenda b {
+            color: var(--green-600);
             font-size: 5px;
         }
 
-    .dashboard-bottom {
+    .ff-bottom {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 7px;
         margin-top: 8px;
     }
 
-    .dashboard-bottom-item {
+    .ff-bottom-item {
         display: flex;
         align-items: center;
         gap: 5px;
         padding: 8px;
         border: 1px solid #edf0f2;
         border-radius: 8px;
-        background: white;
+        background: var(--white);
     }
 
-        .dashboard-bottom-item i {
-            color: var(--green);
+        .ff-bottom-item i {
+            color: var(--green-600);
             font-size: 9px;
         }
 
-        .dashboard-bottom-item span {
+        .ff-bottom-item span {
             font-size: 6px;
             font-weight: 700;
         }
 
-    /* BENEFÍCIOS */
+    /* =========================================================
+           BENEFÍCIOS
+           ========================================================= */
 
-    .benefits {
+    .ff-benefits {
         position: relative;
         z-index: 5;
-        margin-top: -45px;
+        margin-top: -40px;
     }
 
-    .benefits-box {
+    .ff-benefits-box {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         padding: 20px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--slate-200);
         border-radius: 25px;
-        background: white;
-        box-shadow: 0 25px 70px rgba(15,23,42,.08);
+        background: var(--white);
+        box-shadow: var(--shadow-lg);
     }
 
-    .benefit {
+    .ff-benefit {
         display: flex;
         align-items: center;
         gap: 14px;
         padding: 10px 20px;
-        border-right: 1px solid var(--border);
+        border-right: 1px solid var(--slate-200);
     }
 
-        .benefit:last-child {
+        .ff-benefit:last-child {
             border-right: none;
         }
 
-    .benefit-icon {
+    .ff-benefit-icon {
         min-width: 48px;
         height: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #bbf7d0;
+        border: 1px solid var(--green-200);
         border-radius: 15px;
-        color: var(--green);
-        background: var(--green-soft);
+        color: var(--green-600);
+        background: var(--green-50);
     }
 
-    .benefit strong {
+    .ff-benefit strong {
         font-size: 14px;
     }
 
-    .benefit p {
+    .ff-benefit p {
         margin: 4px 0 0;
-        color: #64748b;
+        color: var(--slate-500);
         font-size: 11px;
         line-height: 1.4;
     }
 
-    /* SEÇÕES */
+    /* =========================================================
+           SEÇÕES
+           ========================================================= */
 
-    .home-section {
+    .ff-section {
         padding: 105px 0;
     }
 
-    .home-section-light {
-        background: #f8fafc;
+    .ff-section-white {
+        background: var(--white);
     }
 
-    .section-heading {
-        max-width: 800px;
+    .ff-section-green {
+        color: var(--white);
+        background: radial-gradient(circle at 90% 10%, rgba(52, 211, 153, .18), transparent 25%), linear-gradient(135deg, var(--green-950), var(--green-900));
+    }
+
+    .ff-heading {
+        max-width: 780px;
         margin: 0 auto 55px;
         text-align: center;
     }
 
-    .section-label {
+    .ff-section-green .ff-heading p {
+        color: #cbd5e1;
+    }
+
+    .ff-label {
         display: inline-block;
         padding: 7px 14px;
         margin-bottom: 14px;
-        border-radius: 30px;
-        color: var(--green-dark);
-        background: var(--green-soft);
+        border-radius: 50px;
+        color: var(--green-700);
+        background: var(--green-100);
         font-size: 10px;
         font-weight: 900;
-        letter-spacing: .5px;
+        letter-spacing: .7px;
     }
 
-    .section-heading h2 {
-        margin-bottom: 15px;
+    .ff-section-green .ff-label {
+        color: var(--green-100);
+        background: rgba(52, 211, 153, .12);
+        border: 1px solid rgba(52, 211, 153, .20);
+    }
+
+    .ff-heading h2 {
+        margin: 0 0 15px;
         font-size: clamp(32px, 4vw, 48px);
         line-height: 1.05;
         letter-spacing: -2px;
         font-weight: 900;
     }
 
-        .section-heading h2 span {
-            color: var(--green);
+        .ff-heading h2 span {
+            color: var(--green-600);
         }
 
-    .section-heading p {
-        color: #64748b;
+    .ff-section-green .ff-heading h2 span {
+        color: var(--green-400);
+    }
+
+    .ff-heading p {
+        margin: 0;
+        color: var(--slate-500);
         font-size: 15px;
         line-height: 1.7;
     }
 
-    /* CARDS */
+    /* =========================================================
+           CARDS
+           ========================================================= */
 
-    .home-card {
+    .ff-card {
         height: 100%;
         padding: 30px;
-        border: 1px solid var(--border);
-        border-radius: 22px;
-        background: white;
-        box-shadow: 0 15px 40px rgba(15,23,42,.04);
-        transition: .25s;
+        border: 1px solid var(--slate-200);
+        border-radius: var(--radius-lg);
+        background: var(--white);
+        box-shadow: var(--shadow-sm);
+        transition: .3s ease;
     }
 
-        .home-card:hover {
-            border-color: #86efac;
-            box-shadow: 0 25px 55px rgba(16,185,129,.12);
-            transform: translateY(-7px);
+        .ff-card:hover {
+            border-color: var(--green-400);
+            box-shadow: 0 25px 60px rgba(16, 185, 129, .14);
+            transform: translateY(-8px);
         }
 
-    .home-card-icon {
-        width: 54px;
-        height: 54px;
+    .ff-section-green .ff-card {
+        border-color: rgba(255, 255, 255, .10);
+        background: rgba(255, 255, 255, .07);
+        backdrop-filter: blur(10px);
+    }
+
+    .ff-card-icon {
+        width: 55px;
+        height: 55px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 22px;
         border-radius: 16px;
-        color: var(--green);
-        background: var(--green-soft);
+        color: var(--green-600);
+        background: var(--green-50);
         font-size: 20px;
     }
 
-    .home-card h3 {
-        margin-bottom: 12px;
+    .ff-section-green .ff-card-icon {
+        color: var(--green-900);
+        background: var(--green-400);
+    }
+
+    .ff-card h3 {
+        margin: 0 0 12px;
+        color: var(--slate-900);
         font-size: 19px;
         font-weight: 800;
     }
 
-    .home-card p {
+    .ff-section-green .ff-card h3 {
+        color: var(--white);
+    }
+
+    .ff-card p {
         margin: 0;
-        color: #64748b;
+        color: var(--slate-500);
         font-size: 14px;
         line-height: 1.7;
     }
 
-    /* CONTATO */
-
-    .home-contact {
-        padding: 80px 0;
+    .ff-section-green .ff-card p {
+        color: #cbd5e1;
     }
 
-    .contact-box {
+    /* =========================================================
+           CONTATO
+           ========================================================= */
+
+    .ff-contact {
+        padding: 100px 0;
+        color: var(--white);
+        background: radial-gradient(circle at 15% 50%, rgba(52, 211, 153, .20), transparent 30%), linear-gradient(135deg, var(--green-950), var(--green-900));
+    }
+
+    .ff-contact-box {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 30px;
+        gap: 40px;
         padding: 60px;
-        border-radius: 30px;
-        color: white;
-        background: radial-gradient(circle at 90% 50%, rgba(52,211,153,.25), transparent 35%), linear-gradient(135deg, #022c22, #064e3b);
-        box-shadow: 0 30px 70px rgba(2,44,34,.15);
+        border: 1px solid rgba(255, 255, 255, .10);
+        border-radius: var(--radius-xl);
+        background: rgba(255, 255, 255, .05);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, .18);
+        backdrop-filter: blur(12px);
     }
 
-    .contact-label {
-        color: var(--green-light);
+    .ff-contact-label {
+        color: var(--green-400);
         font-size: 11px;
         font-weight: 900;
         letter-spacing: 1px;
     }
 
-    .contact-box h2 {
+    .ff-contact h2 {
         max-width: 650px;
         margin: 10px 0;
-        font-size: 38px;
+        font-size: clamp(30px, 4vw, 42px);
+        line-height: 1.05;
         font-weight: 900;
         letter-spacing: -1.5px;
     }
 
-    .contact-box p {
+    .ff-contact p {
         margin: 0;
         color: #cbd5e1;
     }
 
-    /* CHAT */
+    /* =========================================================
+           CHAT
+           ========================================================= */
 
-    .home-chat {
+    .ff-chat {
         position: fixed;
         right: 25px;
         bottom: 25px;
         z-index: 1000;
         width: 58px;
         height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: none;
         border-radius: 50%;
-        color: white;
-        background: var(--green);
+        color: var(--white);
+        background: var(--green-500);
         font-size: 21px;
-        box-shadow: 0 12px 35px rgba(16,185,129,.35);
+        box-shadow: 0 14px 35px rgba(16, 185, 129, .35);
         transition: .25s;
     }
 
-        .home-chat:hover {
-            background: var(--green-dark);
-            transform: translateY(-4px);
+        .ff-chat:hover {
+            color: var(--white);
+            background: var(--green-600);
+            transform: translateY(-4px) scale(1.03);
         }
 
-    /* RESPONSIVO */
+    /* =========================================================
+           RESPONSIVO
+           ========================================================= */
 
     @@media (max-width: 991px) {
 
-        .home-hero {
-            padding: 130px 0 90px;
+        .ff-hero {
+            padding: 110px 0 80px;
         }
 
-        .dashboard-container {
-            margin: 60px 0 0;
+        .ff-hero-content {
+            padding-right: 0;
         }
 
-        .dashboard {
+        .ff-dashboard-wrapper {
+            margin-top: 65px;
+        }
+
+        .ff-dashboard {
             transform: none;
         }
 
-        .benefits-box {
+        .ff-benefits-box {
             grid-template-columns: repeat(2, 1fr);
         }
 
-        .benefit:nth-child(2) {
+        .ff-benefit:nth-child(2) {
             border-right: none;
         }
 
-        .benefit:nth-child(-n+2) {
-            border-bottom: 1px solid var(--border);
+        .ff-benefit:nth-child(-n+2) {
+            border-bottom: 1px solid var(--slate-200);
             padding-bottom: 20px;
         }
 
-        .benefit:nth-child(n+3) {
+        .ff-benefit:nth-child(n+3) {
             padding-top: 20px;
         }
     }
 
     @@media (max-width: 767px) {
 
-        .home-hero {
+        .ff-hero {
             min-height: auto;
-            padding: 120px 0 70px;
+            padding: 100px 0 70px;
         }
 
-            .home-hero h1 {
-                letter-spacing: -2px;
-            }
+        .ff-container {
+            padding: 0 20px;
+        }
 
-        .hero-buttons {
+        .ff-hero h1 {
+            letter-spacing: -2px;
+        }
+
+        .ff-buttons {
             flex-direction: column;
         }
 
-        .btn-home-green,
-        .btn-home-outline {
+        .ff-btn {
             width: 100%;
         }
 
-        .dashboard-container {
+        .ff-dashboard-wrapper {
             display: none;
         }
 
-        .benefits {
+        .ff-benefits {
             margin-top: -20px;
         }
 
-        .benefits-box {
+        .ff-benefits-box {
             grid-template-columns: 1fr;
         }
 
-        .benefit {
+        .ff-benefit {
             border-right: none;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--slate-200);
             padding: 18px 10px !important;
         }
 
-            .benefit:last-child {
+            .ff-benefit:last-child {
                 border-bottom: none;
             }
 
-        .home-section {
+        .ff-section {
             padding: 75px 0;
         }
 
-        .contact-box {
-            flex-direction: column;
-            align-items: flex-start;
-            padding: 40px 30px;
+        .ff-heading {
+            margin-bottom: 40px;
         }
 
-            .contact-box h2 {
-                font-size: 30px;
-            }
+        .ff-card {
+            padding: 25px;
+        }
+
+        .ff-contact {
+            padding: 70px 0;
+        }
+
+        .ff-contact-box {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 40px 28px;
+        }
+
+        .ff-chat {
+            right: 18px;
+            bottom: 18px;
+        }
     }
 </style>
 
-<section class="home-hero" id="inicio">
+<!-- =========================================================
+     HERO
+     ========================================================= -->
 
-    ```
-    <div class="container">
+<section class="ff-hero" id="inicio">
+
+  
+    <div class="ff-container">
 
         <div class="row align-items-center">
 
-            <div class="col-lg-6 hero-content">
+            <div class="col-lg-6">
 
-                <div class="hero-badge">
-                    <i class="fa-solid fa-heart-pulse"></i>
-                    Plataforma completa para gestão de fisioterapia
-                </div>
+                <div class="ff-hero-content">
 
-                <div class="hero-small">
-                    Você cuida dos seus pacientes.
-                </div>
+                    <div class="ff-badge">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        Plataforma completa para gestão de fisioterapia
+                    </div>
 
-                <div class="hero-green">
-                    O Fisio Flow cuida da gestão.
-                </div>
+                    <div class="ff-hero-small">
+                        Você cuida dos seus pacientes.
+                    </div>
 
-                <div class="hero-line"></div>
+                    <div class="ff-hero-highlight">
+                        O Fisio Flow cuida da gestão.
+                    </div>
 
-                <h1>
-                    Sua clínica mais
-                    <span>organizada, digital e eficiente.</span>
-                </h1>
+                    <div class="ff-line"></div>
 
-                <p class="hero-description">
-                    Uma plataforma completa para clínicas e profissionais
-                    de fisioterapia gerenciarem pacientes, avaliações,
-                    tratamentos, agenda e informações clínicas em um
-                    único ambiente.
-                </p>
+                    <h1>
+                        Sua clínica mais
+                        <span>organizada, digital e eficiente.</span>
+                    </h1>
 
-                <div class="hero-buttons">
+                    <p class="ff-hero-description">
+                        Uma plataforma completa para clínicas e profissionais
+                        de fisioterapia gerenciarem pacientes, avaliações,
+                        tratamentos, agenda e informações clínicas em um
+                        único ambiente.
+                    </p>
 
-                    <a href="#recursos" class="btn-home-green">
-                        <i class="fa-solid fa-rocket"></i>
-                        Conhecer o Fisio Flow
-                    </a>
+                    <div class="ff-buttons">
 
-                    <a href="#contato" class="btn-home-outline">
-                        <i class="fa-solid fa-headset"></i>
-                        Falar com nossa equipe
-                    </a>
+                        <a href="#recursos" class="ff-btn ff-btn-green">
+                            <i class="fa-solid fa-rocket"></i>
+                            Conhecer o Fisio Flow
+                        </a>
+
+                        <a href="#contato" class="ff-btn ff-btn-outline">
+                            <i class="fa-solid fa-headset"></i>
+                            Falar com nossa equipe
+                        </a>
+
+                    </div>
 
                 </div>
 
             </div>
 
+
             <div class="col-lg-6">
 
-                <div class="dashboard-container">
+                <div class="ff-dashboard-wrapper">
 
-                    <div class="dashboard-glow"></div>
+                    <div class="ff-dashboard-glow"></div>
 
-                    <div class="dashboard">
+                    <div class="ff-dashboard">
 
-                        <div class="dashboard-header">
+                        <div class="ff-dashboard-header">
 
-                            <div class="dashboard-brand">
+                            <div class="ff-dashboard-brand">
                                 <i class="fa-solid fa-heart-pulse"></i>
                                 FISIO<span>FLOW</span>
                             </div>
 
-                            <div class="dashboard-header-links">
+                            <div class="ff-dashboard-links">
                                 <span>Pacientes</span>
                                 <span>Agenda</span>
                                 <span>Tratamentos</span>
@@ -878,13 +987,14 @@
 
                         </div>
 
-                        <div class="dashboard-body">
 
-                            <aside class="dashboard-sidebar">
+                        <div class="ff-dashboard-body">
 
-                                <div class="dashboard-user">
+                            <aside class="ff-sidebar">
 
-                                    <div class="dashboard-user-icon">
+                                <div class="ff-user">
+
+                                    <div class="ff-user-icon">
                                         <i class="fa-solid fa-user-doctor"></i>
                                     </div>
 
@@ -895,46 +1005,47 @@
 
                                 </div>
 
-                                <div class="sidebar-item active">
+                                <div class="ff-menu-item active">
                                     <i class="fa-solid fa-house"></i>
                                     Início
                                 </div>
 
-                                <div class="sidebar-item">
+                                <div class="ff-menu-item">
                                     <i class="fa-solid fa-users"></i>
                                     Pacientes
                                 </div>
 
-                                <div class="sidebar-item">
+                                <div class="ff-menu-item">
                                     <i class="fa-solid fa-calendar-days"></i>
                                     Agenda
                                 </div>
 
-                                <div class="sidebar-item">
+                                <div class="ff-menu-item">
                                     <i class="fa-solid fa-clipboard-list"></i>
                                     Avaliações
                                 </div>
 
-                                <div class="sidebar-item">
+                                <div class="ff-menu-item">
                                     <i class="fa-solid fa-person-walking"></i>
                                     Tratamentos
                                 </div>
 
-                                <div class="sidebar-item">
+                                <div class="ff-menu-item">
                                     <i class="fa-solid fa-file-medical"></i>
                                     Prontuários
                                 </div>
 
-                                <div class="sidebar-item">
+                                <div class="ff-menu-item">
                                     <i class="fa-solid fa-chart-line"></i>
                                     Relatórios
                                 </div>
 
                             </aside>
 
-                            <div class="dashboard-content">
 
-                                <div class="dashboard-title">
+                            <div class="ff-dashboard-content">
+
+                                <div class="ff-dashboard-title">
 
                                     <div>
                                         <small>Visão geral</small>
@@ -948,11 +1059,11 @@
 
                                 </div>
 
-                                <div class="dashboard-stats">
 
-                                    <div class="dashboard-stat">
+                                <div class="ff-stats">
 
-                                        <div class="dashboard-stat-icon">
+                                    <div class="ff-stat">
+                                        <div class="ff-stat-icon">
                                             <i class="fa-solid fa-users"></i>
                                         </div>
 
@@ -960,12 +1071,10 @@
                                             <small>Pacientes ativos</small>
                                             <strong>248</strong>
                                         </div>
-
                                     </div>
 
-                                    <div class="dashboard-stat">
-
-                                        <div class="dashboard-stat-icon">
+                                    <div class="ff-stat">
+                                        <div class="ff-stat-icon">
                                             <i class="fa-solid fa-calendar-check"></i>
                                         </div>
 
@@ -973,12 +1082,10 @@
                                             <small>Consultas hoje</small>
                                             <strong>32</strong>
                                         </div>
-
                                     </div>
 
-                                    <div class="dashboard-stat">
-
-                                        <div class="dashboard-stat-icon">
+                                    <div class="ff-stat">
+                                        <div class="ff-stat-icon">
                                             <i class="fa-solid fa-person-walking"></i>
                                         </div>
 
@@ -986,12 +1093,10 @@
                                             <small>Tratamentos</small>
                                             <strong>126</strong>
                                         </div>
-
                                     </div>
 
-                                    <div class="dashboard-stat">
-
-                                        <div class="dashboard-stat-icon">
+                                    <div class="ff-stat">
+                                        <div class="ff-stat-icon">
                                             <i class="fa-solid fa-file-medical"></i>
                                         </div>
 
@@ -999,70 +1104,55 @@
                                             <small>Avaliações</small>
                                             <strong>18</strong>
                                         </div>
-
                                     </div>
 
                                 </div>
 
-                                <div class="dashboard-grid">
 
-                                    <div class="dashboard-card">
+                                <div class="ff-dashboard-grid">
 
-                                        <div class="dashboard-card-title">
+                                    <div class="ff-dashboard-card">
 
-                                            <strong>
-                                                Evolução dos atendimentos
-                                            </strong>
-
-                                            <span>
-                                                Últimos 30 dias
-                                            </span>
-
+                                        <div class="ff-card-title">
+                                            <strong>Evolução dos atendimentos</strong>
+                                            <span>Últimos 30 dias</span>
                                         </div>
 
-                                        <div class="fake-chart">
-
-                                            <div class="fake-line"></div>
-                                            <div class="fake-line two"></div>
-                                            <div class="fake-line three"></div>
-
+                                        <div class="ff-chart">
+                                            <div class="ff-chart-line one"></div>
+                                            <div class="ff-chart-line two"></div>
+                                            <div class="ff-chart-line three"></div>
                                         </div>
 
                                     </div>
 
-                                    <div class="dashboard-card">
 
-                                        <div class="dashboard-card-title">
+                                    <div class="ff-dashboard-card">
 
-                                            <strong>
-                                                Agenda de hoje
-                                            </strong>
-
-                                            <span>
-                                                Ver agenda
-                                            </span>
-
+                                        <div class="ff-card-title">
+                                            <strong>Agenda de hoje</strong>
+                                            <span>Ver agenda</span>
                                         </div>
 
-                                        <div class="agenda-item">
+                                        <div class="ff-agenda">
                                             <span>09:00</span>
                                             <div></div>
                                             <b>ATENDIDO</b>
                                         </div>
 
-                                        <div class="agenda-item">
+                                        <div class="ff-agenda">
                                             <span>10:15</span>
                                             <div></div>
                                             <b>EM ATENDIMENTO</b>
                                         </div>
 
-                                        <div class="agenda-item">
+                                        <div class="ff-agenda">
                                             <span>11:30</span>
                                             <div></div>
                                             <b>AGENDADO</b>
                                         </div>
 
-                                        <div class="agenda-item">
+                                        <div class="ff-agenda">
                                             <span>14:00</span>
                                             <div></div>
                                             <b>AGENDADO</b>
@@ -1072,24 +1162,25 @@
 
                                 </div>
 
-                                <div class="dashboard-bottom">
 
-                                    <div class="dashboard-bottom-item">
+                                <div class="ff-bottom">
+
+                                    <div class="ff-bottom-item">
                                         <i class="fa-solid fa-users"></i>
                                         <span>Pacientes</span>
                                     </div>
 
-                                    <div class="dashboard-bottom-item">
+                                    <div class="ff-bottom-item">
                                         <i class="fa-solid fa-calendar-check"></i>
                                         <span>Agenda</span>
                                     </div>
 
-                                    <div class="dashboard-bottom-item">
+                                    <div class="ff-bottom-item">
                                         <i class="fa-solid fa-file-medical"></i>
                                         <span>Prontuários</span>
                                     </div>
 
-                                    <div class="dashboard-bottom-item">
+                                    <div class="ff-bottom-item">
                                         <i class="fa-solid fa-chart-line"></i>
                                         <span>Relatórios</span>
                                     </div>
@@ -1109,77 +1200,72 @@
         </div>
 
     </div>
-    ```
+
 
 </section>
 
-<section class="benefits" id="plataforma">
+<!-- =========================================================
+     BENEFÍCIOS
+     ========================================================= -->
 
-    ```
-    <div class="container">
+<section class="ff-benefits" id="plataforma">
 
-        <div class="benefits-box">
+ 
+    <div class="ff-container">
 
-            <div class="benefit">
+        <div class="ff-benefits-box">
 
-                <div class="benefit-icon">
+            <div class="ff-benefit">
+
+                <div class="ff-benefit-icon">
                     <i class="fa-solid fa-users"></i>
                 </div>
 
                 <div>
                     <strong>Gestão de pacientes</strong>
-
-                    <p>
-                        Tenha todas as informações dos pacientes organizadas.
-                    </p>
+                    <p>Todas as informações organizadas.</p>
                 </div>
 
             </div>
 
-            <div class="benefit">
 
-                <div class="benefit-icon">
+            <div class="ff-benefit">
+
+                <div class="ff-benefit-icon">
                     <i class="fa-solid fa-calendar-check"></i>
                 </div>
 
                 <div>
                     <strong>Agenda inteligente</strong>
-
-                    <p>
-                        Organize consultas e atendimentos com praticidade.
-                    </p>
+                    <p>Consultas e atendimentos organizados.</p>
                 </div>
 
             </div>
 
-            <div class="benefit">
 
-                <div class="benefit-icon">
+            <div class="ff-benefit">
+
+                <div class="ff-benefit-icon">
                     <i class="fa-solid fa-file-medical"></i>
                 </div>
 
                 <div>
                     <strong>Prontuário digital</strong>
-
-                    <p>
-                        Centralize avaliações e informações clínicas.
-                    </p>
+                    <p>Informações clínicas centralizadas.</p>
                 </div>
 
             </div>
 
-            <div class="benefit">
 
-                <div class="benefit-icon">
+            <div class="ff-benefit">
+
+                <div class="ff-benefit-icon">
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
 
                 <div>
                     <strong>Indicadores</strong>
-
-                    <p>
-                        Acompanhe o desempenho da sua clínica.
-                    </p>
+                    <p>Acompanhe o desempenho da clínica.</p>
                 </div>
 
             </div>
@@ -1187,18 +1273,22 @@
         </div>
 
     </div>
-    ```
+
 
 </section>
 
-<section class="home-section" id="portais">
+<!-- =========================================================
+     SEÇÃO BRANCA
+     ========================================================= -->
 
-    ```
-    <div class="container">
+<section class="ff-section ff-section-white" id="portais">
 
-        <div class="section-heading">
+  
+    <div class="ff-container">
 
-            <div class="section-label">
+        <div class="ff-heading">
+
+            <div class="ff-label">
                 GESTÃO INTEGRADA
             </div>
 
@@ -1214,19 +1304,18 @@
 
         </div>
 
+
         <div class="row g-4">
 
             <div class="col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-user-doctor"></i>
                     </div>
 
-                    <h3>
-                        Fisioterapeutas
-                    </h3>
+                    <h3>Fisioterapeutas</h3>
 
                     <p>
                         Gerencie atendimentos, avaliações, evolução
@@ -1238,17 +1327,16 @@
 
             </div>
 
+
             <div class="col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-hospital"></i>
                     </div>
 
-                    <h3>
-                        Gestão da clínica
-                    </h3>
+                    <h3>Gestão da clínica</h3>
 
                     <p>
                         Organize profissionais, pacientes, agenda,
@@ -1259,17 +1347,16 @@
 
             </div>
 
+
             <div class="col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-user"></i>
                     </div>
 
-                    <h3>
-                        Acompanhamento do paciente
-                    </h3>
+                    <h3>Acompanhamento do paciente</h3>
 
                     <p>
                         Tenha uma visão completa da jornada do paciente,
@@ -1283,18 +1370,21 @@
         </div>
 
     </div>
-    ```
+
 
 </section>
 
-<section class="home-section home-section-light" id="modulos">
+<!-- =========================================================
+     SEÇÃO VERDE
+     ========================================================= -->
 
-    ```
-    <div class="container">
+<section class="ff-section ff-section-green" id="modulos">
 
-        <div class="section-heading">
+    <div class="ff-container">
 
-            <div class="section-label">
+        <div class="ff-heading">
+
+            <div class="ff-label">
                 MÓDULOS
             </div>
 
@@ -1310,13 +1400,14 @@
 
         </div>
 
+
         <div class="row g-4">
 
             <div class="col-md-6 col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-users"></i>
                     </div>
 
@@ -1331,11 +1422,12 @@
 
             </div>
 
+
             <div class="col-md-6 col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-clipboard-list"></i>
                     </div>
 
@@ -1350,11 +1442,12 @@
 
             </div>
 
+
             <div class="col-md-6 col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-person-walking"></i>
                     </div>
 
@@ -1369,11 +1462,12 @@
 
             </div>
 
+
             <div class="col-md-6 col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-calendar-days"></i>
                     </div>
 
@@ -1388,11 +1482,12 @@
 
             </div>
 
+
             <div class="col-md-6 col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-file-medical"></i>
                     </div>
 
@@ -1407,11 +1502,12 @@
 
             </div>
 
+
             <div class="col-md-6 col-lg-4">
 
-                <div class="home-card">
+                <div class="ff-card">
 
-                    <div class="home-card-icon">
+                    <div class="ff-card-icon">
                         <i class="fa-solid fa-chart-pie"></i>
                     </div>
 
@@ -1429,18 +1525,21 @@
         </div>
 
     </div>
-    ```
+
 
 </section>
 
-<section class="home-section" id="recursos">
+<!-- =========================================================
+     SEÇÃO BRANCA
+     ========================================================= -->
 
-    ```
-    <div class="container">
+<section class="ff-section ff-section-white" id="recursos">
 
-        <div class="section-heading">
+    <div class="ff-container">
 
-            <div class="section-label">
+        <div class="ff-heading">
+
+            <div class="ff-label">
                 RECURSOS
             </div>
 
@@ -1456,13 +1555,14 @@
 
         </div>
 
+
         <div class="row g-4">
 
             <div class="col-md-6 col-lg-3">
 
-                <div class="home-card text-center">
+                <div class="ff-card text-center">
 
-                    <div class="home-card-icon mx-auto">
+                    <div class="ff-card-icon mx-auto">
                         <i class="fa-solid fa-cloud"></i>
                     </div>
 
@@ -1477,11 +1577,12 @@
 
             </div>
 
+
             <div class="col-md-6 col-lg-3">
 
-                <div class="home-card text-center">
+                <div class="ff-card text-center">
 
-                    <div class="home-card-icon mx-auto">
+                    <div class="ff-card-icon mx-auto">
                         <i class="fa-solid fa-chart-line"></i>
                     </div>
 
@@ -1496,11 +1597,12 @@
 
             </div>
 
+
             <div class="col-md-6 col-lg-3">
 
-                <div class="home-card text-center">
+                <div class="ff-card text-center">
 
-                    <div class="home-card-icon mx-auto">
+                    <div class="ff-card-icon mx-auto">
                         <i class="fa-solid fa-lock"></i>
                     </div>
 
@@ -1515,11 +1617,12 @@
 
             </div>
 
+
             <div class="col-md-6 col-lg-3">
 
-                <div class="home-card text-center">
+                <div class="ff-card text-center">
 
-                    <div class="home-card-icon mx-auto">
+                    <div class="ff-card-icon mx-auto">
                         <i class="fa-solid fa-arrows-rotate"></i>
                     </div>
 
@@ -1537,20 +1640,24 @@
         </div>
 
     </div>
-    ```
+
 
 </section>
 
-<section class="home-contact" id="contato">
+<!-- =========================================================
+     CONTATO VERDE
+     ========================================================= -->
 
-    ```
-    <div class="container">
+<section class="ff-contact" id="contato">
 
-        <div class="contact-box">
+
+    <div class="ff-container">
+
+        <div class="ff-contact-box">
 
             <div>
 
-                <div class="contact-label">
+                <div class="ff-contact-label">
                     FISIO FLOW
                 </div>
 
@@ -1565,7 +1672,8 @@
 
             </div>
 
-            <a href="#" class="btn-home-green">
+
+            <a href="#" class="ff-btn ff-btn-green">
 
                 <i class="fa-solid fa-comments"></i>
 
@@ -1576,14 +1684,17 @@
         </div>
 
     </div>
-    ```
+  
 
 </section>
 
-<button class="home-chat" type="button">
+<!-- =========================================================
+     BOTÃO CHAT
+     ========================================================= -->
 
-    ```
+<button class="ff-chat" type="button" aria-label="Abrir atendimento">
+
     <i class="fa-solid fa-comment"></i>
-    ```
+ 
 
 </button>
