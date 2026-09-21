@@ -1,0 +1,287 @@
+﻿@model FisioFlow_Web.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    .login-page {
+        min-height: calc(100vh - 120px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 15px;
+        background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #ecfdf5 100%);
+    }
+
+    .login-wrapper {
+        width: 100%;
+        max-width: 440px;
+    }
+
+    .login-card {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(16, 185, 129, 0.12);
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(15, 118, 110, 0.12);
+        overflow: hidden;
+    }
+
+    .login-header {
+        text-align: center;
+        padding: 40px 35px 25px;
+    }
+
+    .login-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        font-size: 30px;
+        box-shadow: 0 12px 25px rgba(16, 185, 129, 0.25);
+    }
+
+    .login-title {
+        color: #064e3b;
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+    }
+
+    .login-subtitle {
+        color: #64748b;
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+
+    .login-body {
+        padding: 10px 35px 40px;
+    }
+
+    .form-label {
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .input-group-custom {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #10b981;
+        z-index: 3;
+        font-size: 15px;
+    }
+
+    .form-control-custom {
+        height: 52px;
+        padding-left: 46px;
+        padding-right: 16px;
+        border: 1px solid #dbe4e8;
+        border-radius: 13px;
+        background-color: #f8fafc;
+        color: #1e293b;
+        font-size: 15px;
+        transition: all 0.25s ease;
+    }
+
+        .form-control-custom:focus {
+            background-color: #ffffff;
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.10);
+        }
+
+        .form-control-custom::placeholder {
+            color: #94a3b8;
+        }
+
+    .login-button {
+        height: 52px;
+        border: none;
+        border-radius: 13px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 600;
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.20);
+        transition: all 0.25s ease;
+    }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #059669, #047857);
+            box-shadow: 0 14px 25px rgba(16, 185, 129, 0.28);
+            color: #ffffff;
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+    .login-footer {
+        text-align: center;
+        margin-top: 25px;
+        color: #94a3b8;
+        font-size: 13px;
+    }
+
+        .login-footer i {
+            color: #10b981;
+            margin-right: 5px;
+        }
+
+    .validation-message {
+        font-size: 13px;
+        margin-top: 6px;
+    }
+
+    .validation-summary {
+        border-radius: 12px;
+        padding: 12px 15px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        font-size: 13px;
+    }
+
+    @@media (max-width: 576px) {
+        .login-page {
+            padding: 25px 15px;
+        }
+
+        .login-header {
+            padding: 30px 25px 20px;
+        }
+
+        .login-body {
+            padding: 10px 25px 30px;
+        }
+
+        .login-title {
+            font-size: 26px;
+        }
+    }
+</style>
+
+<div class="login-page">
+
+    <div class="login-wrapper">
+
+        <div class="login-card">
+
+            <div class="login-header">
+
+                <div class="login-icon">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+
+                <h1 class="login-title">
+                    FisioFlow
+                </h1>
+
+                <p class="login-subtitle">
+                    Acesse sua conta para continuar
+                </p>
+
+            </div>
+
+            <div class="login-body">
+
+                <form asp-action="Login" method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger validation-summary mb-4">
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label asp-for="Username" class="form-label">
+                            Usuário
+                        </label>
+
+                        <div class="input-group-custom">
+
+                            <i class="fa-solid fa-user input-icon"></i>
+
+                            <input asp-for="Username"
+                                   class="form-control form-control-custom"
+                                   placeholder="Digite seu usuário"
+                                   autocomplete="username" />
+
+                        </div>
+
+                        <span asp-validation-for="Username"
+                              class="text-danger validation-message">
+                        </span>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label asp-for="Password" class="form-label">
+                            Senha
+                        </label>
+
+                        <div class="input-group-custom">
+
+                            <i class="fa-solid fa-lock input-icon"></i>
+
+                            <input asp-for="Password"
+                                   class="form-control form-control-custom"
+                                   placeholder="Digite sua senha"
+                                   autocomplete="current-password" />
+
+                        </div>
+
+                        <span asp-validation-for="Password"
+                              class="text-danger validation-message">
+                        </span>
+
+                    </div>
+
+                    <button type="submit"
+                            class="btn login-button w-100">
+
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>
+
+                        Entrar
+
+                    </button>
+
+                </form>
+
+                <div class="login-footer">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Acesso seguro ao sistema FisioFlow
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+  
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" /> 
+
+}
