@@ -1,234 +1,593 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
 
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
     <title>@ViewData["Title"] - FisioFlow</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
 
     <style>
 
-            body {
-                background: #f4f8f5;
-                font-family: 'Segoe UI', sans-serif;
-                color: #1f2937;
-            }
 
-            /* NAVBAR */
+        :root {
 
-            .navbar {
-                background: linear-gradient(135deg, #087443, #0b8f55) !important;
-                padding: 14px 0;
-                box-shadow: 0 5px 20px rgba(0, 80, 45, 0.18);
-            }
+            --ff-primary:#10b981;
+            --ff-primary-dark:#047857;
+            --ff-green-dark:#064e3b;
+            --ff-bg:#f1f5f9;
 
-            .navbar-brand {
-                color: #ffffff !important;
-                font-size: 26px;
-                font-weight: 700;
-                letter-spacing: -0.5px;
-                transition: .3s;
-            }
+        }
 
-                .navbar-brand:hover {
-                    transform: translateY(-1px);
-                }
 
-            .nav-link {
-                color: rgba(255, 255, 255, 0.9) !important;
-                font-weight: 500;
-                margin-left: 12px;
-                padding: 9px 16px !important;
-                border-radius: 10px;
-                transition: .3s;
-            }
 
-                .nav-link:hover {
-                    color: #ffffff !important;
-                    background: rgba(255, 255, 255, 0.12);
-                }
+        * {
 
-                .nav-link.active {
-                    color: #ffffff !important;
-                    background: rgba(255, 255, 255, 0.15);
-                }
+            box-sizing:border-box;
 
-            /* BOTÃO ADMINISTRATIVO */
+        }
 
-            .btn-login {
-                background: #ffffff;
-                color: #087443 !important;
-                border: none;
-                border-radius: 12px;
-                padding: 10px 20px;
-                font-weight: 600;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-                transition: .3s;
-            }
 
-                .btn-login:hover {
-                    background: #ecfdf5;
-                    color: #065f38 !important;
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
-                }
 
-            /* MENU MOBILE */
+        body {
 
-            .navbar-toggler {
-                border: 1px solid rgba(255, 255, 255, 0.35);
-                border-radius: 10px;
-                padding: 7px 10px;
-            }
+            min-height:100vh;
 
-                .navbar-toggler:focus {
-                    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
-                }
+            display:flex;
 
-            .navbar-toggler-icon {
-                filter: brightness(0) invert(1);
-            }
+            flex-direction:column;
 
-            /* CONTEÚDO */
+            background:var(--ff-bg);
 
-            main {
-                background: #ffffff;
-                border-radius: 20px;
-                padding: 40px;
-                margin-top: 30px;
-                min-height: 70vh;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            }
+            font-family:
+            "Segoe UI",
+            Inter,
+            sans-serif;
 
-            /* FOOTER */
+            color:#1e293b;
 
-            footer {
-                background: #ffffff;
-                border-top: 1px solid #dcefe4;
-                margin-top: 30px;
-                padding: 20px;
-                color: #64748b;
-            }
+        }
 
-                footer strong {
-                    color: #087443;
-                }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+
+        .navbar-custom {
+
+
+            background:
+            linear-gradient(
+                135deg,
+                #022c22,
+                #047857
+            ) !important;
+
+
+            padding:15px 0;
+
+
+            box-shadow:
+            0 8px 25px rgba(0,0,0,.15);
+
+
+        }
+
+
+
+        .navbar-brand {
+
+
+            color:white !important;
+
+
+            font-size:26px;
+
+
+            font-weight:800;
+
+
+            letter-spacing:-.5px;
+
+
+            display:flex;
+
+
+            align-items:center;
+
+
+            gap:10px;
+
+
+        }
+
+
+
+        .navbar-brand-icon {
+
+
+            width:42px;
+
+            height:42px;
+
+
+            display:flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+
+            border-radius:12px;
+
+
+            background:
+            linear-gradient(
+                135deg,
+                #10b981,
+                #34d399
+            );
+
+
+            color:white;
+
+
+        }
+
+
+
+        .nav-link {
+
+
+            color:
+            rgba(255,255,255,.85)
+            !important;
+
+
+            font-weight:600;
+
+
+            padding:
+            10px 18px !important;
+
+
+            border-radius:12px;
+
+
+            transition:.3s;
+
+
+        }
+
+
+
+
+        .nav-link:hover {
+
+
+            background:
+            rgba(255,255,255,.12);
+
+
+            color:white !important;
+
+
+        }
+
+
+
+
+        /* BOTÃO ADMIN */
+
+
+        .btn-admin {
+
+
+            background:white;
+
+
+            color:#047857 !important;
+
+
+            border-radius:14px;
+
+
+            padding:
+            11px 22px;
+
+
+            font-weight:700;
+
+
+            border:none;
+
+
+            box-shadow:
+            0 8px 20px rgba(0,0,0,.15);
+
+
+            transition:.3s;
+
+
+        }
+
+
+
+        .btn-admin:hover {
+
+
+            background:#ecfdf5;
+
+
+            transform:
+            translateY(-2px);
+
+
+            color:#064e3b !important;
+
+
+        }
+
+
+
+
+
+
+
+        /* =========================
+           CONTEÚDO
+        ========================= */
+
+
+        .page-container {
+
+
+            flex:1;
+
+
+            padding:
+            35px 0;
+
+
+        }
+
+
+
+
+        main {
+
+
+            background:white;
+
+
+            border-radius:22px;
+
+
+            padding:40px;
+
+
+            min-height:400px;
+
+
+            box-shadow:
+
+            0 10px 30px
+            rgba(15,23,42,.06);
+
+
+        }
+
+
+
+
+
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+
+
+        footer {
+
+
+            background:white;
+
+
+            border-top:
+
+            1px solid #e2e8f0;
+
+
+            padding:25px 0;
+
+
+            color:#64748b;
+
+
+        }
+
+
+
+        footer strong {
+
+
+            color:#047857;
+
+
+            font-weight:800;
+
+
+        }
+
+
+
+
+
+
+
+        /* MOBILE */
+
+
+        .navbar-toggler {
+
+
+            border:
+            1px solid rgba(255,255,255,.4);
+
+
+        }
+
+
+
+        .navbar-toggler-icon {
+
+
+            filter:
+            brightness(0) invert(1);
+
+
+        }
+
+
 
     </style>
 
+
 </head>
+
+
+
+
 
 <body>
 
-    <header>
 
-        <nav class="navbar navbar-expand-sm">
 
-            <div class="container">
+<header>
 
-                <a class="navbar-brand"
-                   asp-controller="Home"
-                   asp-action="Index">
 
-                    🌿 FisioFlow
+<nav class="navbar navbar-expand-lg navbar-custom">
 
-                </a>
 
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Alternar navegação">
+<div class="container">
 
-                    <span class="navbar-toggler-icon"></span>
 
-                </button>
 
-                <div class="navbar-collapse collapse justify-content-end">
+<a class="navbar-brand"
+   asp-controller="Home"
+   asp-action="Index">
 
-                    <ul class="navbar-nav align-items-center">
 
-                        <li class="nav-item">
+    <span class="navbar-brand-icon">
 
-                            <a class="nav-link"
-                               asp-controller="Home"
-                               asp-action="Index">
+        <i class="fa-solid fa-heart-pulse"></i>
 
-                                Início
+    </span>
 
-                            </a>
 
-                        </li>
+    FisioFlow
 
-                        <li class="nav-item">
 
-                            <a class="nav-link"
-                               asp-controller="Home"
-                               asp-action="Sobre">
+</a>
 
-                                Sobre
 
-                            </a>
 
-                        </li>
 
-                        <li class="nav-item ms-3">
 
-                            <a class="btn btn-login"
-                               asp-controller="Auth"
-                               asp-action="Login">
+<button class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#menu">
 
-                                Área Administrativa
 
-                            </a>
+<span class="navbar-toggler-icon"></span>
 
-                        </li>
 
-                    </ul>
+</button>
 
-                </div>
 
-            </div>
 
-        </nav>
 
-    </header>
 
-    <main role="main">
-        @RenderBody()
-    </main>
 
-    <footer>
 
-        <div class="container text-center">
+<div class="collapse navbar-collapse"
+     id="menu">
 
-            © 2026 <strong>FisioFlow</strong>
 
-            <br>
+<ul class="navbar-nav ms-auto align-items-center">
 
-            Sistema inteligente para gestão de clínicas de fisioterapia.
 
-        </div>
 
-    </footer>
+<li class="nav-item">
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<a class="nav-link"
+   asp-controller="Home"
+   asp-action="Index">
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<i class="fa-solid fa-house me-1"></i>
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
+Início
 
-    @await RenderSectionAsync("Scripts", required: false)
+</a>
+
+</li>
+
+
+
+
+
+<li class="nav-item ms-lg-3">
+
+
+<a class="btn-admin"
+   asp-controller="Auth"
+   asp-action="Login">
+
+
+<i class="fa-solid fa-lock me-2"></i>
+
+Área Administrativa
+
+
+</a>
+
+
+</li>
+
+
+
+</ul>
+
+
+
+</div>
+
+
+</div>
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+
+<div class="page-container">
+
+
+
+
+
+<main role="main">
+
+
+@RenderBody()
+
+
+</main>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<footer>
+
+
+<div class="container text-center">
+
+
+<div>
+
+
+<strong>
+
+FisioFlow
+
+</strong>
+
+
+© @DateTime.Now.Year
+
+
+</div>
+
+
+
+<div class="small mt-1">
+
+
+Sistema inteligente para gestão de clínicas de fisioterapia.
+
+
+</div>
+
+
+
+</div>
+
+
+</footer>
+
+
+
+
+
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script src="~/js/site.js"
+        asp-append-version="true"></script>
+
+
+@await RenderSectionAsync("Scripts",
+required:false)
+
 
 </body>
+
 
 </html>

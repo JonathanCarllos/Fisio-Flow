@@ -92,9 +92,26 @@ namespace FisioFlow_Web.Areas.Admin.Services
                 return null;
 
 
-            var stream = await response.Content.ReadAsStreamAsync();
+            // Caso a API retorne 204 No Content
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return patientVM;
+            }
 
-            return await JsonSerializer.DeserializeAsync<PatientViewModel>(stream, _options);
+
+            var content = await response.Content.ReadAsStringAsync();
+
+
+            if (string.IsNullOrWhiteSpace(content))
+            {
+                return patientVM;
+            }
+
+
+            return JsonSerializer.Deserialize<PatientViewModel>(
+                content,
+                _options
+            );
         }
 
 

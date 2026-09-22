@@ -1,0 +1,547 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.PatientViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Paciente";
+}
+
+
+<div class="container-fluid px-4">
+
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+
+
+        <div>
+
+            <h2 class="fw-bold">
+
+                <i class="fa-solid fa-user text-primary"></i>
+
+                Detalhes do Paciente
+
+            </h2>
+
+
+            <p class="text-muted mb-0">
+
+                Visualização completa das informações cadastradas.
+
+            </p>
+
+
+        </div>
+
+
+
+
+        <div>
+
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary me-2">
+
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Voltar
+
+
+            </a>
+
+
+
+            <a asp-action="Update"
+               asp-route-id="@Model.PatientId"
+               class="btn btn-primary">
+
+
+                <i class="fa-solid fa-pen"></i>
+
+                Editar
+
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+    <!-- PERFIL -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+
+        <div class="card-body p-4">
+
+
+            <div class="row align-items-center">
+
+
+                <div class="col-md-2 text-center">
+
+
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-4 d-inline-flex">
+
+
+                        <i class="fa-solid fa-user text-primary fa-3x"></i>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-10">
+
+
+                    <h3 class="fw-bold mb-1">
+
+                        @Model.Name
+
+                    </h3>
+
+
+
+                    <span class="badge @(Model.Status ? "bg-success" : "bg-secondary")">
+
+
+                        @(Model.Status ? "Paciente Ativo" : "Paciente Inativo")
+
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+    <!-- DADOS PESSOAIS -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+
+        <div class="card-header bg-primary text-white">
+
+
+            <h5 class="mb-0">
+
+
+                <i class="fa-solid fa-id-card"></i>
+
+
+                Dados pessoais
+
+
+            </h5>
+
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            <div class="row">
+
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+
+                        CPF
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.CPF
+
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+
+                        RG
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.RG
+
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div class="col-md-4 mb-3">
+
+                    <label class="text-muted small">
+
+                        Data de nascimento
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.BirthDate.ToString("dd/MM/yyyy")
+
+                    </div>
+
+                </div>
+
+
+
+
+
+
+                <div class="col-md-6 mb-3">
+
+
+                    <label class="text-muted small">
+
+                        E-mail
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.Email
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-6 mb-3">
+
+
+                    <label class="text-muted small">
+
+                        Telefone
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.Phone
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+    <!-- ENDEREÇO -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+
+        <div class="card-header bg-success text-white">
+
+
+            <h5 class="mb-0">
+
+
+                <i class="fa-solid fa-location-dot"></i>
+
+
+                Endereço
+
+
+            </h5>
+
+
+        </div>
+
+
+
+
+        <div class="card-body">
+
+
+            <div class="row">
+
+
+
+                <div class="col-md-3 mb-3">
+
+                    <label class="text-muted small">
+
+                        CEP
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.PostalCode
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-9 mb-3">
+
+                    <label class="text-muted small">
+
+                        Endereço
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.Address
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-4">
+
+
+                    <label class="text-muted small">
+
+                        Bairro
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.Neighborhood
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-4">
+
+
+                    <label class="text-muted small">
+
+                        Cidade
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.City
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-2">
+
+
+                    <label class="text-muted small">
+
+                        Estado
+
+                    </label>
+
+
+                    <div class="fw-semibold">
+
+                        @Model.State
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- INFORMAÇÕES MÉDICAS -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+
+        <div class="card-header bg-warning">
+
+
+            <h5 class="mb-0">
+
+
+                <i class="fa-solid fa-notes-medical"></i>
+
+
+                Informações médicas
+
+
+            </h5>
+
+
+        </div>
+
+
+
+
+        <div class="card-body">
+
+
+            <h6 class="text-muted">
+
+                Convênio médico
+
+            </h6>
+
+
+            <p>
+
+                @(string.IsNullOrEmpty(Model.Insurance)
+                    ? "Não informado"
+                    : Model.Insurance)
+
+            </p>
+
+
+
+
+
+            <h6 class="text-muted">
+
+                Histórico médico
+
+            </h6>
+
+
+            <p>
+
+                @(string.IsNullOrEmpty(Model.MedicalHistory)
+                    ? "Não informado"
+                    : Model.MedicalHistory)
+
+            </p>
+
+
+
+
+
+            <h6 class="text-muted">
+
+                Observações
+
+            </h6>
+
+
+            <p>
+
+                @(string.IsNullOrEmpty(Model.Notes)
+                    ? "Sem observações"
+                    : Model.Notes)
+
+            </p>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+</div>

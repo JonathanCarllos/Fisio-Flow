@@ -1,90 +1,110 @@
 using FisioFlow_Web.Extensions;
 using FisioFlow_Web.Handlers;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ======================================
+// Localização (pt-BR)
+// ======================================
+var supportedCultures = new[]
+{
+    new CultureInfo("pt-BR")
+};
 
-builder.Services.AddControllersWithViews();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("pt-BR");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
+// ======================================
+// MVC
+// ======================================
+builder.Services.AddControllersWithViews()
+    .AddMvcOptions(options =>
+    {
+        // Faz o ASP.NET utilizar as mensagens do [Required]
+        options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+    });
 
-// Permite acessar HttpContext dentro do Handler
+// ======================================
+// HttpContext
+// ======================================
 builder.Services.AddHttpContextAccessor();
 
-
-// Handler que envia o JWT para a API
-builder.Services.AddTransient<AuthTokenHandler>();
-
-
-// Session para guardar o JWT
+// ======================================
+// Session
+// ======================================
 builder.Services.AddSession();
 
+// ======================================
+// Handler JWT
+// ======================================
+builder.Services.AddTransient<AuthTokenHandler>();
 
-// HttpClient da API
+// ======================================
+// HttpClient
+// ======================================
 builder.Services.AddHttpClient("FisioFlowAPI", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7161/");
 })
 .AddHttpMessageHandler<AuthTokenHandler>();
 
-
-
-// Authentication
+// ======================================
+// Autenticação
+// ======================================
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Auth/Login";
         options.AccessDeniedPath = "/Auth/AcessoNegado";
-
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
         options.SlidingExpiration = true;
     });
 
-
 builder.Services.AddAuthorization();
 
-
-// Dependency Injection
+// ======================================
+// Injeção de Dependência
+// ======================================
 builder.Services.AddRepositories();
-
-
 
 var app = builder.Build();
 
-
+// ======================================
+// Pipeline
+// ======================================
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
+
+// Aplica a cultura pt-BR
+app.UseRequestLocalization();
 
 app.UseRouting();
 
-
-// Session precisa vir antes dos Controllers
 app.UseSession();
 
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
-
 
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 
 app.Run();

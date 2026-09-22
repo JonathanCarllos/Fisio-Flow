@@ -62,5 +62,82 @@ namespace FisioFlow_Web.Areas.Admin.Controllers
 
             return View(patientVM);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var result = await _patientService.GetPatientByIdAsync(id);
+
+            if (result is null)
+                return View("Error");
+
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(PatientViewModel patientVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _patientService.UpdatePatientAsync(patientVM);
+
+                if (result is not null)
+                    return RedirectToAction(nameof(Index));
+            }
+
+            return View(patientVM);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+
+            var patient = await _patientService.GetPatientByIdAsync(id);
+
+
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+
+
+            return View(patient);
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PatientViewModel>> Delete(int id)
+        {
+            var result = await _patientService.GetPatientByIdAsync(id);
+
+            if (result is null)
+                return View("Error");
+
+            return View(result);
+        }
+
+        [HttpPost(), ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int patientId)
+        {
+
+            var result = await _patientService.DeletePatientAsync(patientId);
+
+
+            if (result)
+            {
+                TempData["Success"] = "Paciente excluído com sucesso.";
+            }
+            else
+            {
+                TempData["Error"] = "Erro ao excluir paciente.";
+            }
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

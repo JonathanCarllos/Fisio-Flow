@@ -1,0 +1,417 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.PatientViewModel
+
+@{
+    ViewData["Title"] = "Excluir Paciente";
+}
+
+
+<div class="container-fluid px-4">
+
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+
+
+        <div>
+
+            <h2 class="fw-bold text-danger">
+
+                <i class="fa-solid fa-user-xmark"></i>
+
+                Excluir Paciente
+
+            </h2>
+
+
+            <p class="text-muted mb-0">
+
+                Remoção de cadastro do paciente.
+
+            </p>
+
+
+        </div>
+
+
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Voltar
+
+
+        </a>
+
+
+    </div>
+
+
+
+
+
+    <!-- CARD -->
+
+    <div class="card shadow-sm border-0">
+
+
+        <div class="card-header bg-danger text-white">
+
+
+            <h5 class="mb-0">
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                Confirmação de exclusão
+
+            </h5>
+
+
+        </div>
+
+
+
+
+        <div class="card-body p-4">
+
+
+
+            <div class="row align-items-center">
+
+
+                <div class="col-md-2 text-center">
+
+
+                    <div class="rounded-circle bg-danger bg-opacity-10 p-4 d-inline-flex">
+
+
+                        <i class="fa-solid fa-user text-danger fa-3x"></i>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="col-md-10">
+
+
+                    <h4 class="fw-bold mb-2">
+
+                        @Model.Name
+
+                    </h4>
+
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-4">
+
+
+                            <small class="text-muted">
+
+                                CPF
+
+                            </small>
+
+
+                            <p class="fw-semibold">
+
+                                @Model.CPF
+
+                            </p>
+
+
+                        </div>
+
+
+
+
+                        <div class="col-md-4">
+
+
+                            <small class="text-muted">
+
+                                E-mail
+
+                            </small>
+
+
+                            <p class="fw-semibold">
+
+                                @Model.Email
+
+                            </p>
+
+
+                        </div>
+
+
+
+
+                        <div class="col-md-4">
+
+
+                            <small class="text-muted">
+
+                                Telefone
+
+                            </small>
+
+
+                            <p class="fw-semibold">
+
+                                @Model.Phone
+
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <hr />
+
+
+
+            <div class="alert alert-warning d-flex align-items-center">
+
+
+                <i class="fa-solid fa-circle-exclamation me-3 fs-4"></i>
+
+
+                <div>
+
+
+                    <strong>Atenção!</strong>
+
+
+                    <br />
+
+                    Essa ação irá remover o paciente do sistema.
+
+                    Essa operação não poderá ser desfeita.
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <div class="text-end mt-4">
+
+
+                <a asp-action="Index"
+                   class="btn btn-secondary me-2">
+
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                    Cancelar
+
+
+                </a>
+
+
+
+
+
+                <!-- BOTÃO QUE ABRE MODAL -->
+
+                <button type="button"
+                        class="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalExcluir">
+
+
+                    <i class="fa-solid fa-trash"></i>
+
+                    Excluir Paciente
+
+
+                </button>
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+<!-- MODAL CONFIRMAÇÃO -->
+
+<div class="modal fade"
+     id="modalExcluir"
+     tabindex="-1">
+
+
+    <div class="modal-dialog modal-dialog-centered">
+
+
+        <div class="modal-content border-0 shadow">
+
+
+            <div class="modal-header bg-danger text-white">
+
+
+                <h5 class="modal-title">
+
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    Confirmar exclusão
+
+
+                </h5>
+
+
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
+
+            </div>
+
+
+
+
+
+            <div class="modal-body text-center p-4">
+
+
+                <i class="fa-solid fa-user-xmark text-danger fa-4x mb-3"></i>
+
+
+
+                <h5>
+
+                    Deseja realmente excluir?
+
+                </h5>
+
+
+
+                <p class="text-muted">
+
+
+                    O paciente:
+
+
+                    <br />
+
+
+                    <strong class="text-dark">
+
+                        @Model.Name
+
+                    </strong>
+
+
+                    <br />
+
+
+                    será removido permanentemente.
+
+
+                </p>
+
+
+            </div>
+
+
+
+
+
+            <div class="modal-footer">
+
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+
+                    Cancelar
+
+
+                </button>
+
+
+
+
+
+                <form asp-action="Delete"
+                      method="post">
+
+
+                    @Html.AntiForgeryToken()
+
+
+
+                    <input type="hidden"
+                           asp-for="PatientId" />
+
+
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+
+                        <i class="fa-solid fa-trash"></i>
+
+                        Sim, excluir
+
+
+                    </button>
+
+
+                </form>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
