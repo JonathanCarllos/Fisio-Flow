@@ -13,5 +13,6 @@ namespace FisioFlow_API.Repositories.Contracts
         Task<Patient> UpdatePatientAsync(Patient patient);
 
         Task<Patient> DeletePatientAsync(int id);
+
     }
 }

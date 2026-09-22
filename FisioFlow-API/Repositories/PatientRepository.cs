@@ -13,7 +13,7 @@ namespace FisioFlow_API.Repositories
         {
             _context = context;
         }
-
+     
         public async Task<IEnumerable<Patient>> GetAllPatientsAsync()
         {
             return await _context.Patients

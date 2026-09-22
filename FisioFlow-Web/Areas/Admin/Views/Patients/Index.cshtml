@@ -1,0 +1,530 @@
+﻿@model IEnumerable<FisioFlow_Web.Areas.Admin.Models.PatientViewModel>
+
+@{
+    ViewData["Title"] = "Pacientes";
+    var total = Model.Count();
+}
+
+
+<div class="container-fluid px-4">
+
+
+    <!-- Cabeçalho -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                <i class="fa-solid fa-users text-primary"></i>
+
+                Pacientes
+
+            </h2>
+
+
+            <p class="text-muted mb-0">
+
+                Gerencie os pacientes cadastrados no sistema.
+
+            </p>
+
+
+        </div>
+
+
+
+        <a asp-action="Create"
+           class="btn btn-primary btn-lg shadow-sm">
+
+
+            <i class="fa-solid fa-user-plus me-2"></i>
+
+            Novo Paciente
+
+
+        </a>
+
+
+    </div>
+
+
+
+
+
+    <!-- Estatística -->
+
+
+    <div class="row mb-4">
+
+
+        <div class="col-xl-3 col-md-6">
+
+
+            <div class="card border-0 shadow-sm">
+
+
+                <div class="card-body d-flex align-items-center">
+
+
+                    <div class="rounded-circle bg-primary bg-opacity-10 
+                                text-primary d-flex justify-content-center 
+                                align-items-center"
+                         style="width:60px;height:60px">
+
+
+                        <i class="fa-solid fa-user-group fa-xl"></i>
+
+
+                    </div>
+
+
+
+                    <div class="ms-3">
+
+
+                        <span class="text-muted">
+
+                            Total pacientes
+
+                        </span>
+
+
+
+                        <h3 class="fw-bold mb-0">
+
+                            @total
+
+                        </h3>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <!-- Lista de Pacientes -->
+
+
+    <div class="card border-0 shadow-sm">
+
+
+
+        <div class="card-header bg-white border-0 py-3">
+
+
+            <h5 class="mb-0 fw-bold">
+
+
+                <i class="fa-solid fa-list text-primary me-2"></i>
+
+
+                Lista de Pacientes
+
+
+            </h5>
+
+
+        </div>
+
+
+
+
+
+        <div class="card-body">
+
+
+
+            @if (!Model.Any())
+            {
+
+
+                <div class="alert alert-info">
+
+
+                    <i class="fa-solid fa-circle-info me-2"></i>
+
+
+                    Nenhum paciente cadastrado.
+
+
+                </div>
+
+
+            }
+            else
+            {
+
+
+
+                <div class="table-responsive">
+
+
+                    <table class="table align-middle table-hover">
+
+
+
+                        <thead>
+
+
+                            <tr>
+
+
+                                <th>
+                                    Código
+                                </th>
+
+
+                                <th>
+                                    Paciente
+                                </th>
+
+
+                                <th>
+                                    CPF
+                                </th>
+
+
+                                <th>
+                                    Email
+                                </th>
+
+
+                                <th>
+                                    Nascimento
+                                </th>
+
+
+                                <th>
+                                    Status
+                                </th>
+
+
+                                <th class="text-center">
+                                    Ações
+                                </th>
+
+
+                            </tr>
+
+
+                        </thead>
+
+
+
+
+
+                        <tbody>
+
+
+
+                            @foreach(var patient in Model)
+                            {
+
+
+
+                                var initials = string.IsNullOrEmpty(patient.Name)
+                                    ? "?"
+                                    : patient.Name.Substring(0,1).ToUpper();
+
+
+
+
+                                <tr>
+
+
+                                    <!-- Código -->
+
+
+                                    <td>
+
+
+                                        <span class="badge bg-light text-dark">
+
+
+                                            #@patient.PatientId
+
+
+                                        </span>
+
+
+                                    </td>
+
+
+
+
+
+
+                                    <!-- Paciente -->
+
+
+                                    <td>
+
+
+                                        <div class="d-flex align-items-center">
+
+
+
+                                            <div class="rounded-circle 
+                                                        bg-primary 
+                                                        text-white 
+                                                        fw-bold
+                                                        d-flex 
+                                                        justify-content-center 
+                                                        align-items-center"
+                                                 style="width:42px;height:42px">
+
+
+                                                @initials
+
+
+                                            </div>
+
+
+
+
+                                            <div class="ms-3">
+
+
+                                                <strong>
+
+                                                    @patient.Name
+
+                                                </strong>
+
+
+
+                                                <br />
+
+
+                                                <small class="text-muted">
+
+                                                    Paciente
+
+                                                </small>
+
+
+                                            </div>
+
+
+
+                                        </div>
+
+
+
+                                    </td>
+
+
+
+
+
+
+                                    <!-- CPF -->
+
+
+                                    <td>
+
+
+                                        <i class="fa-solid fa-id-card text-muted me-1"></i>
+
+
+                                        @patient.CPF
+
+
+                                    </td>
+
+
+
+
+
+
+                                    <!-- Email -->
+
+
+                                    <td>
+
+
+                                        <i class="fa-solid fa-envelope text-muted me-1"></i>
+
+
+                                        @patient.Email
+
+
+                                    </td>
+
+
+
+
+
+
+                                    <!-- Nascimento -->
+
+
+                                    <td>
+
+
+                                        <i class="fa-solid fa-calendar text-muted me-1"></i>
+
+
+                                        @patient.BirthDate.ToString("dd/MM/yyyy")
+
+
+                                    </td>
+
+
+
+
+
+
+                                    <!-- Status -->
+
+
+                                    <td>
+
+
+                                        @if(patient.Status)
+                                        {
+
+
+                                            <span class="badge bg-success">
+
+                                                <i class="fa-solid fa-circle-check me-1"></i>
+
+                                                Ativo
+
+                                            </span>
+
+
+                                        }
+                                        else
+                                        {
+
+
+                                            <span class="badge bg-danger">
+
+                                                <i class="fa-solid fa-circle-xmark me-1"></i>
+
+                                                Inativo
+
+                                            </span>
+
+
+                                        }
+
+
+                                    </td>
+
+
+
+
+
+
+
+                                    <!-- Ações -->
+
+
+                                    <td class="text-center">
+
+
+                                        <div class="btn-group">
+
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@patient.PatientId"
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="Detalhes">
+
+
+                                                <i class="fa-solid fa-eye"></i>
+
+
+                                            </a>
+
+
+
+
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@patient.PatientId"
+                                               class="btn btn-sm btn-outline-warning"
+                                               title="Editar">
+
+
+                                                <i class="fa-solid fa-pen"></i>
+
+
+                                            </a>
+
+
+
+
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@patient.PatientId"
+                                               class="btn btn-sm btn-outline-danger"
+                                               title="Excluir">
+
+
+                                                <i class="fa-solid fa-trash"></i>
+
+
+                                            </a>
+
+
+                                        </div>
+
+
+                                    </td>
+
+
+
+
+                                </tr>
+
+
+                            }
+
+
+
+
+                        </tbody>
+
+
+
+                    </table>
+
+
+                </div>
+
+
+            }
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>

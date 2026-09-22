@@ -6,217 +6,245 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace FisioFlow_Web.Controllers;
-
-public class AuthController : Controller
+namespace FisioFlow_Web.Controllers
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    private const string ApiEndpoint = "api/Auth/";
-
-    public AuthController(IHttpClientFactory httpClientFactory)
+    public class AuthController : Controller
     {
-        _httpClientFactory = httpClientFactory;
-    }
+        private readonly IHttpClientFactory _httpClientFactory;
 
-    [HttpGet]
-    public IActionResult Login()
-    {     
-        return View();
-    }
+        private const string ApiEndpoint = "api/Auth/";
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(LoginViewModel model)
-    {
-        if (!ModelState.IsValid)
-            return View(model);
-
-        try
+        public AuthController(IHttpClientFactory httpClientFactory)
         {
-            var client = _httpClientFactory
-                .CreateClient("FisioFlowAPI");
+            _httpClientFactory = httpClientFactory;
+        }
 
-            var request = new
-            {
-                username = model.Username,
-                password = model.Password
-            };
 
-            var response = await client.PostAsJsonAsync(
-                $"{ApiEndpoint}login",
-                request);
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
-            var responseContent =
-                await response.Content.ReadAsStringAsync();
 
-            if (!response.IsSuccessStatusCode)
-            {
-                ModelState.AddModelError(
-                    string.Empty,
-                    $"API retornou HTTP {(int)response.StatusCode}: {responseContent}");
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
                 return View(model);
-            }
 
-            if (string.IsNullOrWhiteSpace(responseContent))
+
+            try
             {
-                ModelState.AddModelError(
-                    string.Empty,
-                    "A API retornou uma resposta vazia.");
+                var client = _httpClientFactory
+                    .CreateClient("FisioFlowAPI");
 
-                return View(model);
-            }
 
-            using var document =
-                JsonDocument.Parse(responseContent);
+                var request = new
+                {
+                    username = model.Username,
+                    password = model.Password
+                };
 
-            var root = document.RootElement;
 
-            string? token = null;
+                var response = await client.PostAsJsonAsync(
+                    $"{ApiEndpoint}login",
+                    request);
 
-            if (root.TryGetProperty(
-                    "token",
-                    out var tokenProperty))
-            {
-                token = tokenProperty.GetString();
-            }
 
-            if (string.IsNullOrWhiteSpace(token) &&
-                root.TryGetProperty(
-                    "accessToken",
-                    out var accessTokenProperty))
-            {
-                token = accessTokenProperty.GetString();
-            }
 
-            if (string.IsNullOrWhiteSpace(token))
-            {
-                ModelState.AddModelError(
-                    string.Empty,
-                    "Nenhum token foi encontrado na resposta da API.");
+                var responseContent =
+                    await response.Content.ReadAsStringAsync();
 
-                return View(model);
-            }
 
-            var handler = new JwtSecurityTokenHandler();
 
-            var jwt = handler.ReadJwtToken(token);
+                if (!response.IsSuccessStatusCode)
+                {
+                    ModelState.AddModelError(
+                        "",
+                        "Usuário ou senha inválidos.");
 
-            var claims = new List<Claim>();
+                    return View(model);
+                }
 
-            foreach (var claim in jwt.Claims)
-            {
-                if (
-                    claim.Type.Equals(
+
+
+                using var document =
+                    JsonDocument.Parse(responseContent);
+
+
+                var root = document.RootElement;
+
+
+                string? token = null;
+
+
+
+                if (root.TryGetProperty("token", out var tokenProperty))
+                {
+                    token = tokenProperty.GetString();
+                }
+
+
+                if (string.IsNullOrEmpty(token) &&
+                   root.TryGetProperty("accessToken", out var accessToken))
+                {
+                    token = accessToken.GetString();
+                }
+
+
+
+                if (string.IsNullOrEmpty(token))
+                {
+                    ModelState.AddModelError(
+                        "",
+                        "Token não encontrado.");
+
+                    return View(model);
+                }
+
+
+
+                // ===============================
+                // SALVA TOKEN JWT PARA CHAMADAS API
+                // ===============================
+
+                HttpContext.Session.SetString(
+                    "Token",
+                    token);
+
+
+
+                // ===============================
+                // CRIA COOKIE DE AUTENTICAÇÃO MVC
+                // ===============================
+
+                var handler = new JwtSecurityTokenHandler();
+
+                var jwt = handler.ReadJwtToken(token);
+
+
+
+                var claims = new List<Claim>();
+
+
+                foreach (var claim in jwt.Claims)
+                {
+
+                    if (claim.Type.Equals(
                         "role",
-                        StringComparison.OrdinalIgnoreCase) ||
-                    claim.Type.Equals(
-                        "roles",
-                        StringComparison.OrdinalIgnoreCase) ||
-                    claim.Type.Equals(
-                        ClaimTypes.Role,
                         StringComparison.OrdinalIgnoreCase))
-                {
-                    claims.Add(
-                        new Claim(
-                            ClaimTypes.Role,
-                            claim.Value));
-                }
-                else if (
-                    claim.Type.Equals(
-                        "name",
-                        StringComparison.OrdinalIgnoreCase) ||
-                    claim.Type.Equals(
+                    {
+                        claims.Add(
+                            new Claim(
+                                ClaimTypes.Role,
+                                claim.Value));
+                    }
+
+
+                    else if (claim.Type.Equals(
                         "unique_name",
-                        StringComparison.OrdinalIgnoreCase) ||
-                    claim.Type.Equals(
-                        ClaimTypes.Name,
                         StringComparison.OrdinalIgnoreCase))
-                {
-                    claims.Add(
-                        new Claim(
-                            ClaimTypes.Name,
-                            claim.Value));
+                    {
+                        claims.Add(
+                            new Claim(
+                                ClaimTypes.Name,
+                                claim.Value));
+                    }
+
+
+                    else
+                    {
+                        claims.Add(claim);
+                    }
                 }
-                else
+
+
+
+                var identity = new ClaimsIdentity(
+                    claims,
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    ClaimTypes.Name,
+                    ClaimTypes.Role);
+
+
+
+                var principal = new ClaimsPrincipal(identity);
+
+
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    principal,
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc =
+                            DateTimeOffset.UtcNow.AddHours(8)
+                    });
+
+
+
+                if (principal.IsInRole("Admin"))
                 {
-                    claims.Add(claim);
+                    return RedirectToAction(
+                        "Index",
+                        "Admin",
+                        new
+                        {
+                            area = "Admin"
+                        });
                 }
-            }
 
-            var identity = new ClaimsIdentity(
-                claims,
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                ClaimTypes.Name,
-                ClaimTypes.Role);
 
-            var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                principal,
-                new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    ExpiresUtc =
-                        DateTimeOffset.UtcNow.AddHours(8),
-                    AllowRefresh = true
-                });
-
-            if (principal.IsInRole("Admin"))
-            {
                 return RedirectToAction(
                     "Index",
-                    "Admin",
-                    new { area = "Admin" });
+                    "Home");
+
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(
+                    "",
+                    $"Erro no login: {ex.Message}");
+
+                return View(model);
+            }
+        }
+
+
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+
+            HttpContext.Session.Remove("Token");
+
+
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+
 
             return RedirectToAction(
-                "Index",
-                "Home");
+                "Login",
+                "Auth");
         }
-        catch (HttpRequestException ex)
+
+
+
+
+
+        [HttpGet]
+        public IActionResult AcessoNegado()
         {
-            ModelState.AddModelError(
-                string.Empty,
-                $"Não foi possível conectar à API: {ex.Message}");
-
-            return View(model);
+            return View();
         }
-        catch (JsonException ex)
-        {
-            ModelState.AddModelError(
-                string.Empty,
-                $"Resposta inválida da API: {ex.Message}");
-
-            return View(model);
-        }
-        catch (Exception ex)
-        {
-            ModelState.AddModelError(
-                string.Empty,
-                $"Erro no login: {ex.Message}");
-
-            return View(model);
-        }
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Logout()
-    {
-        await HttpContext.SignOutAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme);
-
-        return RedirectToAction(
-            "Login",
-            "Auth");
-    }
-
-    [HttpGet]
-    public IActionResult AcessoNegado()
-    {
-        return View();
     }
 }

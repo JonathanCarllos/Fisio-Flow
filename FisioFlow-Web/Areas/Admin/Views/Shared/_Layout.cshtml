@@ -22,6 +22,9 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
     <style>
 
         :root {
@@ -1086,7 +1089,7 @@
                     <li class="sidebar-menu-item">
 
                         <a asp-area="Admin"
-                           asp-controller="Home"
+                           asp-controller="Admin"
                            asp-action="Index"
                            class="sidebar-menu-link">
 
@@ -1122,7 +1125,9 @@
 
                     <li class="sidebar-menu-item">
 
-                        <a href="#"
+                          <a asp-area="Admin"
+                           asp-controller="Patients"
+                           asp-action="Index"
                            class="sidebar-menu-link">
 
                             <i class="bi bi-people-fill"></i>
@@ -1550,45 +1555,6 @@
         ====================================================== -->
 
         <main class="content-wrapper">
-
-
-            <!-- CABEÇALHO DA PÁGINA -->
-
-            <div class="page-header">
-
-
-                <div>
-
-                    <h1 class="page-title">
-
-                        @(ViewData["Title"] ?? "Dashboard")
-
-                    </h1>
-
-
-                    <p class="page-subtitle">
-
-                        Gerencie o FisioFlow de forma simples e eficiente.
-
-                    </p>
-
-                </div>
-
-
-                <div class="admin-badge">
-
-                    <i class="bi bi-shield-check"></i>
-
-                    Área Administrativa
-
-                </div>
-
-            </div>
-
-
-            <!-- =================================================
-                 CONTEÚDO DA VIEW
-            ================================================== -->
 
             @RenderBody()
 
