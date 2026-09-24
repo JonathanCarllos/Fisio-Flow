@@ -1,0 +1,683 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.PhysiotherapistViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar Fisioterapeuta";
+}
+
+<div class="container-fluid px-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-person-badge text-success me-2"></i>
+                Novo Fisioterapeuta
+            </h2>
+
+            <p class="text-muted mb-0">
+                Cadastre um novo profissional na clínica.
+            </p>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Voltar
+        </a>
+
+    </div>
+
+    <!-- Card principal -->
+    <div class="card shadow-sm border-0">
+
+        <!-- Cabeçalho do card -->
+        <div class="card-header bg-success text-white py-3">
+            <h5 class="mb-0">
+                <i class="bi bi-person-plus me-2"></i>
+                Dados do Fisioterapeuta
+            </h5>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form asp-action="Create" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger"
+                     role="alert">
+                </div>
+
+                <!-- =============================== -->
+                <!-- DADOS PROFISSIONAIS -->
+                <!-- =============================== -->
+
+                <div class="mb-4">
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="bg-success bg-opacity-10 rounded-circle p-2 me-2">
+                            <i class="bi bi-briefcase text-success"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="mb-0 fw-bold">
+                                Dados profissionais
+                            </h5>
+
+                            <small class="text-muted">
+                                Informações profissionais do fisioterapeuta
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Nome -->
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Name"
+                                   class="form-label fw-semibold">
+                                Nome completo
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-person"></i>
+                                </span>
+
+                                <input asp-for="Name"
+                                       class="form-control"
+                                       placeholder="Digite o nome completo" />
+
+                            </div>
+
+                            <span asp-validation-for="Name"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- CREFITO -->
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Crefito"
+                                   class="form-label fw-semibold">
+                                CREFITO
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-card-text"></i>
+                                </span>
+
+                                <input asp-for="Crefito"
+                                       class="form-control"
+                                       placeholder="Ex: CREFITO 3/123456-F"
+                                       maxlength="30"
+                                       autocomplete="off" />
+
+                            </div>
+
+                            <span asp-validation-for="Crefito"
+                                  class="text-danger">
+                            </span>
+
+                            <small class="text-muted">
+                                Informe o número de registro profissional.
+                            </small>
+
+                        </div>
+
+                        <!-- Especialidade -->
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Specialty"
+                                   class="form-label fw-semibold">
+                                Especialidade
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-heart-pulse"></i>
+                                </span>
+
+                                <input asp-for="Specialty"
+                                       class="form-control"
+                                       placeholder="Ex: Ortopedia" />
+
+                            </div>
+
+                            <span asp-validation-for="Specialty"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Horários -->
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="AvailableHours"
+                                   class="form-label fw-semibold">
+                                Horários disponíveis
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-clock"></i>
+                                </span>
+
+                                <input asp-for="AvailableHours"
+                                       class="form-control"
+                                       placeholder="Ex: Seg. a Sex. - 08:00 às 18:00" />
+
+                            </div>
+
+                            <span asp-validation-for="AvailableHours"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <!-- =============================== -->
+                <!-- DOCUMENTOS E CONTATO -->
+                <!-- =============================== -->
+
+                <div class="mb-4">
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="bg-success bg-opacity-10 rounded-circle p-2 me-2">
+                            <i class="bi bi-person-vcard text-success"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="mb-0 fw-bold">
+                                Documentos e contato
+                            </h5>
+
+                            <small class="text-muted">
+                                Documentos pessoais e informações de contato
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <!-- CPF -->
+                        <div class="col-md-4 mb-3">
+
+                            <label asp-for="CPF"
+                                   class="form-label fw-semibold">
+                                CPF
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-person-vcard"></i>
+                                </span>
+
+                                <input asp-for="CPF"
+                                       class="form-control"
+                                       placeholder="000.000.000-00"
+                                       maxlength="14"
+                                       autocomplete="off" />
+
+                            </div>
+
+                            <span asp-validation-for="CPF"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- RG -->
+                        <div class="col-md-4 mb-3">
+
+                            <label asp-for="RG"
+                                   class="form-label fw-semibold">
+                                RG
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-card-heading"></i>
+                                </span>
+
+                                <input asp-for="RG"
+                                       class="form-control"
+                                       placeholder="Digite o RG" />
+
+                            </div>
+
+                            <span asp-validation-for="RG"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Data nascimento -->
+                        <div class="col-md-4 mb-3">
+
+                            <label asp-for="BirthDate"
+                                   class="form-label fw-semibold">
+                                Data de nascimento
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-calendar3"></i>
+                                </span>
+
+                                <input asp-for="BirthDate"
+                                       type="date"
+                                       class="form-control" />
+
+                            </div>
+
+                            <span asp-validation-for="BirthDate"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Email"
+                                   class="form-label fw-semibold">
+                                E-mail
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+
+                                <input asp-for="Email"
+                                       type="email"
+                                       class="form-control"
+                                       placeholder="email@exemplo.com"
+                                       autocomplete="email" />
+
+                            </div>
+
+                            <span asp-validation-for="Email"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Telefone -->
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Phone"
+                                   class="form-label fw-semibold">
+                                Telefone
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-telephone"></i>
+                                </span>
+
+                                <input asp-for="Phone"
+                                       class="form-control"
+                                       placeholder="(11) 99999-9999"
+                                       maxlength="15"
+                                       autocomplete="tel" />
+
+                            </div>
+
+                            <span asp-validation-for="Phone"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <!-- =============================== -->
+                <!-- ENDEREÇO -->
+                <!-- =============================== -->
+
+                <div class="mb-4">
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="bg-success bg-opacity-10 rounded-circle p-2 me-2">
+                            <i class="bi bi-geo-alt text-success"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="mb-0 fw-bold">
+                                Endereço
+                            </h5>
+
+                            <small class="text-muted">
+                                Endereço residencial ou profissional
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <!-- CEP -->
+                        <div class="col-md-3 mb-3">
+
+                            <label asp-for="PostalCode"
+                                   class="form-label fw-semibold">
+                                CEP
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-mailbox"></i>
+                                </span>
+
+                                <input asp-for="PostalCode"
+                                       class="form-control"
+                                       placeholder="00000-000"
+                                       maxlength="9"
+                                       autocomplete="postal-code" />
+
+                            </div>
+
+                            <span asp-validation-for="PostalCode"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Endereço -->
+                        <div class="col-md-9 mb-3">
+
+                            <label asp-for="Address"
+                                   class="form-label fw-semibold">
+                                Endereço
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-house"></i>
+                                </span>
+
+                                <input asp-for="Address"
+                                       class="form-control"
+                                       placeholder="Rua, avenida, número..."
+                                       autocomplete="street-address" />
+
+                            </div>
+
+                            <span asp-validation-for="Address"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Bairro -->
+                        <div class="col-md-4 mb-3">
+
+                            <label asp-for="Neighborhood"
+                                   class="form-label fw-semibold">
+                                Bairro
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-buildings"></i>
+                                </span>
+
+                                <input asp-for="Neighborhood"
+                                       class="form-control"
+                                       placeholder="Digite o bairro" />
+
+                            </div>
+
+                            <span asp-validation-for="Neighborhood"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Cidade -->
+                        <div class="col-md-5 mb-3">
+
+                            <label asp-for="City"
+                                   class="form-label fw-semibold">
+                                Cidade
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-buildings"></i>
+                                </span>
+
+                                <input asp-for="City"
+                                       class="form-control"
+                                       placeholder="Digite a cidade" />
+
+                            </div>
+
+                            <span asp-validation-for="City"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="col-md-3 mb-3">
+
+                            <label asp-for="State"
+                                   class="form-label fw-semibold">
+                                Estado
+                            </label>
+
+                            <select asp-for="State"
+                                    class="form-select">
+
+                                <option value="">
+                                    Selecione
+                                </option>
+
+                                <option value="AC">Acre - AC</option>
+                                <option value="AL">Alagoas - AL</option>
+                                <option value="AP">Amapá - AP</option>
+                                <option value="AM">Amazonas - AM</option>
+                                <option value="BA">Bahia - BA</option>
+                                <option value="CE">Ceará - CE</option>
+                                <option value="DF">Distrito Federal - DF</option>
+                                <option value="ES">Espírito Santo - ES</option>
+                                <option value="GO">Goiás - GO</option>
+                                <option value="MA">Maranhão - MA</option>
+                                <option value="MT">Mato Grosso - MT</option>
+                                <option value="MS">Mato Grosso do Sul - MS</option>
+                                <option value="MG">Minas Gerais - MG</option>
+                                <option value="PA">Pará - PA</option>
+                                <option value="PB">Paraíba - PB</option>
+                                <option value="PR">Paraná - PR</option>
+                                <option value="PE">Pernambuco - PE</option>
+                                <option value="PI">Piauí - PI</option>
+                                <option value="RJ">Rio de Janeiro - RJ</option>
+                                <option value="RN">Rio Grande do Norte - RN</option>
+                                <option value="RS">Rio Grande do Sul - RS</option>
+                                <option value="RO">Rondônia - RO</option>
+                                <option value="RR">Roraima - RR</option>
+                                <option value="SC">Santa Catarina - SC</option>
+                                <option value="SP">São Paulo - SP</option>
+                                <option value="SE">Sergipe - SE</option>
+                                <option value="TO">Tocantins - TO</option>
+
+                            </select>
+
+                            <span asp-validation-for="State"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <!-- =============================== -->
+                <!-- CONFIGURAÇÕES -->
+                <!-- =============================== -->
+
+                <div class="mb-4">
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div class="bg-success bg-opacity-10 rounded-circle p-2 me-2">
+                            <i class="bi bi-sliders text-success"></i>
+                        </div>
+
+                        <div>
+                            <h5 class="mb-0 fw-bold">
+                                Configurações
+                            </h5>
+
+                            <small class="text-muted">
+                                Defina o status e a identificação visual
+                            </small>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Cor -->
+                        <div class="col-md-6 mb-3">
+
+                            <label asp-for="Color"
+                                   class="form-label fw-semibold">
+                                Cor de identificação
+                            </label>
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <input asp-for="Color"
+                                       type="color"
+                                       class="form-control form-control-color"
+                                       title="Selecione uma cor" />
+
+                                <span class="text-muted small">
+                                    Cor utilizada para identificar o fisioterapeuta
+                                    na agenda.
+                                </span>
+
+                            </div>
+
+                            <span asp-validation-for="Color"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                        <!-- Status -->
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Status
+                            </label>
+
+                            <div class="border rounded p-3">
+
+                                <div class="form-check form-switch">
+
+                                    <input asp-for="Status"
+                                           class="form-check-input"
+                                           role="switch"
+                                           id="Status" />
+
+                                    <label asp-for="Status"
+                                           class="form-check-label fw-semibold">
+                                        Fisioterapeuta ativo
+                                    </label>
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Profissionais ativos poderão ser utilizados
+                                    nos agendamentos da clínica.
+                                </small>
+
+                            </div>
+
+                            <span asp-validation-for="Status"
+                                  class="text-danger">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Botões -->
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-x-circle me-1"></i>
+                        Cancelar
+
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-success px-4">
+
+                        <i class="bi bi-check-circle me-1"></i>
+                        Salvar Fisioterapeuta
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="~/js/patient.js"></script>
+
+}

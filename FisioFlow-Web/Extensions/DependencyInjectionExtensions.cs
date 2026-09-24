@@ -9,6 +9,7 @@ namespace FisioFlow_Web.Extensions
             this IServiceCollection services)
         {
             services.AddScoped<IPatientServices, PatientServices>();
+            services.AddScoped<IPhysiotherapistServices, PhysiotherapistServices>();
 
             return services;
         }

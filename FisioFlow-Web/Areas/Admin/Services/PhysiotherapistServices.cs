@@ -4,86 +4,74 @@ using System.Text.Json;
 
 namespace FisioFlow_Web.Areas.Admin.Services
 {
-    public class PatientServices : IPatientServices
+    public class PhysiotherapistServices : IPhysiotherapistServices
     {
         private readonly IHttpClientFactory _clientFactory;
 
-        private const string apiEndpoint = "/api/Patients/";
+        private const string apiEndpoint = "/api/Physiotherapists/";
 
-        private readonly JsonSerializerOptions _options;        
+        private readonly JsonSerializerOptions _options;
 
-        public PatientServices(IHttpClientFactory clientFactory)
+        public PhysiotherapistServices(IHttpClientFactory client)
         {
-            _clientFactory = clientFactory;
-
+            _clientFactory = client;
             _options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
         }
 
-
-        public async Task<IEnumerable<PatientViewModel>> GetAllPatientsAsync()
+        public async Task<IEnumerable<PhysiotherapistViewModel>> GetAll()
         {
             var client = _clientFactory.CreateClient("FisioFlowAPI");
 
             using var response = await client.GetAsync(apiEndpoint);
 
-
             if (!response.IsSuccessStatusCode)
-                return Enumerable.Empty<PatientViewModel>();
-
+                return Enumerable.Empty<PhysiotherapistViewModel>();
 
             var stream = await response.Content.ReadAsStreamAsync();
 
-            return await JsonSerializer.DeserializeAsync<IEnumerable<PatientViewModel>>(stream, _options);
+            return await JsonSerializer.DeserializeAsync<IEnumerable<PhysiotherapistViewModel>>(stream, _options);
+
         }
 
-
-
-        public async Task<PatientViewModel> GetPatientByIdAsync(int id)
+        public async Task<PhysiotherapistViewModel> GetPhysiotherapistByIDAsync(int id)
         {
             var client = _clientFactory.CreateClient("FisioFlowAPI");
 
             using var response = await client.GetAsync(apiEndpoint + id);
 
-
             if (!response.IsSuccessStatusCode)
                 return null;
 
 
             var stream = await response.Content.ReadAsStreamAsync();
 
-            return await JsonSerializer.DeserializeAsync<PatientViewModel>(stream, _options);
+            return await JsonSerializer.DeserializeAsync<PhysiotherapistViewModel>(stream, _options);
         }
 
-
-
-        public async Task<PatientViewModel> CreatePatientAsync(PatientViewModel patientVM)
+        public async Task<PhysiotherapistViewModel> CreatePhysiotherapistAsync(PhysiotherapistViewModel physiotherapistVM)
         {
             var client = _clientFactory.CreateClient("FisioFlowAPI");
 
-            using var response = await client.PostAsJsonAsync(apiEndpoint, patientVM);
+            using var response = await client.PostAsJsonAsync(apiEndpoint, physiotherapistVM);
 
             if (!response.IsSuccessStatusCode)
                 return null;
 
             var stream = await response.Content.ReadAsStreamAsync();
 
-            return await JsonSerializer.DeserializeAsync<PatientViewModel>(stream, _options);
+            return await JsonSerializer.DeserializeAsync<PhysiotherapistViewModel>(stream, _options);
         }
 
-
-
-        public async Task<PatientViewModel> UpdatePatientAsync(PatientViewModel patientVM)
+        public async Task<PhysiotherapistViewModel> UpdatePhysiotherapistAsync(PhysiotherapistViewModel physiotherapistVM)
         {
             var client = _clientFactory.CreateClient("FisioFlowAPI");
-
 
             using var response = await client.PutAsJsonAsync(
-                apiEndpoint + patientVM.PatientId,
-                patientVM);
-
+               apiEndpoint + physiotherapistVM.PhysiotherapistId,
+               physiotherapistVM);
 
             if (!response.IsSuccessStatusCode)
                 return null;
@@ -92,7 +80,7 @@ namespace FisioFlow_Web.Areas.Admin.Services
             // Caso a API retorne 204 No Content
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
-                return patientVM;
+                return physiotherapistVM;
             }
 
 
@@ -101,22 +89,19 @@ namespace FisioFlow_Web.Areas.Admin.Services
 
             if (string.IsNullOrWhiteSpace(content))
             {
-                return patientVM;
+                return physiotherapistVM;
             }
 
 
-            return JsonSerializer.Deserialize<PatientViewModel>(
+            return JsonSerializer.Deserialize<PhysiotherapistViewModel>(
                 content,
                 _options
             );
         }
 
-
-
-        public async Task<bool> DeletePatientAsync(int id)
+        public async Task<bool> DeletePhysiotherapistAsync(int id)
         {
             var client = _clientFactory.CreateClient("FisioFlowAPI");
-
 
             using var response = await client.DeleteAsync(apiEndpoint + id);
 

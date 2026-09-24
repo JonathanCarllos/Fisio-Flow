@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using static System.Collections.Specialized.BitVector32;
 
-namespace FisioFlow_API.DTOs
+namespace FisioFlow_Web.Areas.Admin.Models
 {
-    public class PhysiotherapistDTO
+    public class PhysiotherapistViewModel
     {
-
         public int PhysiotherapistId { get; set; }
 
 

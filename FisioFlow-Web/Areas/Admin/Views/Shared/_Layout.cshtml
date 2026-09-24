@@ -992,21 +992,14 @@
            FOOTER
         ========================================================= */
 
-        .footer-custom {
-            margin-top: 30px;
-
-            padding: 22px 30px;
-
-            border-top:
-                1px solid var(--ff-border);
-
-            background: white;
-
-            color:
-                var(--ff-muted);
-
-            font-size: 12px;
-        }
+            .footer-custom {
+                flex-shrink: 0;
+                padding: 20px 30px;
+                border-top: 1px solid var(--ff-border);
+                background: white;
+                color: var(--ff-muted);
+                font-size: 12px;
+            }
 
 
         /* =========================================================
@@ -1145,7 +1138,9 @@
 
                     <li class="sidebar-menu-item">
 
-                        <a href="#"
+                        <a asp-area="Admin"
+                           asp-controller="Physiotherapists"
+                           asp-action="Index"
                            class="sidebar-menu-link">
 
                             <i class="bi bi-person-badge-fill"></i>
@@ -1565,7 +1560,8 @@
              FOOTER
         ====================================================== -->
 
-        <footer class="footer-custom">
+
+       @*  <footer class="footer-custom">
 
             <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
 
@@ -1592,8 +1588,7 @@
 
             </div>
 
-        </footer>
-
+        </footer> *@
     </div>
 
 

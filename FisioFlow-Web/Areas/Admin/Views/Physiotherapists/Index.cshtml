@@ -1,0 +1,655 @@
+﻿@model IEnumerable<FisioFlow_Web.Areas.Admin.Models.PhysiotherapistViewModel>
+
+@{
+    ViewData["Title"] = "Fisioterapeutas";
+}
+
+<style>
+    .physio-page {
+        padding: 24px 26px;
+    }
+
+    /* =========================
+       TOPO
+       ========================= */
+
+    .physio-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    .physio-search {
+        position: relative;
+        width: 385px;
+    }
+
+    .physio-search i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #8fa0b7;
+        font-size: 14px;
+        z-index: 2;
+    }
+
+    .physio-search input {
+        width: 100%;
+        height: 37px;
+        border: 1px solid #dfe4ea;
+        border-radius: 7px;
+        background: #fff;
+        padding: 0 14px 0 36px;
+        font-size: 13px;
+        color: #334155;
+        outline: none;
+        transition: all .2s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+    }
+
+    .physio-search input::placeholder {
+        color: #718096;
+    }
+
+    .physio-search input:focus {
+        border-color: #10a89a;
+        box-shadow: 0 0 0 3px rgba(16, 168, 154, .08);
+    }
+
+    .btn-new-physio {
+        height: 37px;
+        border: 0;
+        border-radius: 7px;
+        padding: 0 18px;
+        background: #0d9f91;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+        transition: all .2s ease;
+        box-shadow: 0 2px 4px rgba(13, 159, 145, .12);
+    }
+
+    .btn-new-physio:hover {
+        background: #098b7f;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    .btn-new-physio i {
+        font-size: 13px;
+    }
+
+    /* =========================
+       GRID
+       ========================= */
+
+    .physio-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    /* =========================
+       CARD
+       ========================= */
+
+    .physio-card {
+        position: relative;
+        min-height: 212px;
+        background: #fff;
+        border-radius: 15px;
+        padding: 20px;
+        border: 1px solid #f0f2f5;
+        box-shadow: 0 3px 10px rgba(31, 41, 55, .035);
+        transition: all .2s ease;
+    }
+
+    .physio-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 22px rgba(31, 41, 55, .07);
+    }
+
+    .physio-card.hidden {
+        display: none;
+    }
+
+    /* =========================
+       CABEÇALHO CARD
+       ========================= */
+
+    .physio-card-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        margin-bottom: 12px;
+    }
+
+    .physio-avatar {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .physio-avatar.green {
+        background: #079b8e;
+    }
+
+    .physio-avatar.purple {
+        background: #7438e9;
+    }
+
+    .physio-avatar.blue {
+        background: #2563eb;
+    }
+
+    .physio-avatar.orange {
+        background: #f97316;
+    }
+
+    .physio-avatar.red {
+        background: #ef4444;
+    }
+
+    .physio-avatar.cyan {
+        background: #0891b2;
+    }
+
+    .physio-info {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .physio-name {
+        margin: 0 0 3px;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: 700;
+        color: #26364d;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .physio-crefito {
+        margin: 0;
+        color: #718096;
+        font-size: 11px;
+    }
+
+    /* =========================
+       MENU
+       ========================= */
+
+    .physio-menu {
+        position: relative;
+    }
+
+    .physio-menu-button {
+        border: 0;
+        background: transparent;
+        width: 25px;
+        height: 25px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #25364d;
+        cursor: pointer;
+    }
+
+    .physio-menu-button:hover {
+        background: #f1f5f9;
+    }
+
+    .physio-dropdown {
+        min-width: 145px;
+        border: 1px solid #edf0f3;
+        border-radius: 8px;
+        padding: 5px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, .10);
+    }
+
+    .physio-dropdown .dropdown-item {
+        font-size: 12px;
+        padding: 8px 10px;
+        border-radius: 5px;
+    }
+
+    .physio-dropdown .dropdown-item i {
+        width: 18px;
+    }
+
+    /* =========================
+       ESPECIALIDADE
+       ========================= */
+
+    .physio-specialty {
+        color: #079b8e;
+        font-size: 12px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+
+    /* =========================
+       DADOS
+       ========================= */
+
+    .physio-data {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .physio-data-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #687891;
+        font-size: 11px;
+        line-height: 15px;
+    }
+
+    .physio-data-item i {
+        width: 13px;
+        text-align: center;
+        color: #687891;
+        font-size: 11px;
+    }
+
+    /* =========================
+       STATUS
+       ========================= */
+
+    .physio-status {
+        margin-top: 11px;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 500;
+    }
+
+    .status-active {
+        color: #059669;
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+    }
+
+    .status-inactive {
+        color: #64748b;
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+    }
+
+    /* =========================
+       VAZIO
+       ========================= */
+
+    .physio-empty {
+        grid-column: 1 / -1;
+        text-align: center;
+        background: #fff;
+        border-radius: 15px;
+        padding: 60px 20px;
+        border: 1px solid #f0f2f5;
+    }
+
+    .physio-empty i {
+        font-size: 40px;
+        color: #cbd5e1;
+        margin-bottom: 15px;
+    }
+
+    .physio-empty h5 {
+        color: #334155;
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+
+    .physio-empty p {
+        color: #94a3b8;
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+
+    /* =========================
+       RESPONSIVO
+       ========================= */
+
+    @@media (max-width: 1100px) {
+        .physio-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .physio-page {
+            padding: 18px 15px;
+        }
+
+        .physio-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .physio-search {
+            width: 100%;
+        }
+
+        .btn-new-physio {
+            width: 100%;
+        }
+
+        .physio-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+<div class="physio-page">
+
+    <!-- =========================
+         BARRA DE FERRAMENTAS
+         ========================= -->
+
+    <div class="physio-toolbar">
+
+        <div class="physio-search">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input type="text"
+                   id="searchInput"
+                   placeholder="Buscar fisioterapeuta..."
+                   autocomplete="off" />
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="btn-new-physio">
+
+            <i class="fa-solid fa-plus"></i>
+
+            <span>Novo Fisioterapeuta</span>
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         LISTA DE FISIOTERAPEUTAS
+         ========================= -->
+
+    <div class="physio-grid" id="physioGrid">
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                var initials = !string.IsNullOrWhiteSpace(item.Name)
+                    ? string.Concat(
+                        item.Name
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Take(2)
+                            .Select(x => x[0])
+                      ).ToUpper()
+                    : "F";
+
+                <div class="physio-card"
+                     data-search="@($"{item.Name} {item.Crefito} {item.Specialty} {item.Email} {item.Phone}")">
+
+                    <!-- Cabeçalho -->
+
+                    <div class="physio-card-header">
+
+                        <div class="physio-avatar green">
+
+                            @initials
+
+                        </div>
+
+
+                        <div class="physio-info">
+
+                            <h3 class="physio-name">
+
+                                @item.Name
+
+                            </h3>
+
+                            <p class="physio-crefito">
+
+                                CREFITO: @item.Crefito
+
+                            </p>
+
+                        </div>
+
+
+                        <!-- Menu -->
+
+                        <div class="physio-menu dropdown">
+
+                            <button class="physio-menu-button"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+
+                                <i class="fa-solid fa-ellipsis"></i>
+
+                            </button>
+
+
+                            <ul class="dropdown-menu dropdown-menu-end physio-dropdown">
+
+                                <li>
+
+                                    <a class="dropdown-item"
+                                       asp-action="Details"
+                                       asp-route-id="@item.PhysiotherapistId">
+
+                                        <i class="fa-solid fa-eye text-info"></i>
+
+                                        Visualizar
+
+                                    </a>
+
+                                </li>
+
+                                <li>
+
+                                    <a class="dropdown-item"
+                                       asp-action="Update"
+                                       asp-route-id="@item.PhysiotherapistId">
+
+                                        <i class="fa-solid fa-pen text-warning"></i>
+
+                                        Editar
+
+                                    </a>
+
+                                </li>
+
+                                <li>
+
+                                    <hr class="dropdown-divider" />
+
+                                </li>
+
+                                <li>
+
+                                    <a class="dropdown-item text-danger"
+                                       asp-action="Delete"
+                                       asp-route-id="@item.PhysiotherapistId">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                        Excluir
+
+                                    </a>
+
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Especialidade -->
+
+                    <div class="physio-specialty">
+
+                        @item.Specialty
+
+                    </div>
+
+
+                    <!-- Informações -->
+
+                    <div class="physio-data">
+
+                        <div class="physio-data-item">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            <span>@item.Phone</span>
+
+                        </div>
+
+
+                        <div class="physio-data-item">
+
+                            <i class="fa-regular fa-envelope"></i>
+
+                            <span>@item.Email</span>
+
+                        </div>
+
+
+                        <div class="physio-data-item">
+
+                            <i class="fa-regular fa-clock"></i>
+
+                            <span>Seg-Sex 8h-17h</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="physio-status">
+
+                        @if (item.Status)
+                        {
+                            <span class="status-badge status-active">
+
+                                Ativo
+
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status-badge status-inactive">
+
+                                Inativo
+
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+            }
+        }
+        else
+        {
+            <div class="physio-empty">
+
+                <i class="fa-solid fa-user-doctor"></i>
+
+                <h5>
+                    Nenhum fisioterapeuta encontrado
+                </h5>
+
+                <p>
+                    Clique em "Novo Fisioterapeuta" para realizar o primeiro cadastro.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const searchInput = document.getElementById("searchInput");
+            const cards = document.querySelectorAll(".physio-card");
+
+            if (!searchInput) {
+                return;
+            }
+
+            searchInput.addEventListener("input", function () {
+
+                const value = this.value
+                    .toLowerCase()
+                    .trim();
+
+                cards.forEach(function (card) {
+
+                    const content = card
+                        .getAttribute("data-search")
+                        .toLowerCase();
+
+                    if (content.includes(value)) {
+
+                        card.classList.remove("hidden");
+
+                    } else {
+
+                        card.classList.add("hidden");
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+}

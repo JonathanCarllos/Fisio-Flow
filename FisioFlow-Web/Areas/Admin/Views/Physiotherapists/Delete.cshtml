@@ -1,0 +1,497 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.PhysiotherapistViewModel
+
+@{
+    ViewData["Title"] = "Excluir Fisioterapeuta";
+}
+
+<div class="container-fluid px-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-person-x text-danger me-2"></i>
+                Excluir Fisioterapeuta
+            </h2>
+
+            <p class="text-muted mb-0">
+                Visualize os dados antes de excluir o profissional.
+            </p>
+        </div>
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-1"></i>
+            Voltar
+
+        </a>
+
+    </div>
+
+    <!-- Card principal -->
+    <div class="card shadow-sm border-0">
+
+        <!-- Header -->
+        <div class="card-header bg-danger text-white py-3">
+
+            <div class="d-flex align-items-center">
+
+                <div class="bg-white bg-opacity-25 rounded-circle p-2 me-3">
+                    <i class="bi bi-person-x fs-4"></i>
+                </div>
+
+                <div>
+
+                    <h5 class="mb-0 fw-bold">
+                        Excluir fisioterapeuta
+                    </h5>
+
+                    <small class="opacity-75">
+                        Verifique as informações antes de continuar.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- Aviso -->
+            <div class="alert alert-warning d-flex align-items-start"
+                 role="alert">
+
+                <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+
+                <div>
+
+                    <strong>Atenção!</strong>
+
+                    <p class="mb-0 mt-1">
+                        A exclusão deste profissional removerá o cadastro
+                        do sistema. Essa ação não poderá ser desfeita.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Dados -->
+            <div class="row g-3 mt-2">
+
+                <!-- Nome -->
+                <div class="col-md-6">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-person me-1"></i>
+                            Nome completo
+                        </span>
+
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Name)
+                                ? "Não informado"
+                                : Model.Name)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- CREFITO -->
+                <div class="col-md-6">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-card-text me-1"></i>
+                            CREFITO
+                        </span>
+
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Crefito)
+                                ? "Não informado"
+                                : Model.Crefito)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Especialidade -->
+                <div class="col-md-6">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-heart-pulse me-1"></i>
+                            Especialidade
+                        </span>
+
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Specialty)
+                                ? "Não informado"
+                                : Model.Specialty)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- CPF -->
+                <div class="col-md-6">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-person-vcard me-1"></i>
+                            CPF
+                        </span>
+
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.CPF)
+                                ? "Não informado"
+                                : Model.CPF)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- E-mail -->
+                <div class="col-md-6">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-envelope me-1"></i>
+                            E-mail
+                        </span>
+
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Email)
+                                ? "Não informado"
+                                : Model.Email)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Telefone -->
+                <div class="col-md-6">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-telephone me-1"></i>
+                            Telefone
+                        </span>
+
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.Phone)
+                                ? "Não informado"
+                                : Model.Phone)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Cidade -->
+                <div class="col-md-4">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-building me-1"></i>
+                            Cidade
+                        </span>
+
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.City)
+                                ? "Não informado"
+                                : Model.City)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Estado -->
+                <div class="col-md-4">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-map me-1"></i>
+                            Estado
+                        </span>
+
+                        <div class="info-value">
+                            @(string.IsNullOrWhiteSpace(Model.State)
+                                ? "Não informado"
+                                : Model.State)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-4">
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            <i class="bi bi-toggle-on me-1"></i>
+                            Status
+                        </span>
+
+                        <div class="mt-2">
+
+                            @if (Model.Status)
+                            {
+                                <span class="badge bg-success px-3 py-2">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    Ativo
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary px-3 py-2">
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    Inativo
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Botões -->
+            <div class="border-top pt-4 mt-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-x-circle me-1"></i>
+                        Cancelar
+
+                    </a>
+
+                    <!-- Abrir modal -->
+                    <button type="button"
+                            class="btn btn-danger px-4"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteModal">
+
+                        <i class="bi bi-trash3 me-1"></i>
+                        Excluir Fisioterapeuta
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- MODAL DE CONFIRMAÇÃO -->
+<!-- ===================================================== -->
+
+<div class="modal fade"
+     id="deleteModal"
+     tabindex="-1"
+     aria-labelledby="deleteModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow-lg">
+
+            <!-- Header -->
+            <div class="modal-header bg-danger text-white">
+
+                <h5 class="modal-title"
+                    id="deleteModalLabel">
+
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Confirmar exclusão
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Fechar">
+                </button>
+
+            </div>
+
+            <!-- Corpo -->
+            <div class="modal-body text-center p-4">
+
+                <div class="delete-icon mx-auto mb-3">
+
+                    <i class="bi bi-trash3-fill"></i>
+
+                </div>
+
+                <h5 class="fw-bold mb-2">
+                    Deseja realmente excluir?
+                </h5>
+
+                <p class="text-muted mb-3">
+
+                    Você está prestes a excluir o fisioterapeuta:
+
+                </p>
+
+                <div class="professional-name">
+
+                    <i class="bi bi-person-badge me-2"></i>
+
+                    <strong>
+                        @Model.Name
+                    </strong>
+
+                </div>
+
+                <div class="mt-3 text-danger small">
+
+                    <i class="bi bi-exclamation-circle me-1"></i>
+
+                    Essa ação não poderá ser desfeita.
+
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer justify-content-center gap-2">
+
+                <button type="button"
+                        class="btn btn-outline-secondary px-4"
+                        data-bs-dismiss="modal">
+
+                    <i class="bi bi-x-circle me-1"></i>
+                    Cancelar
+
+                </button>
+
+                <!-- Formulário de exclusão -->
+                <form asp-action="Delete"
+                      method="post"
+                      class="d-inline">
+
+                    @Html.AntiForgeryToken()
+
+                    <input asp-for="PhysiotherapistId"
+                           type="hidden" />
+
+                    <button type="submit"
+                            class="btn btn-danger px-4">
+
+                        <i class="bi bi-trash3 me-1"></i>
+                        Sim, excluir
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    .info-box {
+        height: 100%;
+        padding: 16px 18px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        transition: all .2s ease;
+    }
+
+        .info-box:hover {
+            border-color: #fecaca;
+            background: #fffafa;
+        }
+
+    .info-label {
+        display: block;
+        margin-bottom: 6px;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .info-value {
+        color: #1e293b;
+        font-size: 15px;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    .delete-icon {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fef2f2;
+        color: #dc2626;
+        border-radius: 50%;
+        font-size: 30px;
+    }
+
+    .professional-name {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 20px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        color: #1e293b;
+    }
+
+    .modal-content {
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        border-bottom: 0;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #e2e8f0;
+        padding: 16px 20px;
+    }
+
+</style>
