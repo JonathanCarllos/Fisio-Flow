@@ -1,0 +1,346 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.SessionViewModel
+
+@{
+    ViewData["Title"] = "Detalhes da Sessão";
+}
+
+
+<div class="container-fluid px-4">
+
+
+    <!-- HEADER -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+        <div>
+
+            <h1 class="fw-bold text-success">
+
+                <i class="bi bi-calendar-event"></i>
+
+                Detalhes da Sessão
+
+            </h1>
+
+
+            <p class="text-muted">
+
+                Informações completas do atendimento
+
+            </p>
+
+        </div>
+
+
+
+        <div>
+
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.SessionId"
+               class="btn btn-warning me-2">
+
+
+                <i class="bi bi-pencil-square"></i>
+
+                Editar
+
+
+            </a>
+
+
+
+            <a asp-action="Delete"
+               asp-route-id="@Model.SessionId"
+               class="btn btn-danger me-2">
+
+
+                <i class="bi bi-trash"></i>
+
+                Excluir
+
+
+            </a>
+
+
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+
+
+                <i class="bi bi-arrow-left"></i>
+
+                Voltar
+
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- CARD -->
+
+
+    <div class="card shadow border-0 rounded-4">
+
+
+        <div class="card-body p-4">
+
+
+            <div class="row g-4">
+
+
+
+                <!-- PACIENTE -->
+
+                <div class="col-md-6">
+
+
+                    <div class="p-3 bg-light rounded-4">
+
+
+                        <h6 class="text-success fw-bold">
+
+                            <i class="bi bi-person"></i>
+
+                            Paciente
+
+                        </h6>
+
+
+                        <h5>
+
+                            @Model.PatientName
+
+                        </h5>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- FISIOTERAPEUTA -->
+
+
+                <div class="col-md-6">
+
+
+                    <div class="p-3 bg-light rounded-4">
+
+
+                        <h6 class="text-success fw-bold">
+
+                            <i class="bi bi-person-badge"></i>
+
+                            Fisioterapeuta
+
+                        </h6>
+
+
+                        <h5>
+
+                            @Model.PhysiotherapistName
+
+                        </h5>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- DATA -->
+
+
+                <div class="col-md-4">
+
+
+                    <div class="card border-0 shadow-sm p-3">
+
+
+                        <small class="text-muted">
+
+                            Data
+
+                        </small>
+
+
+                        <h5>
+
+                            <i class="bi bi-calendar3 text-success"></i>
+
+                            @Model.Date.ToString("dd/MM/yyyy")
+
+                        </h5>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- HORARIO -->
+
+
+                <div class="col-md-4">
+
+
+                    <div class="card border-0 shadow-sm p-3">
+
+
+                        <small class="text-muted">
+
+                            Horário
+
+                        </small>
+
+
+                        <h5>
+
+
+                            <i class="bi bi-clock text-success"></i>
+
+                            @Model.Time.ToString("HH:mm")
+
+
+                        </h5>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- DURACAO -->
+
+
+                <div class="col-md-4">
+
+
+                    <div class="card border-0 shadow-sm p-3">
+
+
+                        <small class="text-muted">
+
+                            Duração
+
+                        </small>
+
+
+                        <h5>
+
+                            <i class="bi bi-stopwatch text-success"></i>
+
+                            @Model.Duration minutos
+
+
+                        </h5>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- OBS -->
+
+
+                <div class="col-md-12">
+
+
+                    <h6 class="fw-bold text-success">
+
+                        <i class="bi bi-chat-left-text"></i>
+
+                        Observações
+
+                    </h6>
+
+
+                    <div class="bg-light rounded-3 p-3">
+
+
+                        @(string.IsNullOrEmpty(Model.Notes)
+                            ? "Sem observações"
+                            : Model.Notes)
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- EVOLUCAO -->
+
+
+                <div class="col-md-12">
+
+
+                    <h6 class="fw-bold text-success">
+
+                        <i class="bi bi-file-medical"></i>
+
+                        Evolução
+
+                    </h6>
+
+
+                    <div class="bg-light rounded-3 p-3">
+
+
+                        @(string.IsNullOrEmpty(Model.Evolution)
+                            ? "Sem evolução registrada"
+                            : Model.Evolution)
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

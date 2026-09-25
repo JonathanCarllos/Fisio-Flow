@@ -39,8 +39,6 @@ namespace FisioFlow_Web.Areas.Admin.Services
             return await JsonSerializer.DeserializeAsync<IEnumerable<PatientViewModel>>(stream, _options);
         }
 
-
-
         public async Task<PatientViewModel> GetPatientByIdAsync(int id)
         {
             var client = _clientFactory.CreateClient("FisioFlowAPI");
@@ -57,8 +55,6 @@ namespace FisioFlow_Web.Areas.Admin.Services
             return await JsonSerializer.DeserializeAsync<PatientViewModel>(stream, _options);
         }
 
-
-
         public async Task<PatientViewModel> CreatePatientAsync(PatientViewModel patientVM)
         {
             var client = _clientFactory.CreateClient("FisioFlowAPI");
@@ -72,8 +68,6 @@ namespace FisioFlow_Web.Areas.Admin.Services
 
             return await JsonSerializer.DeserializeAsync<PatientViewModel>(stream, _options);
         }
-
-
 
         public async Task<PatientViewModel> UpdatePatientAsync(PatientViewModel patientVM)
         {
@@ -111,15 +105,11 @@ namespace FisioFlow_Web.Areas.Admin.Services
             );
         }
 
-
-
         public async Task<bool> DeletePatientAsync(int id)
         {
             var client = _clientFactory.CreateClient("FisioFlowAPI");
 
-
             using var response = await client.DeleteAsync(apiEndpoint + id);
-
 
             return response.IsSuccessStatusCode;
         }

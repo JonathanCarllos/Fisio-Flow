@@ -1,9 +1,9 @@
 ﻿namespace FisioFlow_API.Enums
 {
-    public enum Status
+    public enum SessionStatus
     {
-        Paind = 1,
-        Pending = 2,
+        Pending = 1,
+        Paid = 2,
         Overdue = 3,
         Cancelled = 4
     }

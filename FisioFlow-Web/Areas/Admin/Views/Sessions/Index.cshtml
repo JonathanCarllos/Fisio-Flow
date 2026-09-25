@@ -1,0 +1,331 @@
+﻿@model IEnumerable<FisioFlow_Web.Areas.Admin.Models.SessionViewModel>
+
+@{
+    ViewData["Title"] = "Agenda de Sessões";
+}
+
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css"
+      rel="stylesheet" />
+
+
+<style>
+
+    .calendar-card {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 10px 25px rgba(0,0,0,.08);
+    }
+
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #047857;
+    }
+
+
+    .btn-new {
+        background: #10b981;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+    }
+
+
+        .btn-new:hover {
+            background: #047857;
+            color: white;
+        }
+
+
+    .fc .fc-toolbar-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #047857;
+    }
+
+
+    .fc-button-primary {
+        background: #10b981 !important;
+        border-color: #10b981 !important;
+    }
+
+
+        .fc-button-primary:hover {
+            background: #047857 !important;
+        }
+
+
+    .fc-event {
+        border-radius: 8px;
+        padding: 4px;
+        cursor: pointer;
+    }
+
+</style>
+
+
+<div class="container-fluid px-4">
+
+
+    <!-- Cabeçalho -->
+
+    <div class="page-header">
+
+
+        <div>
+
+            <h1 class="page-title">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                Agenda de Sessões
+
+            </h1>
+
+
+            <p class="text-muted">
+
+                Controle dos atendimentos dos pacientes
+
+            </p>
+
+        </div>
+
+
+
+        <a asp-action="Create"
+           class="btn btn-new">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Nova Sessão
+
+        </a>
+
+
+    </div>
+
+
+
+    <!-- Calendário -->
+
+    <div class="calendar-card">
+
+
+        <div id="calendar"></div>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+@section Scripts {
+
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+
+
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+
+            var calendarEl = document.getElementById('calendar');
+
+
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+
+
+                locale: 'pt-br',
+
+
+                initialView: 'dayGridMonth',
+
+
+
+                headerToolbar: {
+
+
+                    left: 'prev,next today',
+
+
+                    center: 'title',
+
+
+                    right:
+                    'dayGridMonth,timeGridWeek,timeGridDay'
+
+                },
+
+
+
+                buttonText:{
+
+
+                    today:'Hoje',
+
+                    month:'Mês',
+
+                    week:'Semana',
+
+                    day:'Dia'
+
+                },
+
+
+
+                height:750,
+
+
+
+              events: [
+
+@foreach (var session in Model)
+{
+
+    var start = session.Date.ToDateTime(session.Time);
+
+    var end = start.AddMinutes(session.Duration);
+
+
+    var title =
+        $"{session.PatientName ?? "Paciente"} - {session.PhysiotherapistName ?? "Fisioterapeuta"}";
+
+
+    <text>
+
+    {
+
+        id:
+        '@session.SessionId',
+
+
+
+        title:
+        @Html.Raw(
+            System.Text.Json.JsonSerializer.Serialize(title)
+        ),
+
+
+
+        start:
+        '@start.ToString("yyyy-MM-ddTHH:mm:ss")',
+
+
+
+        end:
+        '@end.ToString("yyyy-MM-ddTHH:mm:ss")',
+
+
+
+        backgroundColor:
+        '@(!string.IsNullOrEmpty(session.PhysiotherapistColor)
+            ? session.PhysiotherapistColor
+            : "#10b981")',
+
+
+
+        borderColor:
+        '@(!string.IsNullOrEmpty(session.PhysiotherapistColor)
+            ? session.PhysiotherapistColor
+            : "#047857")',
+
+
+
+        textColor:
+        "#ffffff",
+
+
+
+        extendedProps:
+        {
+
+            patient:
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    session.PatientName ?? ""
+                )
+            ),
+
+
+            physiotherapist:
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                    session.PhysiotherapistName ?? ""
+                )
+            ),
+
+
+            duration:
+            '@session.Duration'
+
+
+        }
+
+
+    },
+
+    </text>
+
+}
+
+],
+
+
+
+
+                eventClick:function(info){
+
+
+                    let id = info.event.id;
+
+
+
+                    window.location.href =
+                    '/Admin/Sessions/Details/' + id;
+
+
+                }
+
+
+
+
+            });
+
+
+
+            calendar.render();
+
+
+
+        });
+
+
+
+    </script>
+
+
+}

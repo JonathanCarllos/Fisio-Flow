@@ -17,7 +17,7 @@ namespace FisioFlow_API.Models
         public DateTime DueDate { get; set; }
 
 
-        public Status Status { get; set; }
+        public bool Status { get; set; }
 
 
         public string? Description { get; set; }

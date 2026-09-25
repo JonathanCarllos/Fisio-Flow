@@ -12,6 +12,7 @@ namespace FisioFlow_API.Controllers
     [ApiController]
     public class SessionsController : ControllerBase
     {
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
@@ -26,67 +27,193 @@ namespace FisioFlow_API.Controllers
 
 
 
+
         // GET: api/Sessions
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SessionDTO>>> GetSessions()
         {
+
             var sessions = await _unitOfWork
                 .SessionRepository
                 .GetAllSessionsAsync();
 
 
-            var result = _mapper.Map<IEnumerable<SessionDTO>>(sessions);
+            var result = sessions.Select(s => new SessionDTO
+            {
+                SessionId = s.SessionId,
+
+                Date = s.Date,
+
+                Time = s.Time,
+
+                Duration = s.Duration,
+
+                Status = s.Status,
+
+                Notes = s.Notes,
+
+                Evolution = s.Evolution,
+
+
+                PatientId = s.PatientId,
+
+                PatientName = s.Patient?.Name,
+
+
+                PhysiotherapistId = s.PhysiotherapistId,
+
+                PhysiotherapistName = s.Physiotherapist?.Name,
+
+                PhysiotherapistColor = s.Physiotherapist?.Color
+
+            });
 
 
             return Ok(result);
+
+
+            return Ok(result);
+
         }
 
 
 
 
-        // GET: api/Sessions/{id}
+
+        // GET: api/Sessions/1
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<SessionDTO>> GetSession(int id)
         {
+
             var session = await _unitOfWork
                 .SessionRepository
                 .GetSessionByIdAsync(id);
 
 
-            if (session is null)
+
+            if (session == null)
             {
                 return NotFound(new
                 {
-                    message = $"Sessão com ID {id} não encontrada."
+                    message = "Sessão não encontrada."
                 });
             }
+
 
 
             var result = _mapper.Map<SessionDTO>(session);
 
 
+
             return Ok(result);
+
         }
 
 
 
 
+
         // POST: api/Sessions
+
         [HttpPost]
-        public async Task<ActionResult<SessionDTO>> CreateSession(
-            SessionDTO dto)
+        public async Task<ActionResult<SessionDTO>> Create(
+            [FromBody] SessionDTO dto)
         {
 
-            if (dto is null)
+
+            if (dto == null)
             {
                 return BadRequest(new
                 {
-                    message = "Os dados da sessão são obrigatórios."
+                    message = "Dados da sessão obrigatórios."
                 });
             }
 
 
-            var session = _mapper.Map<Session>(dto);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+
+
+
+            // Verifica paciente
+
+            var patient = await _unitOfWork
+                .PatientRepository
+                .GetPatientByIdAsync(dto.PatientId);
+
+
+
+            if (patient == null)
+            {
+                return NotFound(new
+                {
+                    message = "Paciente não encontrado."
+                });
+            }
+
+
+
+
+
+            // Verifica fisioterapeuta
+
+            var physiotherapist = await _unitOfWork
+                .PhysiotherapistRepository
+                .GetPhysiotherapistByIdAsync(
+                    dto.PhysiotherapistId
+                );
+
+
+
+            if (physiotherapist == null)
+            {
+                return NotFound(new
+                {
+                    message = "Fisioterapeuta não encontrado."
+                });
+            }
+
+
+
+
+
+            // Cria somente a sessão
+
+            var session = new Session
+            {
+
+                Date = dto.Date,
+
+                Time = dto.Time,
+
+                Duration = dto.Duration,
+
+                Status = dto.Status,
+
+
+                Notes = dto.Notes ?? string.Empty,
+
+
+                Evolution = dto.Evolution ?? string.Empty,
+
+
+                PatientId = patient.PatientId,
+
+
+                PhysiotherapistId =
+                    physiotherapist.PhysiotherapistId
+
+            };
+
+
+
 
 
 
@@ -100,70 +227,103 @@ namespace FisioFlow_API.Controllers
 
 
 
-            var result = _mapper.Map<SessionDTO>(session);
+
+
+
+            // Busca novamente com relacionamentos
+
+            var createdSession = await _unitOfWork
+                .SessionRepository
+                .GetSessionByIdAsync(
+                    session.SessionId
+                );
+
+
+
+            var result = _mapper
+                .Map<SessionDTO>(createdSession);
+
 
 
 
             return CreatedAtAction(
                 nameof(GetSession),
-                new { id = session.SessionId },
+                new
+                {
+                    id = session.SessionId
+                },
                 result
             );
+
         }
 
 
 
 
-        // PUT: api/Sessions/{id}
+
+
+        // PUT: api/Sessions/1
+
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateSession(
+        public async Task<IActionResult> Update(
             int id,
-            SessionDTO dto)
+            [FromBody] SessionDTO dto)
         {
 
-            if (dto is null)
+
+            if (!ModelState.IsValid)
             {
-                return BadRequest(new
-                {
-                    message = "Os dados da sessão são obrigatórios."
-                });
+                return BadRequest(ModelState);
             }
 
 
 
-            if (id != dto.SessionId)
-            {
-                return BadRequest(new
-                {
-                    message = "O ID da URL não corresponde ao ID da sessão."
-                });
-            }
-
-
-
-            var existingSession = await _unitOfWork
+            var session = await _unitOfWork
                 .SessionRepository
                 .GetSessionByIdAsync(id);
 
 
 
-            if (existingSession is null)
+            if (session == null)
             {
                 return NotFound(new
                 {
-                    message = $"Sessão com ID {id} não encontrada."
+                    message = "Sessão não encontrada."
                 });
             }
 
 
 
-            _mapper.Map(dto, existingSession);
+
+
+            session.Date = dto.Date;
+
+            session.Time = dto.Time;
+
+            session.Duration = dto.Duration;
+
+            session.Status = dto.Status;
+
+
+            session.Notes = dto.Notes ?? string.Empty;
+
+
+            session.Evolution = dto.Evolution ?? string.Empty;
+
+
+            session.PatientId = dto.PatientId;
+
+
+            session.PhysiotherapistId =
+                dto.PhysiotherapistId;
+
+
 
 
 
             await _unitOfWork
                 .SessionRepository
-                .UpdateSessionAsync(existingSession);
+                .UpdateSessionAsync(session);
 
 
 
@@ -171,42 +331,56 @@ namespace FisioFlow_API.Controllers
 
 
 
+
             return NoContent();
+
         }
 
 
 
 
-        // DELETE: api/Sessions/{id}
+
+
+
+        // DELETE: api/Sessions/1
+
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteSession(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                var session = await _unitOfWork
-                    .SessionRepository
-                    .DeleteSessionAsync(id);
+
+            var session = await _unitOfWork
+                .SessionRepository
+                .GetSessionByIdAsync(id);
 
 
 
-                await _unitOfWork.Commit();
-
-
-
-                return Ok(new
-                {
-                    message = "Sessão removida com sucesso.",
-                    data = _mapper.Map<SessionDTO>(session)
-                });
-
-            }
-            catch (KeyNotFoundException)
+            if (session == null)
             {
                 return NotFound(new
                 {
-                    message = $"Sessão com ID {id} não encontrada."
+                    message = "Sessão não encontrada."
                 });
             }
+
+
+
+
+            await _unitOfWork
+                .SessionRepository
+                .DeleteSessionAsync(id);
+
+
+
+            await _unitOfWork.Commit();
+
+
+
+            return Ok(new
+            {
+                message = "Sessão removida com sucesso."
+            });
+
         }
+
     }
 }

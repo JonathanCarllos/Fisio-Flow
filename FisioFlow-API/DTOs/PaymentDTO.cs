@@ -27,7 +27,7 @@ namespace FisioFlow_API.DTOs
 
 
         [Required(ErrorMessage = "O status do pagamento é obrigatório.")]
-        public Status Status { get; set; }
+        public bool Status { get; set; }
 
 
 

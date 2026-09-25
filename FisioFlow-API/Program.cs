@@ -1,4 +1,5 @@
 using FisioFlow_API.Context;
+using FisioFlow_API.Converters;
 using FisioFlow_API.Extensions;
 using FisioFlow_API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +17,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
+
         options.JsonSerializerOptions.ReferenceHandler =
-            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+            ReferenceHandler.IgnoreCycles;
+
+
+        options.JsonSerializerOptions.Converters.Add(
+            new TimeOnlyJsonConverter()
+        );
+
     });
 
 
