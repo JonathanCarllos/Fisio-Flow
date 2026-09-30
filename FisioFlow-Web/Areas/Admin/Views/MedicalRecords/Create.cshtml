@@ -1,0 +1,590 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.MedicalRecordViewModel
+
+@{
+    ViewData["Title"] = "Novo Prontuário";
+
+    var patients = ViewBag.Patients
+        as IEnumerable<FisioFlow_Web.Areas.Admin.Models.PatientViewModel>
+        ?? Enumerable.Empty<FisioFlow_Web.Areas.Admin.Models.PatientViewModel>();
+
+    var physiotherapists = ViewBag.Physiotherapists
+        as IEnumerable<FisioFlow_Web.Areas.Admin.Models.PhysiotherapistViewModel>
+        ?? Enumerable.Empty<FisioFlow_Web.Areas.Admin.Models.PhysiotherapistViewModel>();
+}
+
+<div class="container-fluid px-4 pb-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+
+        <div>
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="d-flex align-items-center justify-content-center rounded-3 bg-success-subtle"
+                     style="width: 48px; height: 48px;">
+
+                    <i class="fas fa-file-medical text-success fs-5"></i>
+
+                </div>
+
+                <div>
+
+                    <h2 class="fw-bold mb-1">
+                        Novo Prontuário
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Cadastre um novo registro clínico para o paciente.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="MedicalRecords"
+           asp-action="Index"
+           class="btn btn-light border shadow-sm px-4">
+
+            <i class="fas fa-arrow-left me-2"></i>
+            Voltar
+
+        </a>
+
+    </div>
+
+
+    <!-- Formulário -->
+    <form asp-area="Admin"
+          asp-controller="MedicalRecords"
+          asp-action="Create"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+        <!-- Validações -->
+        <div asp-validation-summary="ModelOnly"
+             class="alert alert-danger shadow-sm"
+             role="alert">
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- ===================================== -->
+            <!-- DADOS DO PRONTUÁRIO -->
+            <!-- ===================================== -->
+
+            <div class="col-12">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-header bg-white border-0 px-4 py-3">
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-success-subtle"
+                                 style="width: 42px; height: 42px;">
+
+                                <i class="fas fa-notes-medical text-success"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+                                    Informações do Prontuário
+                                </h5>
+
+                                <small class="text-muted">
+                                    Defina o tipo e os responsáveis pelo registro.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-body px-4 pb-4">
+
+                        <div class="row g-4">
+
+                            <!-- Tipo -->
+                            <div class="col-md-6">
+
+                                <label asp-for="RecordType"
+                                       class="form-label fw-semibold">
+
+                                    <i class="fas fa-layer-group text-success me-2"></i>
+                                    Tipo do Prontuário
+
+                                </label>
+
+                                <select asp-for="RecordType"
+                                        class="form-select form-select-lg">
+
+                                    <option value="0">
+                                        Selecione o tipo
+                                    </option>
+
+                                    <option value="1">
+                                        Avaliação Inicial
+                                    </option>
+
+                                    <option value="2">
+                                        Evolução
+                                    </option>
+
+                                    <option value="3">
+                                        Exame
+                                    </option>
+
+                                    <option value="4">
+                                        Alta
+                                    </option>
+
+                                </select>
+
+                                <div class="form-text">
+                                    Selecione a categoria do registro clínico.
+                                </div>
+
+                                <span asp-validation-for="RecordType"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Paciente -->
+                            <div class="col-md-6">
+
+                                <label asp-for="PatientId"
+                                       class="form-label fw-semibold">
+
+                                    <i class="fas fa-user text-success me-2"></i>
+                                    Paciente
+
+                                </label>
+
+                                <select asp-for="PatientId"
+                                        class="form-select form-select-lg">
+
+                                    <option value="0">
+                                        Selecione o paciente
+                                    </option>
+
+                                    @foreach (var patient in patients)
+                                    {
+                                        <option value="@patient.PatientId">
+                                            @patient.Name
+                                        </option>
+                                    }
+
+                                </select>
+
+                                <div class="form-text">
+                                    Paciente relacionado a este prontuário.
+                                </div>
+
+                                <span asp-validation-for="PatientId"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Fisioterapeuta -->
+                            <div class="col-md-6">
+
+                                <label asp-for="PhysiotherapistId"
+                                       class="form-label fw-semibold">
+
+                                    <i class="fas fa-user-md text-primary me-2"></i>
+                                    Fisioterapeuta
+
+                                </label>
+
+                                <select asp-for="PhysiotherapistId"
+                                        class="form-select form-select-lg">
+
+                                    <option value="0">
+                                        Selecione o fisioterapeuta
+                                    </option>
+
+                                    @foreach (var physiotherapist in physiotherapists)
+                                    {
+                                        <option value="@physiotherapist.PhysiotherapistId">
+                                            @physiotherapist.Name
+                                        </option>
+                                    }
+
+                                </select>
+
+                                <div class="form-text">
+                                    Profissional responsável pelo registro.
+                                </div>
+
+                                <span asp-validation-for="PhysiotherapistId"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Sessão -->
+                            <div class="col-md-6">
+
+                                <label asp-for="SessionId"
+                                       class="form-label fw-semibold">
+
+                                    <i class="fas fa-calendar-check text-secondary me-2"></i>
+                                    Sessão
+
+                                    <span class="text-muted fw-normal">
+                                        (opcional)
+                                    </span>
+
+                                </label>
+
+                                <input asp-for="SessionId"
+                                       type="number"
+                                       min="1"
+                                       class="form-control form-control-lg"
+                                       placeholder="Informe o ID da sessão" />
+
+                                <div class="form-text">
+                                    Vincule este prontuário a uma sessão existente.
+                                </div>
+
+                                <span asp-validation-for="SessionId"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===================================== -->
+            <!-- IDENTIFICAÇÃO -->
+            <!-- ===================================== -->
+
+            <div class="col-12">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-header bg-white border-0 px-4 py-3">
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-primary-subtle"
+                                 style="width: 42px; height: 42px;">
+
+                                <i class="fas fa-heading text-primary"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+                                    Identificação
+                                </h5>
+
+                                <small class="text-muted">
+                                    Informe o título e o diagnóstico funcional.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-body px-4 pb-4">
+
+                        <div class="row g-4">
+
+                            <!-- Título -->
+                            <div class="col-12">
+
+                                <label asp-for="Title"
+                                       class="form-label fw-semibold">
+
+                                    <i class="fas fa-heading text-primary me-2"></i>
+                                    Título
+
+                                </label>
+
+                                <input asp-for="Title"
+                                       type="text"
+                                       class="form-control form-control-lg"
+                                       maxlength="200"
+                                       placeholder="Ex.: Avaliação fisioterapêutica inicial" />
+
+                                <div class="form-text">
+                                    Utilize um título curto para identificar o prontuário.
+                                </div>
+
+                                <span asp-validation-for="Title"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+
+                            <!-- Diagnóstico -->
+                            <div class="col-12">
+
+                                <label asp-for="FunctionalDiagnosis"
+                                       class="form-label fw-semibold">
+
+                                    <i class="fas fa-stethoscope text-danger me-2"></i>
+                                    Diagnóstico Funcional
+
+                                </label>
+
+                                <textarea asp-for="FunctionalDiagnosis"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Informe o diagnóstico funcional do paciente..."></textarea>
+
+                                <div class="form-text">
+                                    Descreva as limitações funcionais identificadas durante a avaliação.
+                                </div>
+
+                                <span asp-validation-for="FunctionalDiagnosis"
+                                      class="text-danger">
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===================================== -->
+            <!-- CONTEÚDO CLÍNICO -->
+            <!-- ===================================== -->
+
+            <div class="col-12">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-header bg-white border-0 px-4 py-3">
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-info-subtle"
+                                 style="width: 42px; height: 42px;">
+
+                                <i class="fas fa-file-medical-alt text-info"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+                                    Conteúdo Clínico
+                                </h5>
+
+                                <small class="text-muted">
+                                    Registre as informações e observações do atendimento.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-body px-4 pb-4">
+
+                        <label asp-for="Content"
+                               class="form-label fw-semibold">
+
+                            <i class="fas fa-align-left text-info me-2"></i>
+                            Conteúdo do Prontuário
+
+                        </label>
+
+                        <textarea asp-for="Content"
+                                  class="form-control"
+                                  rows="10"
+                                  placeholder="Descreva a avaliação, evolução, procedimentos realizados, observações e demais informações clínicas..."></textarea>
+
+                        <div class="form-text">
+                            Registre as informações relevantes do atendimento.
+                        </div>
+
+                        <span asp-validation-for="Content"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===================================== -->
+            <!-- ARQUIVO -->
+            <!-- ===================================== -->
+
+            <div class="col-12">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-header bg-white border-0 px-4 py-3">
+
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-warning-subtle"
+                                 style="width: 42px; height: 42px;">
+
+                                <i class="fas fa-paperclip text-warning"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5 class="fw-bold mb-1">
+                                    Documento
+                                </h5>
+
+                                <small class="text-muted">
+                                    Adicione um link para um documento relacionado.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-body px-4 pb-4">
+
+                        <label asp-for="FileUrl"
+                               class="form-label fw-semibold">
+
+                            <i class="fas fa-link text-warning me-2"></i>
+                            URL do Arquivo
+
+                            <span class="text-muted fw-normal">
+                                (opcional)
+                            </span>
+
+                        </label>
+
+                        <div class="input-group input-group-lg">
+
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-link text-muted"></i>
+                            </span>
+
+                            <input asp-for="FileUrl"
+                                   type="url"
+                                   class="form-control"
+                                   placeholder="https://exemplo.com/documento.pdf" />
+
+                        </div>
+
+                        <div class="form-text">
+                            Informe uma URL pública ou acessível pelo sistema.
+                        </div>
+
+                        <span asp-validation-for="FileUrl"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ===================================== -->
+            <!-- BOTÕES -->
+            <!-- ===================================== -->
+
+            <div class="col-12">
+
+                <div class="card border-0 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+
+                            <div class="text-muted small">
+
+                                <i class="fas fa-info-circle me-1"></i>
+
+                                Confira os dados antes de salvar o prontuário.
+
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+
+                                <a asp-area="Admin"
+                                   asp-controller="MedicalRecords"
+                                   asp-action="Index"
+                                   class="btn btn-light border px-4">
+
+                                    <i class="fas fa-times me-2"></i>
+                                    Cancelar
+
+                                </a>
+
+                                <button type="submit"
+                                        class="btn btn-success px-4 shadow-sm">
+
+                                    <i class="fas fa-save me-2"></i>
+                                    Salvar Prontuário
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

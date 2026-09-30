@@ -7,45 +7,70 @@ namespace FisioFlow_API.DTOs.Mappings
     {
         public MappingProfile()
         {
+            // ============================================================
+            // PATIENT
+            // ============================================================
+
             CreateMap<Patient, PatientDTO>()
                 .ReverseMap();
 
+
+            // ============================================================
+            // PHYSIOTHERAPIST
+            // ============================================================
 
             CreateMap<Physiotherapist, PhysiotherapistDTO>()
                 .ReverseMap();
 
 
+            // ============================================================
+            // TREATMENT
+            // ============================================================
+
             CreateMap<Treatment, TreatmentDTO>()
                 .ReverseMap();
 
+
+            // ============================================================
+            // PAYMENT
+            // ============================================================
 
             CreateMap<Payment, PaymentDTO>()
                 .ReverseMap();
 
 
+            // ============================================================
+            // EXPENSE
+            // ============================================================
+
             CreateMap<Expense, ExpenseDTO>()
                 .ReverseMap();
 
 
+            // ============================================================
+            // SESSION
+            // ============================================================
 
-            // Session Entity -> DTO (GET)
+            // Entity -> DTO
             CreateMap<Session, SessionDTO>()
                 .ForMember(
                     dest => dest.PatientName,
                     opt => opt.MapFrom(
-                        src => src.Patient.Name
+                        src => src.Patient != null
+                            ? src.Patient.Name
+                            : null
                     )
                 )
                 .ForMember(
                     dest => dest.PhysiotherapistName,
                     opt => opt.MapFrom(
-                        src => src.Physiotherapist.Name
+                        src => src.Physiotherapist != null
+                            ? src.Physiotherapist.Name
+                            : null
                     )
                 );
 
-
-
-            // DTO -> Session (POST / PUT)
+            // DTO -> Entity
             CreateMap<SessionDTO, Session>()
                 .ForMember(
                     dest => dest.Patient,
@@ -57,9 +82,41 @@ namespace FisioFlow_API.DTOs.Mappings
                 );
 
 
+            // ============================================================
+            // MEDICAL RECORD
+            // ============================================================
 
+            // Entity -> DTO
+            // Usado nos GETs
             CreateMap<MedicalRecord, MedicalRecordDTO>()
-                .ReverseMap();
+                .ForMember(
+                    dest => dest.PatientName,
+                    opt => opt.MapFrom(
+                        src => src.Patient != null
+                            ? src.Patient.Name
+                            : null
+                    )
+                )
+                .ForMember(
+                    dest => dest.PhysiotherapistName,
+                    opt => opt.MapFrom(
+                        src => src.Physiotherapist != null
+                            ? src.Physiotherapist.Name
+                            : null
+                    )
+                );
+
+            // DTO -> Entity
+            // Usado no POST e PUT
+            CreateMap<MedicalRecordDTO, MedicalRecord>()
+                .ForMember(
+                    dest => dest.Patient,
+                    opt => opt.Ignore()
+                )
+                .ForMember(
+                    dest => dest.Physiotherapist,
+                    opt => opt.Ignore()
+                );
         }
     }
 }

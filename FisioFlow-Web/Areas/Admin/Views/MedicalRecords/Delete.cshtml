@@ -1,0 +1,529 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.MedicalRecordViewModel
+
+@{
+ViewData["Title"] = "Excluir Prontuário";
+}
+
+<div class="container-fluid px-4 pb-4">
+
+
+<!-- Cabeçalho -->
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+
+    <div>
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="d-flex align-items-center justify-content-center rounded-3 bg-danger-subtle"
+                 style="width: 48px; height: 48px;">
+
+                <i class="fas fa-trash-alt text-danger fs-5"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="fw-bold mb-1">
+                    Excluir Prontuário
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Confirme a exclusão do registro clínico.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <a asp-area="Admin"
+       asp-controller="MedicalRecords"
+       asp-action="Index"
+       class="btn btn-light border shadow-sm px-4">
+
+        <i class="fas fa-arrow-left me-2"></i>
+        Voltar
+
+    </a>
+
+</div>
+
+
+<div class="row justify-content-center">
+
+    <div class="col-12 col-xl-9">
+
+        <!-- Alerta -->
+        <div class="alert alert-danger border-0 shadow-sm d-flex align-items-start gap-3 mb-4"
+             role="alert">
+
+            <div class="d-flex align-items-center justify-content-center rounded-circle bg-danger text-white flex-shrink-0"
+                 style="width: 42px; height: 42px;">
+
+                <i class="fas fa-exclamation-triangle"></i>
+
+            </div>
+
+            <div>
+
+                <h6 class="fw-bold mb-1">
+                    Atenção!
+                </h6>
+
+                <p class="mb-0">
+                    Você está prestes a excluir este prontuário.
+                    Essa ação não poderá ser desfeita.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Card principal -->
+        <div class="card border-0 shadow-sm">
+
+            <!-- Cabeçalho -->
+            <div class="card-header bg-white border-0 px-4 py-4">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="d-flex align-items-center justify-content-center rounded-4 bg-danger-subtle"
+                         style="width: 60px; height: 60px;">
+
+                        <i class="fas fa-file-medical text-danger fa-lg"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4 class="fw-bold mb-1">
+
+                            @(string.IsNullOrWhiteSpace(Model.Title)
+                                ? "Prontuário sem título"
+                                : Model.Title)
+
+                        </h4>
+
+                        <span class="text-muted">
+
+                            <i class="fas fa-hashtag me-1"></i>
+
+                            Prontuário #@Model.MedicalRecordId
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Informações -->
+            <div class="card-body px-4">
+
+                <div class="row g-4">
+
+                    <!-- Tipo -->
+                    <div class="col-md-6">
+
+                        <div class="bg-light rounded-3 p-3 h-100">
+
+                            <small class="text-muted d-block mb-2">
+
+                                <i class="fas fa-layer-group me-1"></i>
+                                Tipo do prontuário
+
+                            </small>
+
+                            @switch (Model.RecordType)
+                            {
+                                case FisioFlow_Web.Enums.RecordType.InitialEvaluation:
+
+                                    <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 fw-bold">
+
+                                        <i class="fas fa-clipboard-check me-1"></i>
+                                        Avaliação Inicial
+
+                                    </span>
+
+                                    break;
+
+                                case FisioFlow_Web.Enums.RecordType.Evolution:
+
+                                    <span class="badge rounded-pill bg-info-subtle text-info px-3 py-2 fw-bold">
+
+                                        <i class="fas fa-chart-line me-1"></i>
+                                        Evolução
+
+                                    </span>
+
+                                    break;
+
+                                case FisioFlow_Web.Enums.RecordType.Exam:
+
+                                    <span class="badge rounded-pill bg-warning text-dark px-3 py-2 fw-bold">
+
+                                        <i class="fas fa-file-medical-alt me-1"></i>
+                                        Exame
+
+                                    </span>
+
+                                    break;
+
+                                case FisioFlow_Web.Enums.RecordType.Discharge:
+
+                                    <span class="badge rounded-pill bg-success-subtle text-success px-3 py-2 fw-bold">
+
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        Alta
+
+                                    </span>
+
+                                    break;
+
+                                default:
+
+                                    <span class="badge rounded-pill bg-secondary-subtle text-secondary px-3 py-2 fw-bold">
+                                        Não informado
+                                    </span>
+
+                                    break;
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Paciente -->
+                    <div class="col-md-6">
+
+                        <div class="bg-light rounded-3 p-3 h-100">
+
+                            <small class="text-muted d-block mb-2">
+
+                                <i class="fas fa-user me-1"></i>
+                                Paciente
+
+                            </small>
+
+                            <div class="fw-bold">
+
+                                @(string.IsNullOrWhiteSpace(Model.PatientName)
+                                    ? "Paciente não informado"
+                                    : Model.PatientName)
+
+                            </div>
+
+                            <small class="text-muted">
+                                ID #@Model.PatientId
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Fisioterapeuta -->
+                    <div class="col-md-6">
+
+                        <div class="bg-light rounded-3 p-3 h-100">
+
+                            <small class="text-muted d-block mb-2">
+
+                                <i class="fas fa-user-md me-1"></i>
+                                Fisioterapeuta
+
+                            </small>
+
+                            <div class="fw-bold">
+
+                                @(string.IsNullOrWhiteSpace(Model.PhysiotherapistName)
+                                    ? "Fisioterapeuta não informado"
+                                    : Model.PhysiotherapistName)
+
+                            </div>
+
+                            <small class="text-muted">
+                                ID #@Model.PhysiotherapistId
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Sessão -->
+                    <div class="col-md-6">
+
+                        <div class="bg-light rounded-3 p-3 h-100">
+
+                            <small class="text-muted d-block mb-2">
+
+                                <i class="fas fa-calendar-check me-1"></i>
+                                Sessão
+
+                            </small>
+
+                            @if (Model.SessionId.HasValue)
+                            {
+                                <div class="fw-bold">
+                                    Sessão #@Model.SessionId
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-muted">
+                                    Nenhuma sessão vinculada
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Diagnóstico -->
+                    <div class="col-12">
+
+                        <div class="bg-light rounded-3 p-3">
+
+                            <small class="text-muted d-block mb-2">
+
+                                <i class="fas fa-stethoscope me-1"></i>
+                                Diagnóstico Funcional
+
+                            </small>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.FunctionalDiagnosis))
+                            {
+                                <div style="white-space: pre-line;">
+                                    @Model.FunctionalDiagnosis
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Não informado
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Conteúdo -->
+                    <div class="col-12">
+
+                        <div class="bg-light rounded-3 p-3">
+
+                            <small class="text-muted d-block mb-2">
+
+                                <i class="fas fa-file-medical-alt me-1"></i>
+                                Conteúdo do Prontuário
+
+                            </small>
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Content))
+                            {
+                                <div style="white-space: pre-line; line-height: 1.7;">
+                                    @Model.Content
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Nenhum conteúdo informado
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Rodapé -->
+            <div class="card-footer bg-white border-0 px-4 py-4">
+
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+
+                    <div class="text-muted small">
+
+                        <i class="fas fa-info-circle me-1"></i>
+
+                        Esta ação excluirá permanentemente o prontuário.
+
+                    </div>
+
+                    <div class="d-flex gap-2">
+
+                        <a asp-area="Admin"
+                           asp-controller="MedicalRecords"
+                           asp-action="Index"
+                           class="btn btn-light border px-4">
+
+                            <i class="fas fa-times me-2"></i>
+                            Cancelar
+
+                        </a>
+
+
+                        <!-- Botão que abre o modal -->
+                        <button type="button"
+                                class="btn btn-danger px-4 shadow-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#confirmDeleteModal">
+
+                            <i class="fas fa-trash-alt me-2"></i>
+                            Excluir Prontuário
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO -->
+
+<div class="modal fade"
+     id="confirmDeleteModal"
+     tabindex="-1"
+     aria-labelledby="confirmDeleteModalLabel"
+     aria-hidden="true">
+
+
+<div class="modal-dialog modal-dialog-centered">
+
+    <div class="modal-content border-0 shadow-lg">
+
+        <!-- Cabeçalho -->
+        <div class="modal-header border-0 px-4 pt-4">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="d-flex align-items-center justify-content-center rounded-circle bg-danger-subtle"
+                     style="width: 48px; height: 48px;">
+
+                    <i class="fas fa-trash-alt text-danger"></i>
+
+                </div>
+
+                <div>
+
+                    <h5 class="modal-title fw-bold"
+                        id="confirmDeleteModalLabel">
+
+                        Confirmar exclusão
+
+                    </h5>
+
+                    <small class="text-muted">
+                        Esta ação é permanente.
+                    </small>
+
+                </div>
+
+            </div>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Fechar">
+            </button>
+
+        </div>
+
+
+        <!-- Corpo -->
+        <div class="modal-body px-4 py-4">
+
+            <p class="mb-3">
+                Tem certeza que deseja excluir o prontuário:
+            </p>
+
+            <div class="bg-light rounded-3 p-3 mb-3">
+
+                <div class="fw-bold text-dark">
+
+                    <i class="fas fa-file-medical text-danger me-2"></i>
+
+                    @(string.IsNullOrWhiteSpace(Model.Title)
+                        ? "Prontuário sem título"
+                        : Model.Title)
+
+                </div>
+
+                <small class="text-muted">
+
+                    Prontuário #@Model.MedicalRecordId
+
+                </small>
+
+            </div>
+
+            <div class="alert alert-warning border-0 mb-0">
+
+                <i class="fas fa-exclamation-triangle me-2"></i>
+
+                <strong>Atenção:</strong>
+                depois de excluído, este prontuário não poderá ser recuperado.
+
+            </div>
+
+        </div>
+
+
+        <!-- Rodapé -->
+        <div class="modal-footer border-0 px-4 pb-4">
+
+            <button type="button"
+                    class="btn btn-light border px-4"
+                    data-bs-dismiss="modal">
+
+                <i class="fas fa-times me-2"></i>
+                Cancelar
+
+            </button>
+
+
+            <!-- Formulário de exclusão -->
+            <form asp-area="Admin"
+                  asp-controller="MedicalRecords"
+                  asp-action="DeleteConfirmed"
+                  method="post"
+                  class="d-inline">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="id"
+                       value="@Model.MedicalRecordId" />
+
+                <button type="submit"
+                        class="btn btn-danger px-4">
+
+                    <i class="fas fa-trash-alt me-2"></i>
+                    Sim, excluir
+
+                </button>
+
+            </form>

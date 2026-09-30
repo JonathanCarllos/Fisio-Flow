@@ -1,8 +1,8 @@
-﻿using FisioFlow_API.Enums;
+﻿using FisioFlow_Web.Enums;
 
-namespace FisioFlow_API.DTOs
+namespace FisioFlow_Web.Areas.Admin.Models
 {
-    public class MedicalRecordDTO
+    public class MedicalRecordViewModel
     {
         public int MedicalRecordId { get; set; }
 
@@ -19,13 +19,13 @@ namespace FisioFlow_API.DTOs
         // FK Patient
         public int PatientId { get; set; }
 
-        // Nome do paciente - somente retorno da API
+        // Nome do paciente - retorno da API
         public string? PatientName { get; set; }
 
         // FK Physiotherapist
         public int PhysiotherapistId { get; set; }
 
-        // Nome do fisioterapeuta - somente retorno da API
+        // Nome do fisioterapeuta - retorno da API
         public string? PhysiotherapistName { get; set; }
 
         // FK Session opcional

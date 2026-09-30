@@ -1,0 +1,674 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.MedicalRecordViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Prontuário";
+}
+
+<div class="container-fluid px-4 pb-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+
+        <div>
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="d-flex align-items-center justify-content-center rounded-3 bg-success-subtle"
+                     style="width: 48px; height: 48px;">
+
+                    <i class="fas fa-file-medical text-success fs-5"></i>
+
+                </div>
+
+                <div>
+
+                    <h2 class="fw-bold mb-1">
+                        Detalhes do Prontuário
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Visualize as informações completas do registro clínico.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a asp-area="Admin"
+               asp-controller="MedicalRecords"
+               asp-action="Index"
+               class="btn btn-light border shadow-sm px-3">
+
+                <i class="fas fa-arrow-left me-2"></i>
+                Voltar
+
+            </a>
+
+            <a asp-area="Admin"
+               asp-controller="MedicalRecords"
+               asp-action="Edit"
+               asp-route-id="@Model.MedicalRecordId"
+               class="btn btn-warning shadow-sm px-3">
+
+                <i class="fas fa-edit me-2"></i>
+                Editar
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Identificação do prontuário -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row align-items-center">
+
+                <!-- Ícone -->
+                <div class="col-auto">
+
+                    <div class="d-flex align-items-center justify-content-center rounded-4 bg-success-subtle"
+                         style="width: 70px; height: 70px;">
+
+                        <i class="fas fa-file-medical text-success fa-2x"></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Informações -->
+                <div class="col">
+
+                    <div class="d-flex flex-column flex-md-row align-items-md-center gap-2">
+
+                        <h4 class="fw-bold mb-0">
+                            @(string.IsNullOrWhiteSpace(Model.Title)
+                                ? "Prontuário sem título"
+                                : Model.Title)
+                        </h4>
+
+                        <!-- Tipo -->
+                        @switch (Model.RecordType)
+                        {
+                            case FisioFlow_Web.Enums.RecordType.InitialEvaluation:
+
+                                <span class="badge rounded-pill bg-primary-subtle text-primary px-3 py-2 fw-bold">
+
+                                    <i class="fas fa-clipboard-check me-1"></i>
+                                    Avaliação Inicial
+
+                                </span>
+
+                                break;
+
+                            case FisioFlow_Web.Enums.RecordType.Evolution:
+
+                                <span class="badge rounded-pill bg-info-subtle text-info px-3 py-2 fw-bold">
+
+                                    <i class="fas fa-chart-line me-1"></i>
+                                    Evolução
+
+                                </span>
+
+                                break;
+
+                            case FisioFlow_Web.Enums.RecordType.Exam:
+
+                                <span class="badge rounded-pill bg-warning text-dark px-3 py-2 fw-bold">
+
+                                    <i class="fas fa-file-medical-alt me-1"></i>
+                                    Exame
+
+                                </span>
+
+                                break;
+
+                            case FisioFlow_Web.Enums.RecordType.Discharge:
+
+                                <span class="badge rounded-pill bg-success-subtle text-success px-3 py-2 fw-bold">
+
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    Alta
+
+                                </span>
+
+                                break;
+
+                            default:
+
+                                <span class="badge rounded-pill bg-secondary-subtle text-secondary px-3 py-2 fw-bold">
+
+                                    Não informado
+
+                                </span>
+
+                                break;
+                        }
+
+                    </div>
+
+                    <div class="text-muted mt-2">
+
+                        <i class="fas fa-hashtag me-1"></i>
+                        Prontuário #@Model.MedicalRecordId
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- ========================================= -->
+        <!-- PACIENTE -->
+        <!-- ========================================= -->
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-white border-0 px-4 py-3">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-success-subtle"
+                             style="width: 42px; height: 42px;">
+
+                            <i class="fas fa-user text-success"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Paciente
+                            </h5>
+
+                            <small class="text-muted">
+                                Paciente relacionado ao prontuário
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body px-4">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-success-subtle"
+                             style="width: 54px; height: 54px;">
+
+                            <i class="fas fa-user text-success fs-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="fw-bold fs-5">
+
+                                @(string.IsNullOrWhiteSpace(Model.PatientName)
+                                    ? "Paciente não informado"
+                                    : Model.PatientName)
+
+                            </div>
+
+                            <div class="text-muted">
+
+                                <i class="fas fa-id-card me-1"></i>
+
+                                ID #@Model.PatientId
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- FISIOTERAPEUTA -->
+        <!-- ========================================= -->
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-white border-0 px-4 py-3">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-primary-subtle"
+                             style="width: 42px; height: 42px;">
+
+                            <i class="fas fa-user-md text-primary"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Fisioterapeuta
+                            </h5>
+
+                            <small class="text-muted">
+                                Profissional responsável
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body px-4">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary-subtle"
+                             style="width: 54px; height: 54px;">
+
+                            <i class="fas fa-user-md text-primary fs-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="fw-bold fs-5">
+
+                                @(string.IsNullOrWhiteSpace(Model.PhysiotherapistName)
+                                    ? "Fisioterapeuta não informado"
+                                    : Model.PhysiotherapistName)
+
+                            </div>
+
+                            <div class="text-muted">
+
+                                <i class="fas fa-id-badge me-1"></i>
+
+                                ID #@Model.PhysiotherapistId
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- DIAGNÓSTICO -->
+        <!-- ========================================= -->
+
+        <div class="col-12">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white border-0 px-4 py-3">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-danger-subtle"
+                             style="width: 42px; height: 42px;">
+
+                            <i class="fas fa-stethoscope text-danger"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Diagnóstico Funcional
+                            </h5>
+
+                            <small class="text-muted">
+                                Diagnóstico registrado no prontuário
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body px-4">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.FunctionalDiagnosis))
+                    {
+                        <div class="bg-light rounded-3 p-4">
+
+                            <p class="mb-0"
+                               style="white-space: pre-line;">
+                                @Model.FunctionalDiagnosis
+                            </p>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted">
+
+                            <i class="fas fa-minus-circle me-2"></i>
+
+                            Nenhum diagnóstico funcional informado.
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- CONTEÚDO -->
+        <!-- ========================================= -->
+
+        <div class="col-12">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-white border-0 px-4 py-3">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-info-subtle"
+                             style="width: 42px; height: 42px;">
+
+                            <i class="fas fa-file-medical-alt text-info"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Conteúdo do Prontuário
+                            </h5>
+
+                            <small class="text-muted">
+                                Informações clínicas e observações do atendimento
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body px-4">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Content))
+                    {
+                        <div class="bg-light rounded-3 p-4">
+
+                            <div style="white-space: pre-line; line-height: 1.8;">
+                                @Model.Content
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted">
+
+                            <i class="fas fa-minus-circle me-2"></i>
+
+                            Nenhum conteúdo informado.
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- SESSÃO E ARQUIVO -->
+        <!-- ========================================= -->
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-white border-0 px-4 py-3">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-secondary-subtle"
+                             style="width: 42px; height: 42px;">
+
+                            <i class="fas fa-calendar-check text-secondary"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Sessão
+                            </h5>
+
+                            <small class="text-muted">
+                                Sessão relacionada
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body px-4">
+
+                    @if (Model.SessionId.HasValue)
+                    {
+                        <div class="d-flex align-items-center gap-3">
+
+                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-secondary-subtle"
+                                 style="width: 50px; height: 50px;">
+
+                                <i class="fas fa-calendar-check text-secondary"></i>
+
+                            </div>
+
+                            <div>
+
+                                <div class="fw-bold">
+                                    Sessão #@Model.SessionId
+                                </div>
+
+                                <small class="text-muted">
+                                    Este prontuário está vinculado a uma sessão.
+                                </small>
+
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted">
+
+                            <i class="fas fa-minus-circle me-2"></i>
+
+                            Nenhuma sessão vinculada.
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Arquivo -->
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-white border-0 px-4 py-3">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-warning-subtle"
+                             style="width: 42px; height: 42px;">
+
+                            <i class="fas fa-paperclip text-warning"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Documento
+                            </h5>
+
+                            <small class="text-muted">
+                                Arquivo relacionado ao prontuário
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body px-4">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.FileUrl))
+                    {
+                        <a href="@Model.FileUrl"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="btn btn-outline-warning">
+
+                            <i class="fas fa-external-link-alt me-2"></i>
+
+                            Abrir documento
+
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="text-muted">
+
+                            <i class="fas fa-file-slash me-2"></i>
+
+                            Nenhum documento anexado.
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- RODAPÉ / AÇÕES -->
+        <!-- ========================================= -->
+
+        <div class="col-12">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+
+                        <div class="text-muted small">
+
+                            <i class="fas fa-info-circle me-1"></i>
+
+                            Prontuário #@Model.MedicalRecordId
+
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            <a asp-area="Admin"
+                               asp-controller="MedicalRecords"
+                               asp-action="Index"
+                               class="btn btn-light border px-4">
+
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Voltar
+
+                            </a>
+
+                            <a asp-area="Admin"
+                               asp-controller="MedicalRecords"
+                               asp-action="Edit"
+                               asp-route-id="@Model.MedicalRecordId"
+                               class="btn btn-warning px-4">
+
+                                <i class="fas fa-edit me-2"></i>
+                                Editar
+
+                            </a>
+
+                            <a asp-area="Admin"
+                               asp-controller="MedicalRecords"
+                               asp-action="Delete"
+                               asp-route-id="@Model.MedicalRecordId"
+                               class="btn btn-outline-danger px-4">
+
+                                <i class="fas fa-trash me-2"></i>
+                                Excluir
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

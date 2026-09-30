@@ -16,27 +16,36 @@ namespace FisioFlow_API.Repositories
 
         public async Task<IEnumerable<MedicalRecord>> GetAllMedicalRecordsAsync()
         {
-            return await _context.MedicalRecords.AsNoTracking().ToListAsync();
+            return await _context.MedicalRecords
+                .Include(mr => mr.Patient)
+                .Include(mr => mr.Physiotherapist)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<MedicalRecord>> GetMedicalRecordsByPatientIdAsync(int patientId)
         {
             return await _context.MedicalRecords
+                .Include(mr => mr.Patient)
+                .Include(mr => mr.Physiotherapist)
                 .Where(mr => mr.PatientId == patientId)
                 .AsNoTracking()
                 .ToListAsync();
-        }      
+        }
 
         public async Task<MedicalRecord> GetMedicalRecordByIdAsync(int id)
         {
             return await _context.MedicalRecords
+                .Include(mr => mr.Patient)
+                .Include(mr => mr.Physiotherapist)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(mr => mr.MedicalRecordId == id);
         }
 
-        public async Task<MedicalRecord> AddMedicalRecordAsync(MedicalRecord medicalRecord)
+        public async Task<MedicalRecord> AddMedicalRecordAsync(
+            MedicalRecord medicalRecord)
         {
-            if(medicalRecord is null)
+            if (medicalRecord is null)
                 throw new ArgumentNullException(nameof(medicalRecord));
 
             await _context.MedicalRecords.AddAsync(medicalRecord);
@@ -44,26 +53,29 @@ namespace FisioFlow_API.Repositories
             return medicalRecord;
         }
 
-        public async Task<MedicalRecord> UpdateMedicalRecordAsync(MedicalRecord medicalRecord)
+        public async Task<MedicalRecord> UpdateMedicalRecordAsync(
+            MedicalRecord medicalRecord)
         {
-            if(medicalRecord is null)
+            if (medicalRecord is null)
                 throw new ArgumentNullException(nameof(medicalRecord));
 
             _context.MedicalRecords.Update(medicalRecord);
+
             return medicalRecord;
         }
 
         public async Task<MedicalRecord> DeleteMedicalRecordAsync(int id)
         {
-            var medicalRecord = await _context.MedicalRecords.FindAsync(id);
+            var medicalRecord = await _context.MedicalRecords
+                .FindAsync(id);
 
             if (medicalRecord is null)
-                throw new KeyNotFoundException($"Medical record with ID {id} not found.");
+                throw new KeyNotFoundException(
+                    $"Medical record with ID {id} not found.");
 
             _context.MedicalRecords.Remove(medicalRecord);
 
             return medicalRecord;
         }
-
     }
 }

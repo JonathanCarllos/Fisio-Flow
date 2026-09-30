@@ -23,8 +23,10 @@ namespace FisioFlow_API.Controllers
             _mapper = mapper;
         }
 
-
+        // ============================================================
         // GET: api/MedicalRecords
+        // ============================================================
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MedicalRecordDTO>>> GetMedicalRecords()
         {
@@ -32,21 +34,22 @@ namespace FisioFlow_API.Controllers
                 .MedicalRecordRepository
                 .GetAllMedicalRecordsAsync();
 
-
             var result = _mapper.Map<IEnumerable<MedicalRecordDTO>>(medicalRecords);
 
             return Ok(result);
         }
 
-
+        // ============================================================
         // GET: api/MedicalRecords/patient/{patientId}
+        // ============================================================
+
         [HttpGet("patient/{patientId:int}")]
-        public async Task<ActionResult<IEnumerable<MedicalRecordDTO>>> GetMedicalRecordsByPatientId(int patientId)
+        public async Task<ActionResult<IEnumerable<MedicalRecordDTO>>> GetMedicalRecordsByPatientId(
+            int patientId)
         {
             var medicalRecords = await _unitOfWork
                 .MedicalRecordRepository
                 .GetMedicalRecordsByPatientIdAsync(patientId);
-
 
             if (medicalRecords == null || !medicalRecords.Any())
             {
@@ -56,20 +59,43 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-
             var result = _mapper.Map<IEnumerable<MedicalRecordDTO>>(medicalRecords);
 
             return Ok(result);
         }
 
+        // ============================================================
+        // GET: api/MedicalRecords/{id}
+        // ============================================================
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<MedicalRecordDTO>> GetMedicalRecordById(int id)
+        {
+            var medicalRecord = await _unitOfWork
+                .MedicalRecordRepository
+                .GetMedicalRecordByIdAsync(id);
 
+            if (medicalRecord == null)
+            {
+                return NotFound(new
+                {
+                    message = $"Registro médico com ID {id} não encontrado."
+                });
+            }
+
+            var result = _mapper.Map<MedicalRecordDTO>(medicalRecord);
+
+            return Ok(result);
+        }
+
+        // ============================================================
         // POST: api/MedicalRecords
+        // ============================================================
+
         [HttpPost]
         public async Task<ActionResult<MedicalRecordDTO>> CreateMedicalRecord(
-            MedicalRecordDTO dto)
+            [FromBody] MedicalRecordDTO dto)
         {
-
             if (dto == null)
             {
                 return BadRequest(new
@@ -78,35 +104,72 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
+            if (dto.PatientId <= 0)
+            {
+                return BadRequest(new
+                {
+                    message = "O paciente informado é inválido."
+                });
+            }
+
+            if (dto.PhysiotherapistId <= 0)
+            {
+                return BadRequest(new
+                {
+                    message = "O fisioterapeuta informado é inválido."
+                });
+            }
 
             var medicalRecord = _mapper.Map<MedicalRecord>(dto);
-
 
             await _unitOfWork
                 .MedicalRecordRepository
                 .AddMedicalRecordAsync(medicalRecord);
 
-
             await _unitOfWork.Commit();
 
+            // Busca novamente para carregar Patient e Physiotherapist
+            var createdMedicalRecord = await _unitOfWork
+                .MedicalRecordRepository
+                .GetMedicalRecordByIdAsync(medicalRecord.MedicalRecordId);
 
-            var result = _mapper.Map<MedicalRecordDTO>(medicalRecord);
+            if (createdMedicalRecord == null)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new
+                    {
+                        message = "Não foi possível recuperar o registro médico criado."
+                    });
+            }
 
+            var result = _mapper.Map<MedicalRecordDTO>(createdMedicalRecord);
 
             return CreatedAtAction(
-                nameof(GetMedicalRecordsByPatientId),
-                new { patientId = medicalRecord.PatientId },
+                nameof(GetMedicalRecordById),
+                new
+                {
+                    id = medicalRecord.MedicalRecordId
+                },
                 result);
         }
 
-
-
+        // ============================================================
         // PUT: api/MedicalRecords/{id}
+        // ============================================================
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateMedicalRecord(
             int id,
-            MedicalRecordDTO dto)
+            [FromBody] MedicalRecordDTO dto)
         {
+            if (dto == null)
+            {
+                return BadRequest(new
+                {
+                    message = "Os dados do registro médico são obrigatórios."
+                });
+            }
 
             if (id != dto.MedicalRecordId)
             {
@@ -116,11 +179,25 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
+            if (dto.PatientId <= 0)
+            {
+                return BadRequest(new
+                {
+                    message = "O paciente informado é inválido."
+                });
+            }
+
+            if (dto.PhysiotherapistId <= 0)
+            {
+                return BadRequest(new
+                {
+                    message = "O fisioterapeuta informado é inválido."
+                });
+            }
 
             var existingMedicalRecord = await _unitOfWork
                 .MedicalRecordRepository
                 .GetMedicalRecordByIdAsync(id);
-
 
             if (existingMedicalRecord == null)
             {
@@ -130,32 +207,33 @@ namespace FisioFlow_API.Controllers
                 });
             }
 
-
+            // Atualiza somente os dados do registro.
+            // PatientName e PhysiotherapistName são apenas campos de retorno.
             _mapper.Map(dto, existingMedicalRecord);
 
+            await _unitOfWork
+                .MedicalRecordRepository
+                .UpdateMedicalRecordAsync(existingMedicalRecord);
 
             await _unitOfWork.Commit();
-
 
             return NoContent();
         }
 
-
-
+        // ============================================================
         // DELETE: api/MedicalRecords/{id}
+        // ============================================================
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteMedicalRecord(int id)
         {
-
             try
             {
                 var medicalRecord = await _unitOfWork
                     .MedicalRecordRepository
                     .DeleteMedicalRecordAsync(id);
 
-
                 await _unitOfWork.Commit();
-
 
                 return Ok(new
                 {
