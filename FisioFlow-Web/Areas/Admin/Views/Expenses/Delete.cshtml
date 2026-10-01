@@ -1,0 +1,312 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.ExpenseViewModel
+
+@{
+    ViewData["Title"] = "Excluir Despesa";
+}
+
+<div class="container-fluid px-4 pb-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+        <div>
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="bg-danger bg-opacity-10 text-danger rounded-3 p-3">
+                    <i class="fas fa-trash-alt fa-lg"></i>
+                </div>
+
+                <div>
+                    <h2 class="fw-bold mb-1">Excluir Despesa</h2>
+
+                    <p class="text-muted mb-0">
+                        Confirme a exclusão da despesa selecionada.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Expenses"
+           asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="fas fa-arrow-left me-2"></i>
+            Voltar
+        </a>
+
+    </div>
+
+    <!-- Card -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 py-3">
+
+            <div class="d-flex align-items-center gap-2">
+
+                <i class="fas fa-exclamation-triangle text-warning"></i>
+
+                <span class="fw-semibold">
+                    Confirmar exclusão
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="alert alert-warning d-flex align-items-start gap-3">
+
+                <i class="fas fa-exclamation-circle fa-lg mt-1"></i>
+
+                <div>
+                    <strong>Atenção!</strong>
+
+                    <p class="mb-0 mt-1">
+                        Você está prestes a excluir esta despesa.
+                        Essa ação não poderá ser desfeita.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Informações -->
+            <div class="row g-4 mt-2">
+
+                <!-- Descrição -->
+                <div class="col-12 col-md-6">
+
+                    <label class="form-label text-muted small mb-1">
+                        Descrição
+                    </label>
+
+                    <div class="fw-semibold">
+                        @Model.Description
+                    </div>
+
+                </div>
+
+                <!-- Valor -->
+                <div class="col-12 col-md-6">
+
+                    <label class="form-label text-muted small mb-1">
+                        Valor
+                    </label>
+
+                    <div class="fw-semibold text-danger">
+                        @Model.Amount.ToString("C2")
+                    </div>
+
+                </div>
+
+                <!-- Data -->
+                <div class="col-12 col-md-6">
+
+                    <label class="form-label text-muted small mb-1">
+                        Data
+                    </label>
+
+                    <div>
+                        @Model.Date.ToString("dd/MM/yyyy")
+                    </div>
+
+                </div>
+
+                <!-- Categoria -->
+                <div class="col-12 col-md-6">
+
+                    <label class="form-label text-muted small mb-1">
+                        Categoria
+                    </label>
+
+                    <div>
+                        @Model.Category
+                    </div>
+
+                </div>
+
+                <!-- Forma de pagamento -->
+                <div class="col-12 col-md-6">
+
+                    <label class="form-label text-muted small mb-1">
+                        Forma de pagamento
+                    </label>
+
+                    <div>
+                        @Model.PaymentMethod
+                    </div>
+
+                </div>
+
+                <!-- Status -->
+                <div class="col-12 col-md-6">
+
+                    <label class="form-label text-muted small mb-1">
+                        Status
+                    </label>
+
+                    <div>
+
+                        @if (Model.Status)
+                        {
+                            <span class="badge bg-success">
+                                Ativa
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                Inativa
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+                <!-- Observações -->
+                @if (!string.IsNullOrWhiteSpace(Model.Notes))
+                {
+                    <div class="col-12">
+
+                        <label class="form-label text-muted small mb-1">
+                            Observações
+                        </label>
+
+                        <div class="bg-light rounded-3 p-3">
+                            @Model.Notes
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+            <!-- Botões -->
+            <div class="d-flex justify-content-end gap-2 mt-4 pt-4 border-top">
+
+                <a asp-area="Admin"
+                   asp-controller="Expenses"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary">
+
+                    <i class="fas fa-times me-2"></i>
+                    Cancelar
+                </a>
+
+                <button type="button"
+                        class="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteExpenseModal">
+
+                    <i class="fas fa-trash-alt me-2"></i>
+                    Excluir despesa
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Modal de confirmação -->
+<div class="modal fade"
+     id="deleteExpenseModal"
+     tabindex="-1"
+     aria-labelledby="deleteExpenseModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 shadow">
+
+            <div class="modal-header border-0">
+
+                <h5 class="modal-title fw-bold"
+                    id="deleteExpenseModalLabel">
+
+                    <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+
+                    Confirmar exclusão
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Fechar">
+                </button>
+
+            </div>
+
+            <div class="modal-body text-center px-4">
+
+                <div class="mb-3">
+
+                    <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-inline-flex align-items-center justify-content-center"
+                         style="width: 70px; height: 70px;">
+
+                        <i class="fas fa-trash-alt fa-2x"></i>
+
+                    </div>
+
+                </div>
+
+                <h5 class="fw-bold mb-2">
+                    Deseja realmente excluir esta despesa?
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    A despesa
+                    <strong>@Model.Description</strong>
+                    será excluída permanentemente.
+
+                </p>
+
+            </div>
+
+            <div class="modal-footer border-0 justify-content-center pb-4">
+
+                <button type="button"
+                        class="btn btn-outline-secondary px-4"
+                        data-bs-dismiss="modal">
+
+                    <i class="fas fa-times me-2"></i>
+                    Cancelar
+
+                </button>
+
+                <form asp-area="Admin"
+                      asp-controller="Expenses"
+                      asp-action="Delete"
+                      method="post"
+                      class="d-inline">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           asp-for="ExpenseId" />
+
+                    <button type="submit"
+                            class="btn btn-danger px-4">
+
+                        <i class="fas fa-trash-alt me-2"></i>
+                        Sim, excluir
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

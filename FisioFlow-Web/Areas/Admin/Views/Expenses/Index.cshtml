@@ -1,0 +1,456 @@
+﻿@model IEnumerable<FisioFlow_Web.Areas.Admin.Models.ExpenseViewModel>
+
+@{
+    ViewData["Title"] = "Despesas";
+}
+
+<div class="container-fluid px-4 pb-4">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+        <div>
+            <div class="d-flex align-items-center gap-3 mb-1">
+
+                <div class="d-flex align-items-center justify-content-center rounded-3 bg-primary bg-opacity-10"
+                     style="width: 46px; height: 46px;">
+
+                    <i class="fas fa-wallet text-primary fs-5"></i>
+
+                </div>
+
+                <h2 class="fw-bold mb-0">
+                    Despesas
+                </h2>
+
+            </div>
+
+            <p class="text-muted mb-0">
+                Controle e acompanhe as despesas da clínica.
+            </p>
+        </div>
+
+        <div>
+            <a asp-area="Admin"
+               asp-controller="Expenses"
+               asp-action="Create"
+               class="btn btn-primary px-4 py-2">
+
+                <i class="fas fa-plus me-2"></i>
+                Nova Despesa
+
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Cards -->
+    <div class="row g-4 mb-4">
+
+        <!-- Quantidade -->
+        <div class="col-12 col-md-6 col-xl-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small fw-semibold">
+                                DESPESAS CADASTRADAS
+                            </span>
+
+                            <h2 class="fw-bold mb-1 mt-2">
+                                @ViewBag.Total
+                            </h2>
+
+                            <span class="text-muted small">
+                                @(ViewBag.Total == 1 ? "despesa registrada" : "despesas registradas")
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center rounded-4 bg-primary bg-opacity-10"
+                             style="width: 64px; height: 64px;">
+
+                            <i class="fas fa-receipt text-primary fs-3"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Valor total -->
+        <div class="col-12 col-md-6 col-xl-4">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small fw-semibold">
+                                TOTAL DE GASTOS
+                            </span>
+
+                            <h2 class="fw-bold mb-1 mt-2 text-danger">
+
+                                @if (ViewBag.TotalAmount != null)
+                                {
+                                    @(((decimal)ViewBag.TotalAmount).ToString("C2"))
+                                }
+                                else
+                                {
+                                    @("R$ 0,00")
+                                }
+
+                            </h2>
+
+                            <span class="text-muted small">
+                                Valor acumulado das despesas
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center rounded-4 bg-danger bg-opacity-10"
+                             style="width: 64px; height: 64px;">
+
+                            <i class="fas fa-money-bill-wave text-danger fs-3"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Lista -->
+    <div class="card border-0 shadow-sm overflow-hidden">
+
+        <div class="card-header bg-white border-0 px-4 py-4">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        <i class="fas fa-list-ul text-primary me-2"></i>
+                        Lista de Despesas
+                    </h5>
+
+                    <span class="text-muted small">
+                        Consulte e gerencie todas as despesas cadastradas.
+                    </span>
+
+                </div>
+
+                <div class="badge bg-light text-dark border px-3 py-2 rounded-pill">
+
+                    <i class="fas fa-layer-group me-1"></i>
+
+                    @ViewBag.Total
+                    @(ViewBag.Total == 1 ? "registro" : "registros")
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="bg-light">
+
+                            <tr>
+
+                                <th class="border-0 px-4 py-3 text-muted small text-uppercase">
+                                    Descrição
+                                </th>
+
+                                <th class="border-0 py-3 text-muted small text-uppercase">
+                                    Valor
+                                </th>
+
+                                <th class="border-0 py-3 text-muted small text-uppercase">
+                                    Data
+                                </th>
+
+                                <th class="border-0 py-3 text-muted small text-uppercase">
+                                    Categoria
+                                </th>
+
+                                <th class="border-0 px-4 py-3 text-end text-muted small text-uppercase">
+                                    Ações
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var expense in Model)
+                            {
+                                <tr>
+
+                                    <td class="px-4 py-3">
+
+                                        <div class="d-flex align-items-center gap-3">
+
+                                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-light"
+                                                 style="width: 42px; height: 42px;">
+
+                                                <i class="fas fa-file-invoice-dollar text-primary"></i>
+
+                                            </div>
+
+                                            <div>
+
+                                                <div class="fw-semibold">
+                                                    @expense.Description
+                                                </div>
+
+                                                <small class="text-muted">
+                                                    Despesa #@expense.ExpenseId
+                                                </small>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td class="py-3">
+
+                                        <span class="fw-bold text-danger">
+                                            @expense.Amount.ToString("C2")
+                                        </span>
+
+                                    </td>
+
+
+                                    <td class="py-3">
+
+                                        @if (expense.Date != null)
+                                        {
+                                            <span class="text-muted">
+
+                                                <i class="far fa-calendar-alt me-1"></i>
+
+                                                @expense.Date.ToString("dd/MM/yyyy")
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                Não informado
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <td class="py-3">
+
+                                        @switch (expense.Category)
+                                        {
+                                            case FisioFlow_Web.Enums.Category.rent:
+
+                                                <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary px-3 py-2">
+                                                    Aluguel
+                                                </span>
+
+                                                break;
+
+
+                                            case FisioFlow_Web.Enums.Category.utilities:
+
+                                                <span class="badge rounded-pill bg-info bg-opacity-10 text-info px-3 py-2">
+                                                    Contas / Utilidades
+                                                </span>
+
+                                                break;
+
+
+                                            case FisioFlow_Web.Enums.Category.supplies:
+
+                                                <span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary px-3 py-2">
+                                                    Materiais
+                                                </span>
+
+                                                break;
+
+
+                                            case FisioFlow_Web.Enums.Category.equipment:
+
+                                                <span class="badge rounded-pill bg-dark bg-opacity-10 text-dark px-3 py-2">
+                                                    Equipamentos
+                                                </span>
+
+                                                break;
+
+
+                                            case FisioFlow_Web.Enums.Category.salary:
+
+                                                <span class="badge rounded-pill bg-success bg-opacity-10 text-success px-3 py-2">
+                                                    Salários
+                                                </span>
+
+                                                break;
+
+
+                                            case FisioFlow_Web.Enums.Category.marketing:
+
+                                                <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning-emphasis px-3 py-2">
+                                                    Marketing
+                                                </span>
+
+                                                break;
+
+
+                                            case FisioFlow_Web.Enums.Category.maintenance:
+
+                                                <span class="badge rounded-pill bg-danger bg-opacity-10 text-danger px-3 py-2">
+                                                    Manutenção
+                                                </span>
+
+                                                break;
+
+
+                                            case FisioFlow_Web.Enums.Category.other:
+
+                                                <span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary px-3 py-2">
+                                                    Outros
+                                                </span>
+
+                                                break;
+
+
+                                            default:
+
+                                                <span class="badge rounded-pill bg-secondary bg-opacity-10 text-secondary px-3 py-2">
+                                                    Não informado
+                                                </span>
+
+                                                break;
+                                        }
+
+                                    </td>
+
+
+                                    <td class="px-4 py-3">
+
+                                        <div class="d-flex justify-content-end gap-2">
+
+                                            <a asp-area="Admin"
+                                               asp-controller="Expenses"
+                                               asp-action="Details"
+                                               asp-route-id="@expense.ExpenseId"
+                                               class="btn btn-sm btn-light border"
+                                               title="Visualizar">
+
+                                                <i class="fas fa-eye text-info"></i>
+
+                                            </a>
+
+
+                                            <a asp-area="Admin"
+                                               asp-controller="Expenses"
+                                               asp-action="Edit"
+                                               asp-route-id="@expense.ExpenseId"
+                                               class="btn btn-sm btn-light border"
+                                               title="Editar">
+
+                                                <i class="fas fa-pen text-warning"></i>
+
+                                            </a>
+
+
+                                            <a asp-area="Admin"
+                                               asp-controller="Expenses"
+                                               asp-action="Delete"
+                                               asp-route-id="@expense.ExpenseId"
+                                               class="btn btn-sm btn-light border"
+                                               title="Excluir">
+
+                                                <i class="fas fa-trash text-danger"></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5 px-4">
+
+                    <div class="d-flex align-items-center justify-content-center rounded-circle bg-light mx-auto mb-4"
+                         style="width: 80px; height: 80px;">
+
+                        <i class="fas fa-receipt text-muted fs-2"></i>
+
+                    </div>
+
+                    <h5 class="fw-bold mb-2">
+                        Nenhuma despesa encontrada
+                    </h5>
+
+                    <p class="text-muted mb-4">
+                        Ainda não existem despesas cadastradas no sistema.
+                    </p>
+
+                    <a asp-area="Admin"
+                       asp-controller="Expenses"
+                       asp-action="Create"
+                       class="btn btn-primary px-4">
+
+                        <i class="fas fa-plus me-2"></i>
+                        Cadastrar primeira despesa
+
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

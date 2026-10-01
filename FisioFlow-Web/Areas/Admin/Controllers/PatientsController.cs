@@ -120,10 +120,10 @@ namespace FisioFlow_Web.Areas.Admin.Controllers
 
         [HttpPost(), ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int patientId)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
 
-            var result = await _patientService.DeletePatientAsync(patientId);
+            var result = await _patientService.DeletePatientAsync(id);
 
 
             if (result)

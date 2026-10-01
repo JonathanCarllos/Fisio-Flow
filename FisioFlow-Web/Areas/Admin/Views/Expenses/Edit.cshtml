@@ -1,0 +1,433 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.ExpenseViewModel
+
+@{
+    ViewData["Title"] = "Editar Despesa";
+}
+
+<div class="container-fluid px-4 pb-4">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+
+        <div>
+
+            <div class="d-flex align-items-center gap-3 mb-1">
+
+                <div class="d-flex align-items-center justify-content-center rounded-3 bg-primary bg-opacity-10"
+                     style="width: 46px; height: 46px;">
+
+                    <i class="fas fa-edit text-primary fs-5"></i>
+
+                </div>
+
+                <h2 class="fw-bold mb-0">
+                    Editar Despesa
+                </h2>
+
+            </div>
+
+            <p class="text-muted mb-0">
+                Altere as informações da despesa cadastrada.
+            </p>
+
+        </div>
+
+        <div>
+
+            <a asp-area="Admin"
+               asp-controller="Expenses"
+               asp-action="Index"
+               class="btn btn-light border px-4">
+
+                <i class="fas fa-arrow-left me-2"></i>
+                Voltar
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-12 col-xl-10">
+
+            <div class="card border-0 shadow-sm overflow-hidden">
+
+                <div class="card-header bg-white border-0 px-4 py-4">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-primary bg-opacity-10"
+                             style="width: 48px; height: 48px;">
+
+                            <i class="fas fa-file-invoice-dollar text-primary fs-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Informações da Despesa
+                            </h5>
+
+                            <span class="text-muted small">
+                                Atualize os dados da despesa abaixo.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body px-4 py-4">
+
+                    <form asp-area="Admin"
+                          asp-controller="Expenses"
+                          asp-action="Edit"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               asp-for="ExpenseId" />
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger"
+                             role="alert">
+                        </div>
+
+                        <div class="row g-4">
+
+                            <div class="col-12">
+
+                                <label asp-for="Description"
+                                       class="form-label fw-semibold">
+
+                                    Descrição
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light border-end-0">
+
+                                        <i class="fas fa-align-left text-muted"></i>
+
+                                    </span>
+
+                                    <input asp-for="Description"
+                                           class="form-control border-start-0"
+                                           placeholder="Ex.: Compra de materiais para atendimento"
+                                           maxlength="150"
+                                           autocomplete="off" />
+
+                                </div>
+
+                                <span asp-validation-for="Description"
+                                      class="text-danger small">
+                                </span>
+
+                            </div>
+
+                            <div class="col-12 col-md-6">
+
+                                <label asp-for="Amount"
+                                       class="form-label fw-semibold">
+
+                                    Valor
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        R$
+                                    </span>
+
+                                    <input asp-for="Amount"
+                                           class="form-control"
+                                           type="number"
+                                           step="0.01"
+                                           min="0"
+                                           placeholder="0,00" />
+
+                                </div>
+
+                                <span asp-validation-for="Amount"
+                                      class="text-danger small">
+                                </span>
+
+                                <div class="form-text">
+                                    Informe o valor atualizado da despesa.
+                                </div>
+
+                            </div>
+
+                            <div class="col-12 col-md-6">
+
+                                <label asp-for="Date"
+                                       class="form-label fw-semibold">
+
+                                    Data da Despesa
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+
+                                        <i class="far fa-calendar-alt text-muted"></i>
+
+                                    </span>
+
+                                    <input asp-for="Date"
+                                           class="form-control"
+                                           type="date" />
+
+                                </div>
+
+                                <span asp-validation-for="Date"
+                                      class="text-danger small">
+                                </span>
+
+                            </div>
+
+                            <div class="col-12 col-md-6">
+
+                                <label asp-for="Category"
+                                       class="form-label fw-semibold">
+
+                                    Categoria
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <select asp-for="Category"
+                                        class="form-select">
+
+                                    <option value="1">
+                                        Aluguel
+                                    </option>
+
+                                    <option value="2">
+                                        Contas / Utilidades
+                                    </option>
+
+                                    <option value="3">
+                                        Materiais
+                                    </option>
+
+                                    <option value="4">
+                                        Equipamentos
+                                    </option>
+
+                                    <option value="5">
+                                        Salários
+                                    </option>
+
+                                    <option value="6">
+                                        Marketing
+                                    </option>
+
+                                    <option value="7">
+                                        Manutenção
+                                    </option>
+
+                                    <option value="8">
+                                        Outros
+                                    </option>
+
+                                </select>
+
+                                <span asp-validation-for="Category"
+                                      class="text-danger small">
+                                </span>
+
+                            </div>
+
+                            <div class="col-12 col-md-6">
+
+                                <label asp-for="PaymentMethod"
+                                       class="form-label fw-semibold">
+
+                                    Forma de Pagamento
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <select asp-for="PaymentMethod"
+                                        class="form-select">
+
+                                    <option value="1">
+                                        Dinheiro
+                                    </option>
+
+                                    <option value="2">
+                                        Cartão de Crédito
+                                    </option>
+
+                                    <option value="3">
+                                        Cartão de Débito
+                                    </option>
+
+                                    <option value="4">
+                                        Pix
+                                    </option>
+
+                                    <option value="5">
+                                        Transferência Bancária
+                                    </option>
+
+                                </select>
+
+                                <span asp-validation-for="PaymentMethod"
+                                      class="text-danger small">
+                                </span>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <label asp-for="Notes"
+                                       class="form-label fw-semibold">
+
+                                    Observações
+
+                                </label>
+
+                                <textarea asp-for="Notes"
+                                          class="form-control"
+                                          rows="4"
+                                          maxlength="1000"
+                                          placeholder="Digite alguma observação sobre esta despesa..."></textarea>
+
+                                <div class="d-flex justify-content-between mt-1">
+
+                                    <span asp-validation-for="Notes"
+                                          class="text-danger small">
+                                    </span>
+
+                                    <small class="text-muted ms-auto">
+                                        Máximo de 1000 caracteres
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-12">
+
+                                <div class="card border bg-light">
+
+                                    <div class="card-body">
+
+                                        <div class="d-flex align-items-center justify-content-between">
+
+                                            <div class="d-flex align-items-center gap-3">
+
+                                                <div class="d-flex align-items-center justify-content-center rounded-3 bg-success bg-opacity-10"
+                                                     style="width: 45px; height: 45px;">
+
+                                                    <i class="fas fa-toggle-on text-success"></i>
+
+                                                </div>
+
+                                                <div>
+
+                                                    <label asp-for="Status"
+                                                           class="fw-semibold mb-1">
+
+                                                        Despesa ativa
+
+                                                    </label>
+
+                                                    <div class="text-muted small">
+                                                        Define se a despesa está ativa no sistema.
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-check form-switch">
+
+                                                <input asp-for="Status"
+                                                       class="form-check-input"
+                                                       type="checkbox"
+                                                       role="switch"
+                                                       style="width: 45px; height: 22px;" />
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+
+                            <a asp-area="Admin"
+                               asp-controller="Expenses"
+                               asp-action="Index"
+                               class="btn btn-light border px-4">
+
+                                <i class="fas fa-times me-2"></i>
+                                Cancelar
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+
+                                <i class="fas fa-save me-2"></i>
+                                Salvar Alterações
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

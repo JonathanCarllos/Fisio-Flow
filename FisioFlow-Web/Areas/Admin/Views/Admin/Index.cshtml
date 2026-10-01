@@ -1,11 +1,496 @@
-﻿@{
-    ViewData["Title"] = "Admin";
+﻿@model FisioFlow_Web.Areas.Admin.Models.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="container py-5">
-    <h1>Área Administrativa</h1>
+<div class="container-fluid px-4 pb-4">
 
-    <p>
-        Bem-vindo ao painel administrativo do FisioFlow.
-    </p>
+    <div class="mb-4">
+
+        <div class="d-flex align-items-center gap-3 mb-1">
+
+            <div class="d-flex align-items-center justify-content-center rounded-3 bg-primary bg-opacity-10"
+                 style="width: 46px; height: 46px;">
+
+                <i class="fas fa-chart-line text-primary fs-5"></i>
+
+            </div>
+
+            <h2 class="fw-bold mb-0">
+                Dashboard
+            </h2>
+
+        </div>
+
+        <p class="text-muted mb-0">
+            Visão geral das informações da clínica.
+        </p>
+
+    </div>
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small fw-semibold">
+                                PACIENTES
+                            </span>
+
+                            <h2 class="fw-bold mb-1 mt-2">
+                                @Model.TotalPatients
+                            </h2>
+
+                            <span class="text-muted small">
+                                @(Model.TotalPatients == 1
+                                    ? "paciente cadastrado"
+                                    : "pacientes cadastrados")
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center rounded-4 bg-primary bg-opacity-10"
+                             style="width: 64px; height: 64px;">
+
+                            <i class="fas fa-users text-primary fs-3"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small fw-semibold">
+                                FISIOTERAPEUTAS
+                            </span>
+
+                            <h2 class="fw-bold mb-1 mt-2">
+                                @Model.TotalPhysiotherapists
+                            </h2>
+
+                            <span class="text-muted small">
+                                @(Model.TotalPhysiotherapists == 1
+                                    ? "fisioterapeuta cadastrado"
+                                    : "fisioterapeutas cadastrados")
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center rounded-4 bg-success bg-opacity-10"
+                             style="width: 64px; height: 64px;">
+
+                            <i class="fas fa-user-md text-success fs-3"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small fw-semibold">
+                                DESPESAS
+                            </span>
+
+                            <h2 class="fw-bold mb-1 mt-2">
+                                @Model.TotalExpenses
+                            </h2>
+
+                            <span class="text-muted small">
+                                @(Model.TotalExpenses == 1
+                                    ? "despesa cadastrada"
+                                    : "despesas cadastradas")
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center rounded-4 bg-danger bg-opacity-10"
+                             style="width: 64px; height: 64px;">
+
+                            <i class="fas fa-receipt text-danger fs-3"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <div>
+
+                            <span class="text-muted small fw-semibold">
+                                TOTAL DE GASTOS
+                            </span>
+
+                            <h2 class="fw-bold mb-1 mt-2 text-danger">
+                                @Model.TotalExpenseAmount.ToString("C2")
+                            </h2>
+
+                            <span class="text-muted small">
+                                Valor acumulado
+                            </span>
+
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-center rounded-4 bg-danger bg-opacity-10"
+                             style="width: 64px; height: 64px;">
+
+                            <i class="fas fa-money-bill-wave text-danger fs-3"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-12 col-xl-7">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-white border-0 px-4 py-4">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-primary bg-opacity-10"
+                             style="width: 44px; height: 44px;">
+
+                            <i class="fas fa-chart-bar text-primary"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Resumo da Clínica
+                            </h5>
+
+                            <span class="text-muted small">
+                                Quantidade de registros cadastrados
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body px-4 pb-4">
+
+                    <div style="height: 300px;">
+
+                        <canvas id="clinicOverviewChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-xl-5">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-white border-0 px-4 py-4">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-3 bg-danger bg-opacity-10"
+                             style="width: 44px; height: 44px;">
+
+                            <i class="fas fa-wallet text-danger"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h5 class="fw-bold mb-1">
+                                Despesas
+                            </h5>
+
+                            <span class="text-muted small">
+                                Resumo financeiro
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body px-4 pb-4">
+
+                    <div class="text-center py-3">
+
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-danger bg-opacity-10 mx-auto mb-3"
+                             style="width: 80px; height: 80px;">
+
+                            <i class="fas fa-money-bill-wave text-danger fs-2"></i>
+
+                        </div>
+
+                        <span class="text-muted small d-block">
+                            TOTAL DE GASTOS
+                        </span>
+
+                        <h2 class="fw-bold text-danger mb-2">
+                            @Model.TotalExpenseAmount.ToString("C2")
+                        </h2>
+
+                        <span class="text-muted small">
+                            @Model.TotalExpenses
+                            @(Model.TotalExpenses == 1 ? "despesa registrada" : "despesas registradas")
+                        </span>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <span class="text-muted">
+                            Gerenciar despesas
+                        </span>
+
+                        <a asp-area="Admin"
+                           asp-controller="Expenses"
+                           asp-action="Index"
+                           class="btn btn-sm btn-outline-primary">
+
+                            <i class="fas fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4 mt-1">
+
+        <div class="col-12 col-md-4">
+
+            <a asp-area="Admin"
+               asp-controller="Patients"
+               asp-action="Index"
+               class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <div>
+
+                                <h6 class="fw-bold mb-1">
+                                    Pacientes
+                                </h6>
+
+                                <span class="text-muted small">
+                                    Gerenciar pacientes
+                                </span>
+
+                            </div>
+
+                            <i class="fas fa-users text-primary fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-12 col-md-4">
+
+            <a asp-area="Admin"
+               asp-controller="Physiotherapists"
+               asp-action="Index"
+               class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <div>
+
+                                <h6 class="fw-bold mb-1">
+                                    Fisioterapeutas
+                                </h6>
+
+                                <span class="text-muted small">
+                                    Gerenciar profissionais
+                                </span>
+
+                            </div>
+
+                            <i class="fas fa-user-md text-success fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-12 col-md-4">
+
+            <a asp-area="Admin"
+               asp-controller="Expenses"
+               asp-action="Index"
+               class="text-decoration-none">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex align-items-center justify-content-between">
+
+                            <div>
+
+                                <h6 class="fw-bold mb-1">
+                                    Despesas
+                                </h6>
+
+                                <span class="text-muted small">
+                                    Gerenciar despesas
+                                </span>
+
+                            </div>
+
+                            <i class="fas fa-wallet text-danger fs-4"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
 </div>
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        const ctx = document.getElementById('clinicOverviewChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Pacientes',
+                    'Fisioterapeutas'
+                ],
+                datasets: [
+                    {
+                        label: 'Total',
+                        data: [
+                                    @Model.TotalPatients,
+                            @Model.TotalPhysiotherapists
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+
+}

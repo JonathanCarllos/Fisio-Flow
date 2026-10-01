@@ -12,6 +12,7 @@ namespace FisioFlow_Web.Extensions
             services.AddScoped<IPhysiotherapistServices, PhysiotherapistServices>();
             services.AddScoped<ISessionServices, SessionServices>();
             services.AddScoped<IMedicalRecordServices, MedicalRecordServices>();
+            services.AddScoped<IExpenseServices, ExpenseServices>();
 
             return services;
         }
