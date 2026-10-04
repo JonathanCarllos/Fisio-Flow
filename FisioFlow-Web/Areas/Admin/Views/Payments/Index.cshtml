@@ -1,0 +1,283 @@
+﻿@model IEnumerable<FisioFlow_Web.Areas.Admin.Models.PaymentViewModel>
+
+@{
+    ViewData["Title"] = "Pagamentos";
+}
+
+<div class="container-fluid">
+
+    <!-- Cabeçalho -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold text-success mb-0">
+                <i class="bi bi-cash-coin"></i>
+                Pagamentos
+            </h2>
+
+            <small class="text-muted">
+                Gerencie os pagamentos dos tratamentos.
+            </small>
+        </div>
+
+
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i>
+            Novo Pagamento
+        </a>
+
+    </div>
+
+
+
+    <!-- Card Total -->
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="fs-1 text-success me-3">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+
+
+                        <div>
+
+                            <h6 class="text-muted mb-1">
+                                Total de Pagamentos
+                            </h6>
+
+                            <h3 class="fw-bold mb-0">
+                                @ViewBag.Total
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <!-- Tabela -->
+    <div class="card shadow-sm border-0">
+
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+                <i class="bi bi-list-check"></i>
+                Lista de Pagamentos
+            </h5>
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            @if (!Model.Any())
+            {
+                <div class="alert alert-info text-center">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    Nenhum pagamento cadastrado.
+
+                </div>
+            }
+            else
+            {
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>
+                                    Método
+                                </th>
+
+                                <th>
+                                    Data Pagamento
+                                </th>
+
+                                <th>
+                                    Vencimento
+                                </th>
+
+                                <th>
+                                    Convênio
+                                </th>
+
+                                <th>
+                                    Paciente
+                                </th>
+
+                                <th>
+                                    Tratamento
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th class="text-center">
+                                    Ações
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+
+
+                                    <td>
+
+                                        <span class="badge bg-success">
+                                            @item.PaymentMethod
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+                                        @(item.PaymentDate?.ToString("dd/MM/yyyy") ?? "-")
+                                    </td>
+
+
+                                    <td>
+                                        @(item.DueDate?.ToString("dd/MM/yyyy") ?? "-")
+                                    </td>
+
+
+                                    <td>
+                                        @(string.IsNullOrEmpty(item.InsuranceName)
+                                            ? "Particular"
+                                            : item.InsuranceName)
+                                    </td>
+
+
+                                    <td>
+                                        @item.PatientId
+                                    </td>
+
+
+                                    <td>
+                                        @item.TreatmentId
+                                    </td>
+
+
+
+                                    <td>
+
+                                        @if (item.Status)
+                                        {
+                                            <span class="badge bg-success">
+
+                                                <i class="bi bi-check-circle"></i>
+                                                Pago
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">
+
+                                                <i class="bi bi-clock"></i>
+                                                Pendente
+
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+
+                                    <td class="text-center">
+
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.PaymentId"
+                                           class="btn btn-sm btn-outline-primary"
+                                           title="Detalhes">
+
+                                            <i class="bi bi-eye"></i>
+
+                                        </a>
+
+
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.PaymentId"
+                                           class="btn btn-sm btn-outline-success"
+                                           title="Editar">
+
+                                            <i class="bi bi-pencil"></i>
+
+                                        </a>
+
+
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.PaymentId"
+                                           class="btn btn-sm btn-outline-danger"
+                                           title="Excluir">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </a>
+
+
+                                    </td>
+
+
+                                </tr>
+
+                            }
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+            }
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

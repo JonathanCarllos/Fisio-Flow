@@ -1,0 +1,150 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.PaymentViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Pagamento";
+}
+
+
+<div class="container-fluid">
+
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold text-success">
+            <i class="bi bi-eye"></i>
+            Detalhes do Pagamento
+        </h2>
+
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Voltar
+        </a>
+
+    </div>
+
+
+
+    <div class="card shadow-sm border-0">
+
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+                Informações do Pagamento
+            </h5>
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            <dl class="row">
+
+
+                <dt class="col-sm-3">
+                    Método
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Model.PaymentMethod
+                </dd>
+
+
+
+                <dt class="col-sm-3">
+                    Data Pagamento
+                </dt>
+
+                <dd class="col-sm-9">
+                    @(Model.PaymentDate?.ToString("dd/MM/yyyy"))
+                </dd>
+
+
+
+                <dt class="col-sm-3">
+                    Vencimento
+                </dt>
+
+                <dd class="col-sm-9">
+                    @(Model.DueDate?.ToString("dd/MM/yyyy"))
+                </dd>
+
+
+
+                <dt class="col-sm-3">
+                    Convênio
+                </dt>
+
+                <dd class="col-sm-9">
+                    @(Model.InsuranceName ?? "Particular")
+                </dd>
+
+
+
+                <dt class="col-sm-3">
+                    Paciente ID
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Model.PatientId
+                </dd>
+
+
+
+                <dt class="col-sm-3">
+                    Tratamento ID
+                </dt>
+
+                <dd class="col-sm-9">
+                    @Model.TreatmentId
+                </dd>
+
+
+
+                <dt class="col-sm-3">
+                    Status
+                </dt>
+
+
+                <dd class="col-sm-9">
+
+                    @if(Model.Status)
+                    {
+                        <span class="badge bg-success">
+                            Pago
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">
+                            Pendente
+                        </span>
+                    }
+
+                </dd>
+
+
+
+                <dt class="col-sm-3">
+                    Descrição
+                </dt>
+
+                <dd class="col-sm-9">
+                    @(Model.Description ?? "-")
+                </dd>
+
+
+            </dl>
+
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

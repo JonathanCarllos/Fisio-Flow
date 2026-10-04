@@ -1,0 +1,396 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.PaymentViewModel
+
+@{
+    ViewData["Title"] = "Novo Pagamento";
+}
+
+
+<div class="container-fluid">
+
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+        <div>
+
+            <h2 class="fw-bold text-success mb-0">
+
+                <i class="bi bi-cash-coin"></i>
+                Novo Pagamento
+
+            </h2>
+
+
+            <small class="text-muted">
+                Cadastre um novo pagamento no sistema.
+            </small>
+
+        </div>
+
+
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left"></i>
+            Voltar
+
+        </a>
+
+
+    </div>
+
+
+
+
+
+    <div class="card shadow-sm border-0">
+
+
+        <div class="card-header bg-success text-white">
+
+            <h5 class="mb-0">
+
+                <i class="bi bi-credit-card"></i>
+                Informações do Pagamento
+
+            </h5>
+
+        </div>
+
+
+
+
+
+        <div class="card-body">
+
+
+            <form asp-action="Create" method="post">
+
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger">
+                </div>
+
+
+
+
+
+                <div class="row">
+
+
+                    <div class="col-md-6 mb-3">
+
+
+                        <label class="form-label">
+                            Método de Pagamento
+                        </label>
+
+
+
+                        <select asp-for="PaymentMethod"
+                                class="form-select">
+
+
+                            <option value="">
+                                Selecione o método
+                            </option>
+
+
+                            <option value="1">
+                                Dinheiro
+                            </option>
+
+
+                            <option value="2">
+                                Cartão de Crédito
+                            </option>
+
+
+                            <option value="3">
+                                Cartão de Débito
+                            </option>
+
+
+                            <option value="4">
+                                PIX
+                            </option>
+
+
+                            <option value="5">
+                                Transferência Bancária
+                            </option>
+
+
+                            <option value="6">
+                                Boleto
+                            </option>
+
+
+                            <option value="7">
+                                Convênio
+                            </option>
+
+
+                        </select>
+
+
+                        <span asp-validation-for="PaymentMethod"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="col-md-3 mb-3">
+
+
+                        <label class="form-label">
+                            Data do Pagamento
+                        </label>
+
+
+                        <input asp-for="PaymentDate"
+                               type="date"
+                               class="form-control" />
+
+
+                        <span asp-validation-for="PaymentDate"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="col-md-3 mb-3">
+
+
+                        <label class="form-label">
+                            Data de Vencimento
+                        </label>
+
+
+                        <input asp-for="DueDate"
+                               type="date"
+                               class="form-control" />
+
+
+                        <span asp-validation-for="DueDate"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="row">
+
+
+
+                    <div class="col-md-6 mb-3">
+
+
+                        <label class="form-label">
+                            Paciente
+                        </label>
+
+
+                        <input asp-for="PatientId"
+                               class="form-control"
+                               placeholder="Digite o código do paciente" />
+
+
+                        <span asp-validation-for="PatientId"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+                    <div class="col-md-6 mb-3">
+
+
+                        <label class="form-label">
+                            Tratamento
+                        </label>
+
+
+                        <input asp-for="TreatmentId"
+                               class="form-control"
+                               placeholder="Digite o código do tratamento" />
+
+
+                        <span asp-validation-for="TreatmentId"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+                <div class="row">
+
+
+
+                    <div class="col-md-6 mb-3">
+
+
+                        <label class="form-label">
+                            Convênio
+                        </label>
+
+
+                        <input asp-for="InsuranceName"
+                               class="form-control"
+                               placeholder="Ex: Unimed, Bradesco Saúde..." />
+
+
+                        <span asp-validation-for="InsuranceName"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+                    <div class="col-md-6 mb-3">
+
+
+                        <label class="form-label">
+                            Descrição
+                        </label>
+
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="3"
+                                  placeholder="Digite uma observação sobre o pagamento">
+                        </textarea>
+
+
+                        <span asp-validation-for="Description"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="form-check form-switch mb-4">
+
+
+                    <input asp-for="Status"
+                           class="form-check-input" />
+
+
+                    <label class="form-check-label">
+
+                        Pagamento realizado
+
+                    </label>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="d-flex justify-content-end gap-2">
+
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+
+
+                        <i class="bi bi-x-circle"></i>
+                        Cancelar
+
+
+                    </a>
+
+
+
+
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+
+                        <i class="bi bi-check-circle"></i>
+                        Salvar Pagamento
+
+
+                    </button>
+
+
+                </div>
+
+
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}
