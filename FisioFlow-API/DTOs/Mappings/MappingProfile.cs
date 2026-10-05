@@ -62,12 +62,39 @@ namespace FisioFlow_API.DTOs.Mappings
                 );
 
 
-            // ============================================================
-            // PAYMENT
-            // ============================================================
-
             CreateMap<Payment, PaymentDTO>()
-                .ReverseMap();
+
+    .ForMember(
+        dest => dest.PatientName,
+        opt => opt.MapFrom(
+            src => src.Patient != null
+                ? src.Patient.Name
+                : null
+        )
+    )
+
+    .ForMember(
+        dest => dest.TreatmentName,
+        opt => opt.MapFrom(
+            src => src.Treatment != null
+                ? src.Treatment.Type
+                : null
+        )
+    );
+
+
+
+            CreateMap<PaymentDTO, Payment>()
+
+                .ForMember(
+                    dest => dest.Patient,
+                    opt => opt.Ignore()
+                )
+
+                .ForMember(
+                    dest => dest.Treatment,
+                    opt => opt.Ignore()
+                );
 
 
             // ============================================================

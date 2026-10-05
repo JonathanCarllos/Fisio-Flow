@@ -1,264 +1,597 @@
 ﻿@model IEnumerable<FisioFlow_Web.Areas.Admin.Models.PaymentViewModel>
 
+@using FisioFlow_Web.Enums
+@using System.Globalization
+
 @{
     ViewData["Title"] = "Pagamentos";
+
+    var culture = new CultureInfo("pt-BR");
+
+    var totalRecebido = Model
+        .Where(x => x.Status == Status.Paid)
+        .Sum(x => x.Amount);
+
+    var totalPendente = Model
+        .Where(x => x.Status != Status.Paid)
+        .Sum(x => x.Amount);
+
+    var quantidadePagamentos = Model.Count();
 }
+
 
 <div class="container-fluid">
 
-    <!-- Cabeçalho -->
+
+    <!-- HEADER -->
+
     <div class="d-flex justify-content-between align-items-center mb-4">
 
+
         <div>
-            <h2 class="fw-bold text-success mb-0">
-                <i class="bi bi-cash-coin"></i>
+
+            <h2 class="fw-bold text-success mb-1">
+
+                <i class="bi bi-wallet2"></i>
+
                 Pagamentos
+
             </h2>
 
-            <small class="text-muted">
+
+            <span class="text-muted">
+
                 Gerencie os pagamentos dos tratamentos.
-            </small>
+
+            </span>
+
+
         </div>
 
 
-        <a asp-action="Create" class="btn btn-success">
+
+        <a asp-action="Create"
+           class="btn btn-success px-4">
+
             <i class="bi bi-plus-circle"></i>
+
             Novo Pagamento
+
         </a>
+
 
     </div>
 
 
 
-    <!-- Card Total -->
-    <div class="row mb-4">
+
+
+    <!-- CARDS -->
+
+
+    <div class="row g-4 mb-4">
+
+
+
+        <!-- Recebido -->
 
         <div class="col-md-4">
 
-            <div class="card shadow-sm border-0">
 
-                <div class="card-body">
-
-                    <div class="d-flex align-items-center">
-
-                        <div class="fs-1 text-success me-3">
-                            <i class="bi bi-credit-card"></i>
-                        </div>
+            <div class="card border-0 shadow-sm h-100">
 
 
-                        <div>
+                <div class="card-body d-flex align-items-center">
 
-                            <h6 class="text-muted mb-1">
-                                Total de Pagamentos
-                            </h6>
 
-                            <h3 class="fw-bold mb-0">
-                                @ViewBag.Total
-                            </h3>
+                    <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
 
-                        </div>
+                        <i class="bi bi-cash-stack text-success fs-3"></i>
 
                     </div>
 
+
+
+                    <div>
+
+
+                        <span class="text-muted small">
+
+                            Total recebido
+
+                        </span>
+
+
+                        <h4 class="fw-bold mb-0 text-success">
+
+
+                            @(totalRecebido.ToString("C2", culture))
+
+
+                        </h4>
+
+
+                    </div>
+
+
                 </div>
+
 
             </div>
 
+
         </div>
+
+
+
+
+
+        <!-- Pendentes -->
+
+        <div class="col-md-4">
+
+
+            <div class="card border-0 shadow-sm h-100">
+
+
+                <div class="card-body d-flex align-items-center">
+
+
+                    <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+
+                        <i class="bi bi-clock-history text-warning fs-3"></i>
+
+                    </div>
+
+
+
+                    <div>
+
+
+                        <span class="text-muted small">
+
+                            Valores pendentes
+
+                        </span>
+
+
+                        <h4 class="fw-bold mb-0">
+
+
+                            @(totalPendente.ToString("C2", culture))
+
+
+                        </h4>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+        <!-- Quantidade -->
+
+        <div class="col-md-4">
+
+
+            <div class="card border-0 shadow-sm h-100">
+
+
+                <div class="card-body d-flex align-items-center">
+
+
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+
+                        <i class="bi bi-receipt text-primary fs-3"></i>
+
+                    </div>
+
+
+
+                    <div>
+
+
+                        <span class="text-muted small">
+
+                            Quantidade de pagamentos
+
+                        </span>
+
+
+                        <h4 class="fw-bold mb-0">
+
+                            @quantidadePagamentos
+
+                        </h4>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
 
     </div>
 
 
 
 
-    <!-- Tabela -->
-    <div class="card shadow-sm border-0">
 
 
-        <div class="card-header bg-success text-white">
 
-            <h5 class="mb-0">
-                <i class="bi bi-list-check"></i>
-                Lista de Pagamentos
-            </h5>
+
+
+    @if (!Model.Any())
+    {
+
+
+        <div class="card shadow-sm border-0">
+
+
+            <div class="card-body text-center py-5">
+
+
+                <i class="bi bi-wallet2 text-muted"
+                   style="font-size:60px">
+                </i>
+
+
+
+                <h4 class="mt-3">
+
+                    Nenhum pagamento cadastrado
+
+                </h4>
+
+
+                <p class="text-muted">
+
+                    Comece cadastrando um novo pagamento.
+
+                </p>
+
+
+
+                <a asp-action="Create"
+                   class="btn btn-success">
+
+
+                    Criar pagamento
+
+
+                </a>
+
+
+            </div>
+
 
         </div>
 
 
+    }
+    else
+    {
 
-        <div class="card-body">
 
 
-            @if (!Model.Any())
-            {
-                <div class="alert alert-info text-center">
+        <!-- TABELA -->
 
-                    <i class="bi bi-info-circle"></i>
 
-                    Nenhum pagamento cadastrado.
+        <div class="card shadow-sm border-0">
 
-                </div>
-            }
-            else
-            {
+
+            <div class="card-body">
+
 
                 <div class="table-responsive">
 
-                    <table class="table table-hover align-middle">
+
+                    <table class="table align-middle table-hover">
 
 
                         <thead class="table-light">
 
+
                             <tr>
 
-                                <th>
-                                    Método
-                                </th>
-
-                                <th>
-                                    Data Pagamento
-                                </th>
-
-                                <th>
-                                    Vencimento
-                                </th>
-
-                                <th>
-                                    Convênio
-                                </th>
 
                                 <th>
                                     Paciente
                                 </th>
 
+
                                 <th>
                                     Tratamento
                                 </th>
+
+
+                                <th>
+                                    Valor
+                                </th>
+
+
+                                <th>
+                                    Método
+                                </th>
+
+
+                                <th>
+                                    Vencimento
+                                </th>
+
 
                                 <th>
                                     Status
                                 </th>
 
+
                                 <th class="text-center">
                                     Ações
                                 </th>
 
+
                             </tr>
 
+
                         </thead>
+
 
 
 
                         <tbody>
 
 
-                            @foreach (var item in Model)
+                            @foreach (var payment in Model)
                             {
+
 
                                 <tr>
 
 
                                     <td>
 
-                                        <span class="badge bg-success">
-                                            @item.PaymentMethod
+
+                                        <div class="fw-semibold">
+
+                                            @payment.PatientName
+
+                                        </div>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+                                        @payment.TreatmentName
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+
+                                        <span class="fw-bold text-success">
+
+                                            @payment.Amount.ToString("C2", culture)
+
                                         </span>
 
+
                                     </td>
 
 
-                                    <td>
-                                        @(item.PaymentDate?.ToString("dd/MM/yyyy") ?? "-")
-                                    </td>
-
-
-                                    <td>
-                                        @(item.DueDate?.ToString("dd/MM/yyyy") ?? "-")
-                                    </td>
-
-
-                                    <td>
-                                        @(string.IsNullOrEmpty(item.InsuranceName)
-                                            ? "Particular"
-                                            : item.InsuranceName)
-                                    </td>
-
-
-                                    <td>
-                                        @item.PatientId
-                                    </td>
-
-
-                                    <td>
-                                        @item.TreatmentId
-                                    </td>
 
 
 
                                     <td>
 
-                                        @if (item.Status)
+
+                                        @switch (payment.PaymentMethod)
                                         {
-                                            <span class="badge bg-success">
 
-                                                <i class="bi bi-check-circle"></i>
-                                                Pago
+                                            case PaymentMethod.Pix:
 
-                                            </span>
+                                                <span class="badge rounded-pill bg-success">
+                                                    PIX
+                                                </span>
+
+                                                break;
+
+
+                                            case PaymentMethod.CreditCard:
+
+                                                <span class="badge rounded-pill bg-primary">
+                                                    Cartão
+                                                </span>
+
+                                                break;
+
+
+                                            case PaymentMethod.DebitCard:
+
+                                                <span class="badge rounded-pill bg-info">
+                                                    Débito
+                                                </span>
+
+                                                break;
+
+
+                                            case PaymentMethod.Cash:
+
+                                                <span class="badge rounded-pill bg-secondary">
+                                                    Dinheiro
+                                                </span>
+
+                                                break;
+
+
+                                            default:
+
+                                                <span class="badge rounded-pill bg-dark">
+                                                    Outro
+                                                </span>
+
+                                                break;
+
                                         }
-                                        else
-                                        {
-                                            <span class="badge bg-warning text-dark">
 
-                                                <i class="bi bi-clock"></i>
-                                                Pendente
-
-                                            </span>
-                                        }
 
                                     </td>
+
+
+
+
+
+
+                                    <td>
+
+                                        @payment.DueDate?.ToString("dd/MM/yyyy")
+
+                                    </td>
+
+
+
+
+
+
+
+                                    <td>
+
+
+                                        @switch (payment.Status)
+                                        {
+
+                                            case Status.Paid:
+
+                                                <span class="badge rounded-pill bg-success">
+
+                                                    Pago
+
+                                                </span>
+
+                                                break;
+
+
+
+                                            case Status.Pending:
+
+                                                <span class="badge rounded-pill bg-warning text-dark">
+
+                                                    Pendente
+
+                                                </span>
+
+                                                break;
+
+
+
+                                            case Status.Cancelled:
+
+                                                <span class="badge rounded-pill bg-danger">
+
+                                                    Cancelado
+
+                                                </span>
+
+                                                break;
+
+
+
+                                            default:
+
+                                                <span class="badge rounded-pill bg-secondary">
+
+                                                    @payment.Status
+
+                                                </span>
+
+                                                break;
+
+                                        }
+
+
+                                    </td>
+
+
+
 
 
 
                                     <td class="text-center">
 
 
-                                        <a asp-action="Details"
-                                           asp-route-id="@item.PaymentId"
-                                           class="btn btn-sm btn-outline-primary"
-                                           title="Detalhes">
-
-                                            <i class="bi bi-eye"></i>
-
-                                        </a>
+                                        <div class="btn-group">
 
 
+                                            <a asp-action="Details"
+                                               asp-route-id="@payment.PaymentId"
+                                               class="btn btn-sm btn-outline-success"
+                                               title="Detalhes">
 
-                                        <a asp-action="Edit"
-                                           asp-route-id="@item.PaymentId"
-                                           class="btn btn-sm btn-outline-success"
-                                           title="Editar">
+                                                <i class="bi bi-eye"></i>
 
-                                            <i class="bi bi-pencil"></i>
-
-                                        </a>
+                                            </a>
 
 
 
-                                        <a asp-action="Delete"
-                                           asp-route-id="@item.PaymentId"
-                                           class="btn btn-sm btn-outline-danger"
-                                           title="Excluir">
 
-                                            <i class="bi bi-trash"></i>
+                                            <a asp-action="Edit"
+                                               asp-route-id="@payment.PaymentId"
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="Editar">
 
-                                        </a>
+                                                <i class="bi bi-pencil"></i>
+
+                                            </a>
+
+
+
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@payment.PaymentId"
+                                               class="btn btn-sm btn-outline-danger"
+                                               title="Excluir">
+
+                                                <i class="bi bi-trash"></i>
+
+                                            </a>
+
+
+                                        </div>
 
 
                                     </td>
 
 
+
                                 </tr>
+
 
                             }
 
@@ -271,13 +604,15 @@
 
                 </div>
 
-            }
+
+            </div>
 
 
         </div>
 
 
-    </div>
+
+    }
 
 
 </div>

@@ -1,4 +1,4 @@
-﻿namespace FisioFlow_API.Enums
+﻿namespace FisioFlow_Web.Enums
 {
     public enum Status
     {

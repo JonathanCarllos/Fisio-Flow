@@ -2,6 +2,7 @@
 using FisioFlow_Web.Areas.Admin.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FisioFlow_Web.Areas.Admin.Controllers
 {
@@ -9,93 +10,182 @@ namespace FisioFlow_Web.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class PaymentsController : Controller
     {
+
         private readonly IPaymentServices _paymentService;
+        private readonly IPatientServices _patientService;
+        private readonly ITreatmentServices _treatmentService;
 
 
-        public PaymentsController(IPaymentServices paymentService)
+
+        public PaymentsController(
+            IPaymentServices paymentService,
+            IPatientServices patientService,
+            ITreatmentServices treatmentService)
         {
             _paymentService = paymentService;
+            _patientService = patientService;
+            _treatmentService = treatmentService;
         }
 
 
 
-        // LISTAGEM
+
+        private async Task LoadSelects()
+        {
+            var patients = await _patientService.GetAllPatientsAsync();
+
+            var treatments = await _treatmentService.GetAllTreatmentsAsync();
+
+
+
+            if (patients == null)
+            {
+                patients = new List<PatientViewModel>();
+            }
+
+
+            if (treatments == null)
+            {
+                treatments = new List<TreatmentViewModel>();
+            }
+
+
+
+
+            ViewBag.Patients = new SelectList(
+                patients,
+                "PatientId",
+                "Name"
+            );
+
+
+
+
+            ViewBag.Treatments = new SelectList(
+                treatments,
+                "TreatmentId",
+                "Type"
+            );
+        }
+
+
+
+
+
+
+
         public async Task<IActionResult> Index()
         {
-            var result = await _paymentService.GetAllPaymentsAsync();
 
-            if (result == null)
-                return NotFound();
-
-
-            var payments = result.ToList();
+            var payments =
+                await _paymentService.GetAllPaymentsAsync();
 
 
-            ViewBag.Total = payments.Count();
+
+            if (payments == null)
+            {
+                payments = new List<PaymentViewModel>();
+            }
+
 
 
             return View(payments);
+
         }
 
-        // DETALHES
-        public async Task<IActionResult> Details(int id)
-        {
-            var payment = await _paymentService.GetPaymentByIdAsync(id);
 
 
-            if (payment == null)
-                return NotFound();
 
 
-            return View(payment);
-        }
 
-        // CREATE GET
+
+
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+
+            await LoadSelects();
+
+
+            return View(new PaymentViewModel());
+
         }
 
-        // CREATE POST
+
+
+
+
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PaymentViewModel paymentVM)
+        public async Task<IActionResult> Create(
+            PaymentViewModel paymentVM)
         {
 
+
             if (!ModelState.IsValid)
+            {
+
+                await LoadSelects();
+
                 return View(paymentVM);
 
+            }
 
 
-            var result = await _paymentService.CreatePaymentAsync(paymentVM);
+
+
+            var result =
+                await _paymentService
+                .CreatePaymentAsync(paymentVM);
+
 
 
 
             if (result == null)
             {
+
                 ModelState.AddModelError(
                     "",
-                    "Não foi possível cadastrar o pagamento."
+                    "Erro ao cadastrar pagamento."
                 );
 
+
+                await LoadSelects();
+
+
                 return View(paymentVM);
+
             }
 
 
 
-            TempData["Success"] = "Pagamento cadastrado com sucesso!";
+
+
+            TempData["Success"] =
+                "Pagamento cadastrado com sucesso!";
+
 
 
             return RedirectToAction(nameof(Index));
+
         }
 
-        // EDIT GET
+
+
+
+
+
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
 
-            var payment = await _paymentService.GetPaymentByIdAsync(id);
+            var payment =
+                await _paymentService.GetPaymentByIdAsync(id);
+
 
 
             if (payment == null)
@@ -103,10 +193,22 @@ namespace FisioFlow_Web.Areas.Admin.Controllers
 
 
 
+
+            await LoadSelects();
+
+
+
             return View(payment);
+
         }
 
-        // EDIT POST
+
+
+
+
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(
@@ -114,46 +216,73 @@ namespace FisioFlow_Web.Areas.Admin.Controllers
             PaymentViewModel paymentVM)
         {
 
+
             if (id != paymentVM.PaymentId)
                 return NotFound();
 
 
 
+
             if (!ModelState.IsValid)
-                return View(paymentVM);
-
-
-
-
-            var result = await _paymentService.UpdatePaymentAsync(paymentVM);
-
-
-
-            if (result == null)
             {
-                ModelState.AddModelError(
-                    "",
-                    "Não foi possível atualizar o pagamento."
-                );
+
+                await LoadSelects();
 
                 return View(paymentVM);
+
             }
 
 
 
 
-            TempData["Success"] = "Pagamento atualizado com sucesso!";
+
+            var result =
+                await _paymentService
+                .UpdatePaymentAsync(paymentVM);
+
+
+
+
+            if (result == null)
+            {
+
+                ModelState.AddModelError(
+                    "",
+                    "Erro ao atualizar pagamento."
+                );
+
+
+                await LoadSelects();
+
+
+                return View(paymentVM);
+
+            }
+
+
+
+
+            TempData["Success"] =
+                "Pagamento atualizado com sucesso!";
+
 
 
             return RedirectToAction(nameof(Index));
+
         }
 
-        // DELETE GET
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+
+
+
+
+
+
+
+        public async Task<IActionResult> Details(int id)
         {
 
-            var payment = await _paymentService.GetPaymentByIdAsync(id);
+            var payment =
+                await _paymentService.GetPaymentByIdAsync(id);
 
 
 
@@ -163,24 +292,60 @@ namespace FisioFlow_Web.Areas.Admin.Controllers
 
 
             return View(payment);
+
         }
 
-        // DELETE POST
-        [HttpPost, ActionName("Delete")]
+
+
+
+
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            var payment =
+                await _paymentService.GetPaymentByIdAsync(id);
+
+
+
+            if (payment == null)
+                return NotFound();
+
+
+
+            return View(payment);
+
+        }
+
+
+
+
+
+
+
+
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
 
-            var result = await _paymentService.DeletePaymentAsync(id);
+            var result =
+                await _paymentService.DeletePaymentAsync(id);
 
 
 
             if (!result)
             {
+
                 TempData["Error"] =
-                    "Não foi possível excluir o pagamento.";
+                    "Erro ao excluir pagamento.";
 
                 return RedirectToAction(nameof(Index));
+
             }
 
 
@@ -192,6 +357,7 @@ namespace FisioFlow_Web.Areas.Admin.Controllers
 
 
             return RedirectToAction(nameof(Index));
+
         }
 
     }

@@ -1,25 +1,548 @@
 ﻿@model FisioFlow_Web.Areas.Admin.Models.PaymentViewModel
 
+@using Microsoft.AspNetCore.Mvc.Rendering
+
 @{
     ViewData["Title"] = "Editar Pagamento";
+
+    var patients = ViewBag.Patients as SelectList;
+    var treatments = ViewBag.Treatments as SelectList;
 }
+
 
 
 <div class="container-fluid">
 
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-
-<h2 class="fw-bold text-success">
-<i class="bi bi-pencil"></i>
-Editar Pagamento
-</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
 
-<a asp-action="Index" class="btn btn-outline-secondary">
-<i class="bi bi-arrow-left"></i>
-Voltar
-</a>
+        <div>
+
+            <h2 class="fw-bold text-success mb-1">
+
+                <i class="bi bi-pencil-square"></i>
+
+                Editar Pagamento
+
+            </h2>
+
+
+            <p class="text-muted mb-0">
+
+                Atualize as informações do pagamento.
+
+            </p>
+
+
+        </div>
+
+
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+
+            <i class="bi bi-arrow-left"></i>
+
+            Voltar
+
+
+        </a>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="card shadow-sm border-0">
+
+
+        <div class="card-body p-4">
+
+
+
+            <form asp-action="Edit"
+                  method="post">
+
+
+
+                <input type="hidden"
+                       asp-for="PaymentId" />
+
+
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger">
+                </div>
+
+
+
+
+
+
+                <div class="row g-3">
+
+
+
+
+
+
+
+                    <!-- Valor -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="Amount"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+                        <div class="input-group">
+
+
+                            <span class="input-group-text">
+                                R$
+                            </span>
+
+
+
+                            <input asp-for="Amount"
+                                   class="form-control"
+                                   type="number"
+                                   step="0.01" />
+
+
+
+                        </div>
+
+
+
+                        <span asp-validation-for="Amount"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <!-- Paciente -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="PatientId"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+                        <select asp-for="PatientId"
+                                class="form-select"
+                                asp-items="patients">
+
+
+                            <option value="">
+                                Selecione o paciente
+                            </option>
+
+
+                        </select>
+
+
+
+                        <span asp-validation-for="PatientId"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <!-- Tratamento -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="TreatmentId"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+                        <select asp-for="TreatmentId"
+                                class="form-select"
+                                asp-items="treatments">
+
+
+                            <option value="">
+                                Selecione o tratamento
+                            </option>
+
+
+                        </select>
+
+
+
+                        <span asp-validation-for="TreatmentId"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <!-- Método -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="PaymentMethod"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+
+                        <select asp-for="PaymentMethod"
+                                class="form-select">
+
+
+
+                            <option value="">
+                                Selecione o método
+                            </option>
+
+
+
+                            <option value="1">
+                                Dinheiro
+                            </option>
+
+
+
+                            <option value="2">
+                                Cartão de Crédito
+                            </option>
+
+
+
+                            <option value="3">
+                                Cartão de Débito
+                            </option>
+
+
+
+                            <option value="4">
+                                PIX
+                            </option>
+
+
+
+                            <option value="5">
+                                Transferência Bancária
+                            </option>
+
+
+
+                        </select>
+
+
+
+                        <span asp-validation-for="PaymentMethod"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <!-- Status -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="Status"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+
+                        <select asp-for="Status"
+                                class="form-select">
+
+
+
+                            <option value="">
+                                Selecione o status
+                            </option>
+
+
+
+                            <option value="1">
+                                Pendente
+                            </option>
+
+
+
+                            <option value="2">
+                                Pago
+                            </option>
+
+
+
+                            <option value="3">
+                                Em atraso
+                            </option>
+
+
+
+                            <option value="4">
+                                Cancelado
+                            </option>
+
+
+
+                        </select>
+
+
+
+
+                        <span asp-validation-for="Status"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <!-- Data pagamento -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="PaymentDate"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+
+                        <input asp-for="PaymentDate"
+                               class="form-control"
+                               type="date" />
+
+
+
+                        <span asp-validation-for="PaymentDate"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <!-- Vencimento -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="DueDate"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+
+                        <input asp-for="DueDate"
+                               class="form-control"
+                               type="date" />
+
+
+
+                        <span asp-validation-for="DueDate"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <!-- Convênio -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="InsuranceName"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+
+                        <input asp-for="InsuranceName"
+                               class="form-control"
+                               placeholder="Nome do convênio" />
+
+
+
+                        <span asp-validation-for="InsuranceName"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <!-- Descrição -->
+
+
+                    <div class="col-md-12">
+
+
+                        <label asp-for="Description"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="4">
+                        </textarea>
+
+
+
+                        <span asp-validation-for="Description"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+                <div class="mt-4 d-flex justify-content-end gap-2">
+
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+
+
+                        <i class="bi bi-x-circle"></i>
+
+                        Cancelar
+
+
+                    </a>
+
+
+
+
+
+                    <button type="submit"
+                            class="btn btn-success">
+
+
+                        <i class="bi bi-save"></i>
+
+                        Salvar Alterações
+
+
+                    </button>
+
+
+
+                </div>
+
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
 
 
 </div>
@@ -27,212 +550,12 @@ Voltar
 
 
 
-<div class="card shadow-sm border-0">
 
+@section Scripts
+{
 
-<div class="card-header bg-success text-white">
-
-<h5 class="mb-0">
-Atualização do Pagamento
-</h5>
-
-</div>
-
-
-
-<div class="card-body">
-
-
-<form asp-action="Edit" method="post">
-
-
-<input asp-for="PaymentId" type="hidden" />
-
-
-<div asp-validation-summary="ModelOnly"
-     class="alert alert-danger">
-</div>
-
-
-
-<div class="row">
-
-
-<div class="col-md-6 mb-3">
-
-<label asp-for="PaymentMethod"
-       class="form-label"></label>
-
-
-<select asp-for="PaymentMethod"
-        class="form-select"
-        asp-items="Html.GetEnumSelectList<FisioFlow_Web.Enums.PaymentMethod>()">
-
-<option value="">
-Selecione
-</option>
-
-</select>
-
-
-<span asp-validation-for="PaymentMethod"
-      class="text-danger"></span>
-
-
-</div>
-
-
-
-<div class="col-md-3 mb-3">
-
-<label asp-for="PaymentDate"
-class="form-label"></label>
-
-
-<input asp-for="PaymentDate"
-class="form-control"
-type="date"/>
-
-
-</div>
-
-
-
-
-<div class="col-md-3 mb-3">
-
-<label asp-for="DueDate"
-class="form-label"></label>
-
-
-<input asp-for="DueDate"
-class="form-control"
-type="date"/>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="row">
-
-
-<div class="col-md-6 mb-3">
-
-<label asp-for="InsuranceName"
-class="form-label"></label>
-
-
-<input asp-for="InsuranceName"
-class="form-control"/>
-
-
-</div>
-
-
-
-<div class="col-md-6 mb-3">
-
-<label asp-for="Description"
-class="form-label"></label>
-
-
-<textarea asp-for="Description"
-class="form-control">
-</textarea>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="row">
-
-
-<div class="col-md-6 mb-3">
-
-<label asp-for="PatientId"
-class="form-label"></label>
-
-
-<input asp-for="PatientId"
-class="form-control"/>
-
-
-</div>
-
-
-
-<div class="col-md-6 mb-3">
-
-<label asp-for="TreatmentId"
-class="form-label"></label>
-
-
-<input asp-for="TreatmentId"
-class="form-control"/>
-
-
-</div>
-
-
-</div>
-
-
-
-
-<div class="form-check form-switch mb-3">
-
-<input asp-for="Status"
-class="form-check-input"/>
-
-
-<label asp-for="Status"
-class="form-check-label">
-Pagamento realizado
-</label>
-
-
-</div>
-
-
-
-
-<button class="btn btn-success">
-
-<i class="bi bi-check-circle"></i>
-Salvar
-
-</button>
-
-
-
-</form>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-@section Scripts{
-
-@{
-await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
 }

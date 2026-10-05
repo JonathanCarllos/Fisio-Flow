@@ -26,7 +26,10 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // GET: api/payments
+        // ============================================================
+        // GET ALL
+        // ============================================================
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PaymentDTO>>> GetAllPayments()
         {
@@ -35,7 +38,37 @@ namespace FisioFlow_API.Controllers
                 .GetAllPaymentsAsync();
 
 
-            var result = _mapper.Map<IEnumerable<PaymentDTO>>(payments);
+
+            var result = payments.Select(payment => new PaymentDTO
+            {
+                PaymentId = payment.PaymentId,
+
+                Amount = payment.Amount,
+
+                PaymentMethod = payment.PaymentMethod,
+
+                PaymentDate = payment.PaymentDate,
+
+                DueDate = payment.DueDate,
+
+                Status = payment.Status,
+
+                Description = payment.Description,
+
+                InsuranceName = payment.InsuranceName,
+
+
+                TreatmentId = payment.TreatmentId,
+
+                PatientId = payment.PatientId,
+
+
+                PatientName = payment.Patient?.Name,
+
+                TreatmentName = payment.Treatment?.Type
+
+            });
+
 
 
             return Ok(result);
@@ -43,7 +76,12 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // GET: api/payments/{id}
+
+
+        // ============================================================
+        // GET BY ID
+        // ============================================================
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<PaymentDTO>> GetPaymentById(int id)
         {
@@ -52,16 +90,46 @@ namespace FisioFlow_API.Controllers
                 .GetPaymentByIdAsync(id);
 
 
-            if (payment is null)
+
+            if (payment == null)
             {
                 return NotFound(new
                 {
-                    message = $"Payment com ID {id} não encontrado."
+                    message = "Pagamento não encontrado."
                 });
             }
 
 
-            var result = _mapper.Map<PaymentDTO>(payment);
+
+            var result = new PaymentDTO
+            {
+                PaymentId = payment.PaymentId,
+
+                Amount = payment.Amount,
+
+                PaymentMethod = payment.PaymentMethod,
+
+                PaymentDate = payment.PaymentDate,
+
+                DueDate = payment.DueDate,
+
+                Status = payment.Status,
+
+                Description = payment.Description,
+
+                InsuranceName = payment.InsuranceName,
+
+
+                TreatmentId = payment.TreatmentId,
+
+                PatientId = payment.PatientId,
+
+
+                PatientName = payment.Patient?.Name,
+
+                TreatmentName = payment.Treatment?.Type
+            };
+
 
 
             return Ok(result);
@@ -70,22 +138,48 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // POST: api/payments
+
+        // ============================================================
+        // CREATE
+        // ============================================================
+
         [HttpPost]
         public async Task<ActionResult<PaymentDTO>> CreatePayment(
             PaymentDTO dto)
         {
 
-            if (dto is null)
+            if (dto == null)
             {
                 return BadRequest(new
                 {
-                    message = "Os dados do pagamento são obrigatórios."
+                    message = "Dados inválidos."
                 });
             }
 
 
-            var payment = _mapper.Map<Payment>(dto);
+
+            var payment = new Payment
+            {
+                Amount = dto.Amount,
+
+                PaymentMethod = dto.PaymentMethod,
+
+                PaymentDate = dto.PaymentDate,
+
+                DueDate = dto.DueDate,
+
+                Status = dto.Status,
+
+                Description = dto.Description,
+
+                InsuranceName = dto.InsuranceName,
+
+
+                PatientId = dto.PatientId,
+
+                TreatmentId = dto.TreatmentId
+            };
+
 
 
             await _unitOfWork
@@ -93,16 +187,54 @@ namespace FisioFlow_API.Controllers
                 .CreatePaymentAsync(payment);
 
 
+
             await _unitOfWork.Commit();
 
 
-            var result = _mapper.Map<PaymentDTO>(payment);
+
+            var created = await _unitOfWork
+                .PaymentRepository
+                .GetPaymentByIdAsync(payment.PaymentId);
+
+
+
+            var result = new PaymentDTO
+            {
+                PaymentId = created!.PaymentId,
+
+                Amount = created.Amount,
+
+                PaymentMethod = created.PaymentMethod,
+
+                PaymentDate = created.PaymentDate,
+
+                DueDate = created.DueDate,
+
+                Status = created.Status,
+
+                Description = created.Description,
+
+                InsuranceName = created.InsuranceName,
+
+
+                PatientId = created.PatientId,
+
+                TreatmentId = created.TreatmentId,
+
+
+                PatientName = created.Patient?.Name,
+
+                TreatmentName = created.Treatment?.Type
+            };
 
 
 
             return CreatedAtAction(
                 nameof(GetPaymentById),
-                new { id = payment.PaymentId },
+                new
+                {
+                    id = payment.PaymentId
+                },
                 result
             );
         }
@@ -110,55 +242,66 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // PUT: api/payments/{id}
+
+
+        // ============================================================
+        // UPDATE
+        // ============================================================
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdatePayment(
             int id,
             PaymentDTO dto)
         {
 
-            if (dto is null)
-            {
-                return BadRequest(new
-                {
-                    message = "Os dados do pagamento são obrigatórios."
-                });
-            }
-
-
             if (id != dto.PaymentId)
             {
                 return BadRequest(new
                 {
-                    message = "O ID da URL não corresponde ao ID do pagamento."
+                    message = "ID inválido."
                 });
             }
 
 
 
-            var existingPayment = await _unitOfWork
+            var payment = await _unitOfWork
                 .PaymentRepository
                 .GetPaymentByIdAsync(id);
 
 
 
-            if (existingPayment is null)
+            if (payment == null)
             {
-                return NotFound(new
-                {
-                    message = $"Payment com ID {id} não encontrado."
-                });
+                return NotFound();
             }
 
 
 
-            _mapper.Map(dto, existingPayment);
+            payment.Amount = dto.Amount;
+
+            payment.PaymentMethod = dto.PaymentMethod;
+
+            payment.PaymentDate = dto.PaymentDate;
+
+            payment.DueDate = dto.DueDate;
+
+            payment.Status = dto.Status;
+
+            payment.Description = dto.Description;
+
+            payment.InsuranceName = dto.InsuranceName;
+
+
+            payment.PatientId = dto.PatientId;
+
+            payment.TreatmentId = dto.TreatmentId;
+
 
 
 
             await _unitOfWork
                 .PaymentRepository
-                .UpdatePaymentAsync(existingPayment);
+                .UpdatePaymentAsync(payment);
 
 
 
@@ -172,33 +315,41 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // DELETE: api/payments/{id}
+
+
+        // ============================================================
+        // DELETE
+        // ============================================================
+
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeletePayment(int id)
         {
-            try
-            {
-                var payment = await _unitOfWork
-                    .PaymentRepository
-                    .DeletePaymentAsync(id);
+
+            var payment = await _unitOfWork
+                .PaymentRepository
+                .DeletePaymentAsync(id);
 
 
-                await _unitOfWork.Commit();
 
-
-                return Ok(new
-                {
-                    message = "Pagamento removido com sucesso.",
-                    data = _mapper.Map<PaymentDTO>(payment)
-                });
-            }
-            catch (KeyNotFoundException)
+            if (payment == null)
             {
                 return NotFound(new
                 {
-                    message = $"Payment com ID {id} não encontrado."
+                    message = "Pagamento não encontrado."
                 });
             }
+
+
+
+            await _unitOfWork.Commit();
+
+
+
+            return Ok(new
+            {
+                message = "Pagamento excluído com sucesso."
+            });
         }
+
     }
 }

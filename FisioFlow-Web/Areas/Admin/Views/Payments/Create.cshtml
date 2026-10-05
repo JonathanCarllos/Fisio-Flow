@@ -1,8 +1,14 @@
 ﻿@model FisioFlow_Web.Areas.Admin.Models.PaymentViewModel
 
+@using Microsoft.AspNetCore.Mvc.Rendering
+
 @{
     ViewData["Title"] = "Novo Pagamento";
+
+    var patients = ViewBag.Patients as SelectList;
+    var treatments = ViewBag.Treatments as SelectList;
 }
+
 
 
 <div class="container-fluid">
@@ -13,17 +19,21 @@
 
         <div>
 
-            <h2 class="fw-bold text-success mb-0">
+            <h2 class="fw-bold text-success mb-1">
 
                 <i class="bi bi-cash-coin"></i>
+
                 Novo Pagamento
 
             </h2>
 
 
-            <small class="text-muted">
-                Cadastre um novo pagamento no sistema.
-            </small>
+            <p class="text-muted mb-0">
+
+                Cadastre um pagamento relacionado ao tratamento do paciente.
+
+            </p>
+
 
         </div>
 
@@ -32,8 +42,11 @@
         <a asp-action="Index"
            class="btn btn-outline-secondary">
 
+
             <i class="bi bi-arrow-left"></i>
+
             Voltar
+
 
         </a>
 
@@ -47,25 +60,12 @@
     <div class="card shadow-sm border-0">
 
 
-        <div class="card-header bg-success text-white">
-
-            <h5 class="mb-0">
-
-                <i class="bi bi-credit-card"></i>
-                Informações do Pagamento
-
-            </h5>
-
-        </div>
+        <div class="card-body p-4">
 
 
+            <form asp-action="Create"
+                  method="post">
 
-
-
-        <div class="card-body">
-
-
-            <form asp-action="Create" method="post">
 
 
                 <div asp-validation-summary="ModelOnly"
@@ -76,14 +76,143 @@
 
 
 
-                <div class="row">
+                <div class="row g-3">
 
 
-                    <div class="col-md-6 mb-3">
 
 
-                        <label class="form-label">
-                            Método de Pagamento
+
+                    <!-- Valor -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="Amount"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+                        <div class="input-group">
+
+
+                            <span class="input-group-text">
+                                R$
+                            </span>
+
+
+                            <input asp-for="Amount"
+                                   class="form-control"
+                                   type="number"
+                                   step="0.01"
+                                   placeholder="0,00" />
+
+
+                        </div>
+
+
+                        <span asp-validation-for="Amount"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <!-- Paciente -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="PatientId"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+                        <select asp-for="PatientId"
+                                class="form-select"
+                                asp-items="patients">
+
+
+                            <option value="">
+                                Selecione o paciente
+                            </option>
+
+
+                        </select>
+
+
+
+                        <span asp-validation-for="PatientId"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <!-- Tratamento -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="TreatmentId"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
+                        <select asp-for="TreatmentId"
+                                class="form-select"
+                                asp-items="treatments">
+
+
+                            <option value="">
+                                Selecione o tratamento
+                            </option>
+
+
+                        </select>
+
+
+
+                        <span asp-validation-for="TreatmentId"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <!-- Método Pagamento -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="PaymentMethod"
+                               class="form-label fw-semibold">
                         </label>
 
 
@@ -122,17 +251,8 @@
                             </option>
 
 
-                            <option value="6">
-                                Boleto
-                            </option>
-
-
-                            <option value="7">
-                                Convênio
-                            </option>
-
-
                         </select>
+
 
 
                         <span asp-validation-for="PaymentMethod"
@@ -146,17 +266,84 @@
 
 
 
-                    <div class="col-md-3 mb-3">
 
 
-                        <label class="form-label">
-                            Data do Pagamento
+
+                    <!-- Status -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="Status"
+                               class="form-label fw-semibold">
                         </label>
 
 
+
+                        <select asp-for="Status"
+                                class="form-select">
+
+
+                            <option value="">
+                                Selecione o status
+                            </option>
+
+
+                            <option value="1">
+                                Pendente
+                            </option>
+
+
+                            <option value="2">
+                                Pago
+                            </option>
+
+
+                            <option value="3">
+                                Em atraso
+                            </option>
+
+
+                            <option value="4">
+                                Cancelado
+                            </option>
+
+
+                        </select>
+
+
+
+                        <span asp-validation-for="Status"
+                              class="text-danger">
+                        </span>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <!-- Data Pagamento -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="PaymentDate"
+                               class="form-label fw-semibold">
+                        </label>
+
+
+
                         <input asp-for="PaymentDate"
-                               type="date"
-                               class="form-control" />
+                               class="form-control"
+                               type="date" />
+
 
 
                         <span asp-validation-for="PaymentDate"
@@ -170,17 +357,25 @@
 
 
 
-                    <div class="col-md-3 mb-3">
 
 
-                        <label class="form-label">
-                            Data de Vencimento
+
+                    <!-- Vencimento -->
+
+
+                    <div class="col-md-4">
+
+
+                        <label asp-for="DueDate"
+                               class="form-label fw-semibold">
                         </label>
 
 
+
                         <input asp-for="DueDate"
-                               type="date"
-                               class="form-control" />
+                               class="form-control"
+                               type="date" />
+
 
 
                         <span asp-validation-for="DueDate"
@@ -191,87 +386,28 @@
                     </div>
 
 
-                </div>
 
 
 
 
 
 
-
-                <div class="row">
-
+                    <!-- Convênio -->
 
 
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-4">
 
 
-                        <label class="form-label">
-                            Paciente
+                        <label asp-for="InsuranceName"
+                               class="form-label fw-semibold">
                         </label>
 
-
-                        <input asp-for="PatientId"
-                               class="form-control"
-                               placeholder="Digite o código do paciente" />
-
-
-                        <span asp-validation-for="PatientId"
-                              class="text-danger">
-                        </span>
-
-
-                    </div>
-
-
-
-
-
-                    <div class="col-md-6 mb-3">
-
-
-                        <label class="form-label">
-                            Tratamento
-                        </label>
-
-
-                        <input asp-for="TreatmentId"
-                               class="form-control"
-                               placeholder="Digite o código do tratamento" />
-
-
-                        <span asp-validation-for="TreatmentId"
-                              class="text-danger">
-                        </span>
-
-
-                    </div>
-
-
-                </div>
-
-
-
-
-
-
-
-
-                <div class="row">
-
-
-
-                    <div class="col-md-6 mb-3">
-
-
-                        <label class="form-label">
-                            Convênio
-                        </label>
 
 
                         <input asp-for="InsuranceName"
                                class="form-control"
-                               placeholder="Ex: Unimed, Bradesco Saúde..." />
+                               placeholder="Nome do convênio" />
+
 
 
                         <span asp-validation-for="InsuranceName"
@@ -286,19 +422,26 @@
 
 
 
-                    <div class="col-md-6 mb-3">
 
 
-                        <label class="form-label">
-                            Descrição
+                    <!-- Descrição -->
+
+
+                    <div class="col-md-12">
+
+
+                        <label asp-for="Description"
+                               class="form-label fw-semibold">
                         </label>
+
 
 
                         <textarea asp-for="Description"
                                   class="form-control"
-                                  rows="3"
-                                  placeholder="Digite uma observação sobre o pagamento">
+                                  rows="4"
+                                  placeholder="Observações do pagamento">
                         </textarea>
+
 
 
                         <span asp-validation-for="Description"
@@ -309,27 +452,6 @@
                     </div>
 
 
-                </div>
-
-
-
-
-
-
-
-                <div class="form-check form-switch mb-4">
-
-
-                    <input asp-for="Status"
-                           class="form-check-input" />
-
-
-                    <label class="form-check-label">
-
-                        Pagamento realizado
-
-                    </label>
-
 
                 </div>
 
@@ -339,14 +461,16 @@
 
 
 
-                <div class="d-flex justify-content-end gap-2">
+                <div class="mt-4 d-flex justify-content-end gap-2">
+
 
 
                     <a asp-action="Index"
-                       class="btn btn-secondary">
+                       class="btn btn-outline-secondary">
 
 
                         <i class="bi bi-x-circle"></i>
+
                         Cancelar
 
 
@@ -361,6 +485,7 @@
 
 
                         <i class="bi bi-check-circle"></i>
+
                         Salvar Pagamento
 
 
@@ -368,7 +493,6 @@
 
 
                 </div>
-
 
 
 
@@ -387,7 +511,8 @@
 
 
 
-@section Scripts {
+@section Scripts
+{
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

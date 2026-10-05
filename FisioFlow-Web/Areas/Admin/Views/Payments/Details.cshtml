@@ -1,150 +1,557 @@
 ﻿@model FisioFlow_Web.Areas.Admin.Models.PaymentViewModel
 
+@using FisioFlow_Web.Enums
+
+
 @{
     ViewData["Title"] = "Detalhes do Pagamento";
+
+
+
+    string GetPaymentMethod(PaymentMethod method)
+    {
+        return method switch
+        {
+            PaymentMethod.Cash => "Dinheiro",
+            PaymentMethod.CreditCard => "Cartão de Crédito",
+            PaymentMethod.DebitCard => "Cartão de Débito",
+            PaymentMethod.Pix => "PIX",
+            PaymentMethod.BankTransfer => "Transferência Bancária",
+            _ => "Não informado"
+        };
+    }
+
+
+
+
+    string GetStatus(Status status)
+    {
+        return status switch
+        {
+            Status.Pending => "Pendente",
+            Status.Paid => "Pago",
+            Status.Overdue => "Em atraso",
+            Status.Cancelled => "Cancelado",
+            _ => "Não informado"
+        };
+    }
+
+
+
+    string StatusClass(Status status)
+    {
+        return status switch
+        {
+            Status.Paid => "bg-success",
+            Status.Pending => "bg-warning text-dark",
+            Status.Overdue => "bg-danger",
+            Status.Cancelled => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+
 }
+
+
 
 
 <div class="container-fluid">
 
 
+
+
+
+
+    <!-- Cabeçalho -->
+
+
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h2 class="fw-bold text-success">
-            <i class="bi bi-eye"></i>
-            Detalhes do Pagamento
-        </h2>
 
 
-        <a asp-action="Index" class="btn btn-outline-secondary">
+        <div>
+
+
+            <h2 class="fw-bold text-success mb-1">
+
+
+                <i class="bi bi-receipt"></i>
+
+
+                Detalhes do Pagamento
+
+
+            </h2>
+
+
+
+            <p class="text-muted mb-0">
+
+
+                Visualização completa das informações financeiras.
+
+
+            </p>
+
+
+
+        </div>
+
+
+
+
+
+        <div class="d-flex gap-2">
+
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.PaymentId"
+               class="btn btn-success">
+
+
+                <i class="bi bi-pencil"></i>
+
+
+                Editar
+
+
+            </a>
+
+
+
+
+
+            <a asp-action="Delete"
+               asp-route-id="@Model.PaymentId"
+               class="btn btn-outline-danger">
+
+
+                <i class="bi bi-trash"></i>
+
+
+                Excluir
+
+
+            </a>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- Valor Principal -->
+
+
+    <div class="card border-0 shadow-sm mb-4">
+
+
+        <div class="card-body p-4">
+
+
+
+            <div class="row align-items-center">
+
+
+
+                <div class="col-md-8">
+
+
+
+                    <span class="text-muted">
+                        Valor do pagamento
+                    </span>
+
+
+
+                    <h1 class="fw-bold text-success mt-2">
+
+
+                        @Model.Amount.ToString("C2")
+
+
+                    </h1>
+
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-4 text-md-end">
+
+
+
+                    <span class="badge rounded-pill fs-6 px-4 py-2 @StatusClass(Model.Status)">
+
+
+                        @GetStatus(Model.Status)
+
+
+                    </span>
+
+
+
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <div class="row g-4">
+
+
+
+
+
+        <!-- Dados do pagamento -->
+
+
+        <div class="col-lg-6">
+
+
+
+            <div class="card shadow-sm border-0 h-100">
+
+
+
+                <div class="card-header bg-success text-white">
+
+
+                    <i class="bi bi-cash-stack"></i>
+
+
+                    Informações do Pagamento
+
+
+                </div>
+
+
+
+
+                <div class="card-body">
+
+
+
+                    <div class="mb-3">
+
+
+                        <label class="text-muted">
+                            Método
+                        </label>
+
+
+                        <h6>
+
+
+                            @GetPaymentMethod(Model.PaymentMethod)
+
+
+                        </h6>
+
+
+                    </div>
+
+
+
+
+
+
+                    <div class="mb-3">
+
+
+                        <label class="text-muted">
+                            Data do pagamento
+                        </label>
+
+
+                        <h6>
+
+
+                            @Model.PaymentDate?.ToString("dd/MM/yyyy")
+
+
+                        </h6>
+
+
+                    </div>
+
+
+
+
+
+
+                    <div>
+
+
+                        <label class="text-muted">
+                            Data vencimento
+                        </label>
+
+
+                        <h6>
+
+
+                            @Model.DueDate?.ToString("dd/MM/yyyy")
+
+
+                        </h6>
+
+
+                    </div>
+
+
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <!-- Relacionamentos -->
+
+
+        <div class="col-lg-6">
+
+
+
+            <div class="card shadow-sm border-0 h-100">
+
+
+
+                <div class="card-header bg-success text-white">
+
+
+                    <i class="bi bi-person-vcard"></i>
+
+
+                    Dados do Atendimento
+
+
+                </div>
+
+
+
+
+                <div class="card-body">
+
+
+
+
+
+                    <div class="mb-3">
+
+
+                        <label class="text-muted">
+                            Paciente
+                        </label>
+
+
+                        <h6>
+
+
+                            @Model.PatientName
+
+
+                        </h6>
+
+
+                    </div>
+
+
+
+
+
+
+                    <div>
+
+
+                        <label class="text-muted">
+                            Tratamento
+                        </label>
+
+
+                        <h6>
+
+
+                            @Model.TreatmentName
+
+
+                        </h6>
+
+
+                    </div>
+
+
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+        <!-- Convênio -->
+
+
+        <div class="col-lg-4">
+
+
+
+            <div class="card border-0 shadow-sm">
+
+
+
+                <div class="card-body">
+
+
+                    <small class="text-muted">
+                        Convênio
+                    </small>
+
+
+
+                    <h6 class="mt-2">
+
+
+                        @(string.IsNullOrEmpty(Model.InsuranceName)
+                            ? "Particular"
+                            : Model.InsuranceName)
+
+
+                    </h6>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <!-- Descrição -->
+
+
+        <div class="col-lg-8">
+
+
+
+            <div class="card border-0 shadow-sm">
+
+
+
+                <div class="card-body">
+
+
+                    <small class="text-muted">
+                        Observações
+                    </small>
+
+
+
+                    <p class="mt-2 mb-0">
+
+
+                        @(string.IsNullOrEmpty(Model.Description)
+                            ? "Nenhuma observação cadastrada."
+                            : Model.Description)
+
+
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="mt-4">
+
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+
             <i class="bi bi-arrow-left"></i>
-            Voltar
+
+
+            Voltar para pagamentos
+
+
         </a>
 
-    </div>
-
-
-
-    <div class="card shadow-sm border-0">
-
-
-        <div class="card-header bg-success text-white">
-
-            <h5 class="mb-0">
-                Informações do Pagamento
-            </h5>
-
-        </div>
-
-
-
-        <div class="card-body">
-
-
-            <dl class="row">
-
-
-                <dt class="col-sm-3">
-                    Método
-                </dt>
-
-                <dd class="col-sm-9">
-                    @Model.PaymentMethod
-                </dd>
-
-
-
-                <dt class="col-sm-3">
-                    Data Pagamento
-                </dt>
-
-                <dd class="col-sm-9">
-                    @(Model.PaymentDate?.ToString("dd/MM/yyyy"))
-                </dd>
-
-
-
-                <dt class="col-sm-3">
-                    Vencimento
-                </dt>
-
-                <dd class="col-sm-9">
-                    @(Model.DueDate?.ToString("dd/MM/yyyy"))
-                </dd>
-
-
-
-                <dt class="col-sm-3">
-                    Convênio
-                </dt>
-
-                <dd class="col-sm-9">
-                    @(Model.InsuranceName ?? "Particular")
-                </dd>
-
-
-
-                <dt class="col-sm-3">
-                    Paciente ID
-                </dt>
-
-                <dd class="col-sm-9">
-                    @Model.PatientId
-                </dd>
-
-
-
-                <dt class="col-sm-3">
-                    Tratamento ID
-                </dt>
-
-                <dd class="col-sm-9">
-                    @Model.TreatmentId
-                </dd>
-
-
-
-                <dt class="col-sm-3">
-                    Status
-                </dt>
-
-
-                <dd class="col-sm-9">
-
-                    @if(Model.Status)
-                    {
-                        <span class="badge bg-success">
-                            Pago
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-warning text-dark">
-                            Pendente
-                        </span>
-                    }
-
-                </dd>
-
-
-
-                <dt class="col-sm-3">
-                    Descrição
-                </dt>
-
-                <dd class="col-sm-9">
-                    @(Model.Description ?? "-")
-                </dd>
-
-
-            </dl>
-
-
-
-        </div>
-
 
     </div>
+
+
+
 
 
 </div>

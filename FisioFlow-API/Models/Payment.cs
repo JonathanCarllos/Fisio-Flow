@@ -1,47 +1,55 @@
 ﻿using FisioFlow_API.Enums;
-using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FisioFlow_API.Models
 {
     public class Payment
     {
+        [Key]
         public int PaymentId { get; set; }
 
 
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Amount { get; set; }
+
+
+        [Required]
         public PaymentMethod PaymentMethod { get; set; }
 
 
-        public DateTime PaymentDate { get; set; }
+        [Required]
+        public DateTime? PaymentDate { get; set; }
 
 
-        public DateTime DueDate { get; set; }
+        [Required]
+        public DateTime? DueDate { get; set; }
 
 
-        public bool Status { get; set; }
+        [Required]
+        public Status Status { get; set; }
 
 
+        [MaxLength(500)]
         public string? Description { get; set; }
 
 
+        [MaxLength(150)]
         public string? InsuranceName { get; set; }
 
 
-
-        // Relacionamento Treatment
-
+        [Required]
         public int TreatmentId { get; set; }
 
-        [JsonIgnore]
-        public Treatment? Treatment { get; set; }
+        [ForeignKey(nameof(TreatmentId))]
+        public Treatment Treatment { get; set; } = null!;
 
 
-
-        // Relacionamento Patient
-
+        [Required]
         public int PatientId { get; set; }
 
-        [JsonIgnore]
-        public Patient? Patient { get; set; }
-
+        [ForeignKey(nameof(PatientId))]
+        public Patient Patient { get; set; } = null!;
     }
 }
