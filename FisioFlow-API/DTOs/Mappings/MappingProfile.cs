@@ -27,8 +27,39 @@ namespace FisioFlow_API.DTOs.Mappings
             // TREATMENT
             // ============================================================
 
+
+            // Entity -> DTO
             CreateMap<Treatment, TreatmentDTO>()
-                .ReverseMap();
+                .ForMember(
+                    dest => dest.PatientName,
+                    opt => opt.MapFrom(
+                        src => src.Patient != null
+                            ? src.Patient.Name
+                            : null
+                    )
+                )
+                .ForMember(
+                    dest => dest.PhysiotherapistName,
+                    opt => opt.MapFrom(
+                        src => src.Physiotherapist != null
+                            ? src.Physiotherapist.Name
+                            : null
+                    )
+                );
+
+
+
+
+            // DTO -> Entity
+            CreateMap<TreatmentDTO, Treatment>()
+                .ForMember(
+                    dest => dest.Patient,
+                    opt => opt.Ignore()
+                )
+                .ForMember(
+                    dest => dest.Physiotherapist,
+                    opt => opt.Ignore()
+                );
 
 
             // ============================================================

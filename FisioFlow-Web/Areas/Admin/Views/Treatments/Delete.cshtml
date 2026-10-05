@@ -1,0 +1,220 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.TreatmentViewModel
+
+@{
+    ViewData["Title"] = "Excluir Tratamento";
+}
+
+<div class="container-fluid">
+
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+        <div>
+
+            <h2 class="fw-bold text-danger mb-0">
+
+                <i class="bi bi-trash me-2"></i>
+                Excluir Tratamento
+
+            </h2>
+
+
+            <small class="text-muted">
+                Confirmação de exclusão
+            </small>
+
+        </div>
+
+
+
+        <a asp-action="Index"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-1"></i>
+            Voltar
+
+        </a>
+
+
+    </div>
+
+
+
+
+    <div class="card shadow-sm border-0">
+
+
+        <div class="card-body">
+
+
+            <div class="alert alert-danger">
+
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                Deseja realmente excluir este tratamento?
+
+            </div>
+
+
+
+            <div class="row g-3">
+
+
+
+                <div class="col-md-6">
+
+                    <div class="border rounded p-3">
+
+                        <strong>
+                            Paciente
+                        </strong>
+
+
+                        <p class="mb-0">
+                            @ViewBag.PatientName
+                        </p>
+
+
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="col-md-6">
+
+                    <div class="border rounded p-3">
+
+                        <strong>
+                            Fisioterapeuta
+                        </strong>
+
+
+                        <p class="mb-0">
+                            @ViewBag.PhysiotherapistName
+                        </p>
+
+
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="col-md-4">
+
+                    <div class="border rounded p-3">
+
+                        <strong>
+                            Tipo
+                        </strong>
+
+
+                        <p class="mb-0">
+                            @Model.Type
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="col-md-4">
+
+                    <div class="border rounded p-3">
+
+                        <strong>
+                            Diagnóstico
+                        </strong>
+
+
+                        <p class="mb-0">
+                            @Model.Diagnosis
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="col-md-4">
+
+                    <div class="border rounded p-3">
+
+                        <strong>
+                            Status
+                        </strong>
+
+
+                        <p class="mb-0">
+
+                            @if (Model.Status)
+                            {
+                                <span class="badge bg-success">
+                                    Ativo
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    Finalizado
+                                </span>
+                            }
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <form asp-action="Delete"
+                  method="post"
+                  class="mt-4 text-end">
+
+
+                <input asp-for="TreatmentId"
+                       type="hidden" />
+
+
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    <i class="bi bi-trash me-1"></i>
+                    Confirmar Exclusão
+
+                </button>
+
+
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+
+                    Cancelar
+
+                </a>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

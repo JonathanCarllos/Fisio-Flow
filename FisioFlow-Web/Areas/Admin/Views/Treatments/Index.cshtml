@@ -1,0 +1,413 @@
+﻿@model IEnumerable<FisioFlow_Web.Areas.Admin.Models.TreatmentViewModel>
+
+@{
+    ViewData["Title"] = "Tratamentos";
+}
+
+
+<div class="container-fluid">
+
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
+        <div>
+
+            <h2 class="fw-bold text-success mb-1">
+
+                <i class="bi bi-clipboard2-pulse me-2"></i>
+
+                Tratamentos
+
+            </h2>
+
+
+            <p class="text-muted mb-0">
+                Gerenciamento dos tratamentos dos pacientes.
+            </p>
+
+        </div>
+
+
+
+
+        <a asp-action="Create"
+           class="btn btn-success">
+
+            <i class="bi bi-plus-circle me-1"></i>
+
+            Novo Tratamento
+
+        </a>
+
+
+    </div>
+
+
+
+
+
+    <div class="row mb-4">
+
+
+        <div class="col-md-3">
+
+
+            <div class="card shadow-sm border-0">
+
+
+                <div class="card-body">
+
+
+                    <div class="d-flex align-items-center">
+
+
+                        <div class="bg-success text-white rounded-circle p-3 me-3">
+
+                            <i class="bi bi-clipboard2-pulse fs-4"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h6 class="text-muted mb-1">
+                                Total
+                            </h6>
+
+
+                            <h3 class="fw-bold mb-0">
+                                @ViewBag.Total
+                            </h3>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="card shadow-sm border-0">
+
+
+        <div class="card-body">
+
+
+
+            <div class="table-responsive">
+
+
+                <table class="table table-hover align-middle">
+
+
+                    <thead class="table-success">
+
+
+                        <tr>
+
+
+                            <th>
+                                Paciente
+                            </th>
+
+
+                            <th>
+                                Fisioterapeuta
+                            </th>
+
+
+                            <th>
+                                Tratamento
+                            </th>
+
+
+                            <th>
+                                Sessões
+                            </th>
+
+
+                            <th>
+                                Período
+                            </th>
+
+
+                            <th>
+                                Status
+                            </th>
+
+
+                            <th class="text-center">
+                                Ações
+                            </th>
+
+
+                        </tr>
+
+
+                    </thead>
+
+
+
+
+                    <tbody>
+
+
+                        @if(Model != null && Model.Any())
+                        {
+
+                            foreach(var item in Model)
+                            {
+
+
+                                <tr>
+
+
+                                    <td>
+
+
+                                        <div class="fw-semibold">
+
+                                            <i class="bi bi-person me-1 text-success"></i>
+
+                                            @item.PatientName
+
+                                        </div>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+
+                                        <div>
+
+                                            <i class="bi bi-person-badge me-1 text-success"></i>
+
+                                            @item.PhysiotherapistName
+
+                                        </div>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+                                        <span class="fw-semibold">
+
+                                            @item.Type
+
+                                        </span>
+
+
+                                        <br />
+
+
+                                        <small class="text-muted">
+
+                                            @item.Diagnosis
+
+                                        </small>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+
+                                        <span>
+
+                                            @item.CompletedSessions /
+                                            @item.TotalSessions
+
+                                        </span>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+
+                                        <small>
+
+                                            @item.StartDate.ToString("dd/MM/yyyy")
+
+                                            <br />
+
+                                            até
+
+                                            <br />
+
+                                            @item.EndDate.ToString("dd/MM/yyyy")
+
+                                        </small>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+
+                                        @if(item.Status)
+                                        {
+
+                                            <span class="badge bg-success">
+
+                                                Ativo
+
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="badge bg-secondary">
+
+                                                Finalizado
+
+                                            </span>
+
+                                        }
+
+
+                                    </td>
+
+
+
+
+
+                                    <td class="text-center">
+
+
+                                        <div class="btn-group">
+
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.TreatmentId"
+                                               class="btn btn-sm btn-outline-success"
+                                               title="Detalhes">
+
+
+                                                <i class="bi bi-eye"></i>
+
+
+                                            </a>
+
+
+
+
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.TreatmentId"
+                                               class="btn btn-sm btn-outline-warning"
+                                               title="Editar">
+
+
+                                                <i class="bi bi-pencil"></i>
+
+
+                                            </a>
+
+
+
+
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.TreatmentId"
+                                               class="btn btn-sm btn-outline-danger"
+                                               title="Excluir">
+
+
+                                                <i class="bi bi-trash"></i>
+
+
+                                            </a>
+
+
+
+                                        </div>
+
+
+                                    </td>
+
+
+
+                                </tr>
+
+
+                            }
+
+                        }
+                        else
+                        {
+
+                            <tr>
+
+                                <td colspan="7"
+                                    class="text-center text-muted py-4">
+
+
+                                    Nenhum tratamento encontrado.
+
+
+                                </td>
+
+
+                            </tr>
+
+                        }
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+</div>

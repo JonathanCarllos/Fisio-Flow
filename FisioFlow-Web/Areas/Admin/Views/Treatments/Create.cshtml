@@ -1,0 +1,332 @@
+﻿@model FisioFlow_Web.Areas.Admin.Models.TreatmentViewModel
+
+@{
+    ViewData["Title"] = "Novo Tratamento";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold text-success mb-0">
+                <i class="bi bi-clipboard2-plus me-2"></i>
+                Novo Tratamento
+            </h2>
+
+            <small class="text-muted">
+                Cadastre um novo tratamento fisioterapêutico
+            </small>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Voltar
+        </a>
+
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger">
+                </div>
+
+
+                <div class="row g-3">
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="PatientId"
+                               class="form-label fw-semibold">
+                            Paciente
+                        </label>
+
+                        <select asp-for="PatientId"
+                                class="form-select"
+                                asp-items="ViewBag.Patients">
+
+                            <option value="">
+                                Selecione o paciente
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="PatientId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="PhysiotherapistId"
+                               class="form-label fw-semibold">
+                            Fisioterapeuta
+                        </label>
+
+
+                        <select asp-for="PhysiotherapistId"
+                                class="form-select"
+                                asp-items="ViewBag.Physiotherapists">
+
+                            <option value="">
+                                Selecione o fisioterapeuta
+                            </option>
+
+                        </select>
+
+
+                        <span asp-validation-for="PhysiotherapistId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="Type"
+                               class="form-label fw-semibold">
+                            Tipo de Tratamento
+                        </label>
+
+
+                        <input asp-for="Type"
+                               class="form-control"
+                               placeholder="Ex: Fisioterapia Ortopédica" />
+
+
+                        <span asp-validation-for="Type"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="Diagnosis"
+                               class="form-label fw-semibold">
+                            Diagnóstico
+                        </label>
+
+
+                        <input asp-for="Diagnosis"
+                               class="form-control"
+                               placeholder="Informe o diagnóstico" />
+
+
+                        <span asp-validation-for="Diagnosis"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-4">
+
+                        <label asp-for="TotalSessions"
+                               class="form-label fw-semibold">
+                            Total de Sessões
+                        </label>
+
+
+                        <input asp-for="TotalSessions"
+                               class="form-control"
+                               type="number"
+                               min="1" />
+
+
+                        <span asp-validation-for="TotalSessions"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-4">
+
+                        <label asp-for="CompletedSessions"
+                               class="form-label fw-semibold">
+                            Sessões Concluídas
+                        </label>
+
+
+                        <input asp-for="CompletedSessions"
+                               class="form-control"
+                               type="number"
+                               min="0" />
+
+
+                        <span asp-validation-for="CompletedSessions"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-4">
+
+                        <label asp-for="Status"
+                               class="form-label fw-semibold">
+                            Status
+                        </label>
+
+
+                        <select asp-for="Status"
+                                class="form-select">
+
+                            <option value="true">
+                                Ativo
+                            </option>
+
+                            <option value="false">
+                                Finalizado
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="StartDate"
+                               class="form-label fw-semibold">
+                            Data de Início
+                        </label>
+
+
+                        <input asp-for="StartDate"
+                               class="form-control"
+                               type="date" />
+
+
+                        <span asp-validation-for="StartDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-6">
+
+                        <label asp-for="EndDate"
+                               class="form-label fw-semibold">
+                            Data de Término
+                        </label>
+
+
+                        <input asp-for="EndDate"
+                               class="form-control"
+                               type="date" />
+
+
+                        <span asp-validation-for="EndDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-12">
+
+                        <label asp-for="Exercises"
+                               class="form-label fw-semibold">
+                            Exercícios
+                        </label>
+
+
+                        <textarea asp-for="Exercises"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Descreva os exercícios prescritos">
+                        </textarea>
+
+
+                        <span asp-validation-for="Exercises"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div class="col-md-12">
+
+                        <label asp-for="Observations"
+                               class="form-label fw-semibold">
+                            Observações
+                        </label>
+
+
+                        <textarea asp-for="Observations"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Observações adicionais">
+                        </textarea>
+
+
+                        <span asp-validation-for="Observations"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="mt-4 text-end">
+
+                    <button type="submit"
+                            class="btn btn-success px-4">
+
+                        <i class="bi bi-check-circle me-1"></i>
+                        Salvar Tratamento
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

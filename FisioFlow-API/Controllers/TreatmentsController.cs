@@ -5,6 +5,7 @@ using FisioFlow_API.Repositories.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace FisioFlow_API.Controllers
 {
     [Authorize]
@@ -12,8 +13,10 @@ namespace FisioFlow_API.Controllers
     [ApiController]
     public class TreatmentsController : ControllerBase
     {
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+
 
 
         public TreatmentsController(
@@ -26,16 +29,25 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // GET: api/Treatments
+
+
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TreatmentDTO>>> GetTreatments()
         {
-            var treatments = await _unitOfWork
+
+            var treatments =
+                await _unitOfWork
                 .TreatmentRepository
                 .GetAllTreatmentsAsync();
 
 
-            var result = _mapper.Map<IEnumerable<TreatmentDTO>>(treatments);
+
+            var result =
+                _mapper.Map<IEnumerable<TreatmentDTO>>(
+                    treatments
+                );
+
 
 
             return Ok(result);
@@ -44,27 +56,32 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // GET: api/Treatments/{id}
+
+
+
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<TreatmentDTO>> GetTreatment(int id)
+        public async Task<ActionResult<TreatmentDTO>> GetTreatment(
+            int id)
         {
-            var treatment = await _unitOfWork
+
+            var treatment =
+                await _unitOfWork
                 .TreatmentRepository
                 .GetTreatmentByIdAsync(id);
 
 
 
-            if (treatment is null)
+            if (treatment == null)
             {
-                return NotFound(new
-                {
-                    message = $"Tratamento com ID {id} não encontrado."
-                });
+                return NotFound();
             }
 
 
 
-            var result = _mapper.Map<TreatmentDTO>(treatment);
+            var result =
+                _mapper.Map<TreatmentDTO>(
+                    treatment
+                );
 
 
 
@@ -74,23 +91,22 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // POST: api/Treatments
+
+
+
+
         [HttpPost]
         public async Task<ActionResult<TreatmentDTO>> CreateTreatment(
             TreatmentDTO dto)
         {
 
-            if (dto is null)
-            {
-                return BadRequest(new
-                {
-                    message = "Os dados do tratamento são obrigatórios."
-                });
-            }
+            if (dto == null)
+                return BadRequest();
 
 
 
-            var treatment = _mapper.Map<Treatment>(dto);
+            var treatment =
+                _mapper.Map<Treatment>(dto);
 
 
 
@@ -104,13 +120,19 @@ namespace FisioFlow_API.Controllers
 
 
 
-            var result = _mapper.Map<TreatmentDTO>(treatment);
+            var result =
+                _mapper.Map<TreatmentDTO>(
+                    treatment
+                );
 
 
 
             return CreatedAtAction(
                 nameof(GetTreatment),
-                new { id = treatment.TreatmentId },
+                new
+                {
+                    id = treatment.TreatmentId
+                },
                 result
             );
         }
@@ -118,56 +140,55 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // PUT: api/Treatments/{id}
+
+
+
+
+
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateTreatment(
             int id,
             TreatmentDTO dto)
         {
 
-            if (dto is null)
-            {
-                return BadRequest(new
-                {
-                    message = "Os dados do tratamento são obrigatórios."
-                });
-            }
+            if (dto == null)
+                return BadRequest();
 
 
 
             if (id != dto.TreatmentId)
-            {
-                return BadRequest(new
-                {
-                    message = "O ID da URL não corresponde ao ID do tratamento."
-                });
-            }
+                return BadRequest();
 
 
 
-            var existingTreatment = await _unitOfWork
+            var treatment =
+                await _unitOfWork
                 .TreatmentRepository
                 .GetTreatmentByIdAsync(id);
 
 
 
-            if (existingTreatment is null)
-            {
-                return NotFound(new
-                {
-                    message = $"Tratamento com ID {id} não encontrado."
-                });
-            }
+            if (treatment == null)
+                return NotFound();
 
 
 
-            _mapper.Map(dto, existingTreatment);
+
+
+            _mapper.Map(
+                dto,
+                treatment
+            );
+
+
 
 
 
             await _unitOfWork
                 .TreatmentRepository
-                .UpdateTreatmentAsync(existingTreatment);
+                .UpdateTreatmentAsync(
+                    treatment
+                );
 
 
 
@@ -181,36 +202,32 @@ namespace FisioFlow_API.Controllers
 
 
 
-        // DELETE: api/Treatments/{id}
+
+
+
+
+
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteTreatment(int id)
+        public async Task<IActionResult> DeleteTreatment(
+            int id)
         {
-            try
+
+            var treatment =
+                await _unitOfWork
+                .TreatmentRepository
+                .DeleteTreatmentAsync(id);
+
+
+
+            await _unitOfWork.Commit();
+
+
+
+            return Ok(new
             {
-                var treatment = await _unitOfWork
-                    .TreatmentRepository
-                    .DeleteTreatmentAsync(id);
-
-
-
-                await _unitOfWork.Commit();
-
-
-
-                return Ok(new
-                {
-                    message = "Tratamento removido com sucesso.",
-                    data = _mapper.Map<TreatmentDTO>(treatment)
-                });
-
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound(new
-                {
-                    message = $"Tratamento com ID {id} não encontrado."
-                });
-            }
+                message =
+                "Tratamento removido com sucesso."
+            });
         }
     }
 }
